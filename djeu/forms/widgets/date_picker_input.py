@@ -2,9 +2,9 @@ from django import forms
 from django.conf import settings
 
 
-class LinkedFileInput(forms.FileInput):
+class DatePickerInput(forms.TextInput):
 
-    template_name = 'djeu/forms/widgets/linked-file-input.html'
+    template_name = 'djeu/forms/widgets/date-picker-input.html'
 
     def format_value(self, value):
         """File input never renders a value."""
@@ -23,14 +23,16 @@ class LinkedFileInput(forms.FileInput):
         return forms.Media(
             js=(
                 'admin/js/vendor/jquery/jquery%s.js' % extra,
-                'djeu/js/jquery-filepicker.js',
-                'djeu/js/jquery-filepicker.init.js',
+                'jquery-ui/jquery-ui%s.js' % extra,
+                # 'djeu/js/jquery-datepicker.js',
+                'djeu/js/i18n/datepicker-ru-RU.js',
+                'djeu/js/jquery-datepicker.init.js',
             ) + (
                 'admin/js/jquery.init.js',
             ),
             css={
                 'screen': (
-                    'djeu/css/filepicker.default.css',
+                    'jquery-ui/jquery-ui.min.css',
                 ),
             },
         )
