@@ -1,0 +1,197 @@
+#!/bin/bash
+
+PYTHON=python3.9
+# CHECK PYTHON 3
+if command -v $PYTHON &>/dev/null; then
+    echo Python3 available
+else
+    echo Python3 not available, please install it or add to the PATH variable
+    exit 1
+fi
+
+# CHECK PIP
+if command -v $PYTHON -m pip &>/dev/null; then
+    echo Pip available
+else
+    echo Pip not available, please install it or add to the PATH variable
+    exit 1
+fi
+
+# CHECK VIRTUALENV COMMAND
+if command -v $PYTHON -m venv &>/dev/null; then
+    echo Venv command available
+else
+    echo Venv not available, please install it [For example: python3 -m pip install python-venv]
+    exit 1
+fi
+
+COMMAND=$1
+PYTHON_VERSION=3.9
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+    --python-version)
+        PYTHON_VERSION="$2"
+        shift
+        shift
+        ;;
+    *)
+        COMMAND=$1
+        shift
+        break
+        ;;
+    esac
+    shift
+done
+
+# Redependencies function
+function redependencies {
+    .venv/bin/pip3 install -r requirements.txt
+    .venv/bin/pip3 install -r requirements-dev.txt
+}
+
+# CHECK VENV NOT EXISTS
+if [ ! -d .venv ]; then
+
+    $PYTHON -m venv .venv
+    if [ ! -d .pip ]; then
+        mkdir .pip
+        curl https://bootstrap.pypa.io/get-pip.py -o .pip/get-pip.py
+    fi
+    .venv/bin/python3 .pip/get-pip.py
+    redependencies
+fi
+
+if [ -f '.env' ]; then
+    echo Use .env file to read sensitive information
+    while IPS='=' read -r key value; do
+        eval ${key}
+    done <'.env'
+else
+    # REGENERATE SENSITIVE INFO FROM TEMPLATE
+    cat >'.env' <<EOF
+DJANGO_SECRET_KEY='django-insecure-fl-)+d7g6a@xcjqckh+^eggbx%2)+0fo(^!4npta)xb#4ab6#9'
+PYTHONPATH=.
+EOF
+fi
+
+echo EXECUTE
+echo =========== $COMMAND
+echo $COMMAND ===========
+echo COMMAND
+
+if [ "x$COMMAND" == "xmanage" ]; then
+    echo "Run manage.py script manage.py $@"
+    # Sample: ./buildew manage loaddata app_moods/fixtures/geometry_shapes.yaml
+    export DJANGO_SECRET_KEY=$(.venv/bin/python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')
+    export DJANGO_DEBUG=True
+    export PYTHONPATH=${PYTHONPATH}
+
+    .venv/bin/python3 manage.py $@
+fi
+
+if [ "x$COMMAND" == "xredeps" ]; then
+    echo "Reinstall dependencies"
+    redependencies
+fi
+
+if [ "x$COMMAND" == "xclean" ]; then
+    echo "Clean temporary folders"
+    find . -name __pycache__ | xargs rm -fr
+fi
+
+if [ "x$COMMAND" == "xrun" ]; then
+    echo 'Run site'
+    export PYTHONPATH=${PYTHONPATH}
+    .venv/bin/python manage.py runserver
+fi
+
+
+#                                    #
+# DOCKER INFRASTRACTURE AND COMMANDS #
+#                                    #
+
+function docker_build {
+    echo "Build docker image $1 from $2"
+    mkdir -p .prebuild
+    docker build -t $1 -f $2 $3 || exit 1
+    rm -fr .prebuild
+}
+
+function build {
+    docker_build 'mast.eu.spb.ru/gmig:v1' 'Dockerfile' '.' || exit 1
+    docker_build 'mast.eu.spb.ru/gmig:front' 'front/Dockerfile' 'front' || exit 1
+}
+
+if [ "x$COMMAND" == "xbuild" ]; then
+    build
+fi
+
+function check_folder {
+    FOLDER=$1
+    mkdir -p $FOLDER || exit 1
+    chmod a+rwx $FOLDER
+    SERVICES=( 'postgresdb' 'gmig' 'front' )
+    for SERVICE in ${SERVICES[@]}; do
+        mkdir -p $FOLDER/$SERVICE || exit 1
+        chmod a+rwx $FOLDER/$SERVICE
+    done
+}
+
+function start {
+    # Check the data folders
+    check_folder .data
+    # Tune images folder
+    mkdir -p .data/front/images || exit 1
+    chmod a+rwx .data/front/images
+
+    # Sync Images, TODO: put on s3 storage
+    # cp back/app/static/images/photo_2021-11-10_11-15-00.jpg .data/front/images/cover
+
+    # Check the temporary folders
+    check_folder .tmp
+
+    # Check the logger folders
+    check_folder .logs
+    # Tune front folders
+    mkdir -p .logs/front/nginx || exit 1
+    chmod a+rwx .logs/front/nginx
+
+    if [ "x$1" == "x" ]; then
+        docker-compose up
+    else
+        docker-compose up $@
+    fi
+}
+
+if [ "x$COMMAND" == "xrun" ] || [ "x$COMMAND" == "xup" ] || [ "x$COMMAND" == "xstart" ] ; then
+    echo 'Run docker images'
+
+    start $@
+
+fi
+
+function stop {
+    if [ "x$1" == "x" ]; then
+        docker-compose down -v
+    else
+        docker-compose stop $@
+    fi
+}
+
+if [ "x$COMMAND" == "xstop" ] || [ "x$COMMAND" == "xdown" ] || [ "x$COMMAND" == "xfinish" ] ; then
+    echo 'Stop docker images'
+
+    stop $@
+fi
+
+if [ "x$COMMAND" == "xrestart" ] ; then
+    echo 'Restart services or whole system'
+    stop $@
+    start $@
+fi
+
+# =================================================================================================
+
+AVAILABLE_COMMANDS="run build drun up start stop down finish manage redeps clean"
+echo ''
+[[ $AVAILABLE_COMMANDS =~ (^| )$COMMAND($| ) ]] && echo 'Ok' || echo 'Unknown command: ' "$COMMAND" && echo 'Available commands are: ' "$AVAILABLE_COMMANDS"

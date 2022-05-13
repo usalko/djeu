@@ -1,0 +1,15 @@
+*~
+*.pyc
+*.pyo
+.idea
+.pycharmrc
+.DS_Store
+*.egg-info
+__pycache__/*
+dist/*
+build/*
+db.dev.sqlite3
+.vscode
+.venv
+.env
+.pip
