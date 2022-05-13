@@ -21,5 +21,5 @@ __maintainer__ = 'usalko'
 __email__ = 'ivict@rambler.ru'
 __status__ = 'Development'
 
-# default the contact_form app config
-default_app_config = 'contact_form.apps.AppConfig'
+# default the djeu app config
+default_app_config = 'djeu.apps.AppConfig'

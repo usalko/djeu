@@ -1,13 +1,16 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse_lazy
 
-from appconf import AppConf
+from django import VERSION
+if VERSION >= (2, 0):
+    from django.utils.translation import gettext_lazy as _
+else:
+    from django.utils.translation import ugettext_lazy as _
 
 
-class ContactFormAppConf(AppConf):
+class DjeuAppConf:
 
     USE_CAPTCHA = getattr(settings, 'CONTACT_FORM_USE_CAPTCHA', False)
     USE_RECAPTCHA = getattr(settings, 'CONTACT_FORM_USE_RECAPTCHA', False)

@@ -1,10 +1,10 @@
-from modeltranslation.translator import translator, TranslationOptions
-from contact_form.models import Subject
+# from modeltranslation.translator import translator, TranslationOptions
+# from contact_form.models import Subject
 
 
-class SubjectTranslationOptions(TranslationOptions):
+class SubjectTranslationOptions:
     fields = ('title', 'description')
     fallback_languages = {'default': ('en',)}
 
 
-translator.register(Subject, SubjectTranslationOptions)
+# translator.register(Subject, SubjectTranslationOptions)

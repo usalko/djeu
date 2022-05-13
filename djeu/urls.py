@@ -1,8 +1,8 @@
-"""Django urls for contact form."""
+"""Django urls for djeu form."""
 
 from django.conf.urls import url
 
-from contact_form.views import ContactFormView
+# from djeu.views import DjeuView
 
-app_name = 'contact_form'
-urlpatterns = [url(r'^$', ContactFormView.as_view(), name='contact_form')]
+# app_name = 'djeu'
+# urlpatterns = [url(r'^$', DjeuView.as_view(), name='djeu')]
