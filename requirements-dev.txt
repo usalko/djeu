@@ -1,2 +1,5 @@
 autopep8
 rope
+# Upload on the pypi.org
+wheel
+twine

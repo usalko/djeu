@@ -105,6 +105,22 @@ if [ "x$COMMAND" == "xrun" ]; then
     .venv/bin/python manage.py runserver
 fi
 
+#                         #
+# PUBLISH TO THE PYPI.ORG #
+#                         #
+if [ "x$COMMAND" == "xpublish" ]; then
+    echo 'Publish on the pypi.org'
+    #!/bin/bash
+    rm -fr build
+    rm -fr dist
+    .venv/bin/python3 setup.py bdist_wheel
+    .venv/bin/python3 setup.py sdist
+    .venv/bin/twine upload dist/*
+fi
+
+if [ "x$COMMAND" == "xcheck-publish" ]; then
+    .venv/bin/python3 setup.py check -r -s
+fi
 
 #                                    #
 # DOCKER INFRASTRACTURE AND COMMANDS #
@@ -192,6 +208,6 @@ fi
 
 # =================================================================================================
 
-AVAILABLE_COMMANDS="run build drun up start stop down finish manage redeps clean"
+AVAILABLE_COMMANDS="run build drun up start stop down finish publish check-publish redeps clean"
 echo ''
 [[ $AVAILABLE_COMMANDS =~ (^| )$COMMAND($| ) ]] && echo 'Ok' || echo 'Unknown command: ' "$COMMAND" && echo 'Available commands are: ' "$AVAILABLE_COMMANDS"
