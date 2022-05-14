@@ -7,8 +7,8 @@
 }
 
 .filepicker-ui button {
-    background: #000;
-    color: white;
+    background: var(--default-button-bg);
+    color: var(--button-fg);
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
 }
