@@ -1,12 +1,7 @@
 Some useful django widgets
-===============================================
+==========================
 
 ``djeu`` is a collection of the widgets
-
-..
-.. image:: https://img.shields.io/pypi/l/django-crispy-contact-form.svg
-    :target: https://pypi.python.org/pypi/django-crispy-contact-form/
-    :alt: License
 
 
 Requirements
@@ -22,6 +17,7 @@ Optional Requirements
 
 ::
 
+    django-static-jquery-ui>=1.12.1.1
 
 Usage
 =====

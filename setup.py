@@ -1,7 +1,7 @@
 import os
 
 from setuptools import setup, find_packages
-from contact_form import get_version as get_package_version
+from djeu import get_version as get_package_version
 
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 REQUIREMENTS = os.path.join(os.path.dirname(__file__), 'requirements.txt')
