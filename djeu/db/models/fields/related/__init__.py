@@ -1,0 +1,1 @@
+from .extended_many_to_many_field import *
