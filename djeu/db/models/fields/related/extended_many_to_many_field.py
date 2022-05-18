@@ -4,15 +4,25 @@ from djeu.forms.widgets import ExtendedModelMultipleChoiceField
 
 class ExtendedManyToManyField(ManyToManyField):
 
+    def __init__(self, to, related_name=None, related_query_name=None,
+                 limit_choices_to=None, symmetrical=None, through=None,
+                 through_fields=None, db_constraint=True, db_table=None,
+                 swappable=True, choices_queryset=None, **kwargs):
+        super().__init__(to, related_name, related_query_name, limit_choices_to,
+            symmetrical, through, through_fields, db_constraint, db_table,
+            swappable, **kwargs)
+        self.choices_queryset = choices_queryset
+        self.through = through
+        self.through_fields = through_fields
+
     def formfield(self, *, using=None, **kwargs):
         # self.remote_field.field.objects.all()
         # self.remote_field._default_manager.using(using)
-        from mem.models import Relationship
-        from mem.models import Person
+        queryset = self.through.objects.all() if self.through else self.remote_field.field.objects.all()
+
         defaults = {
             'form_class': ExtendedModelMultipleChoiceField,
-            # 'queryset': Person.objects.all(),
-            'queryset': Relationship.objects.all(),
+            'queryset': queryset,
             **kwargs,
         }
         # If initial is passed in, it's a list of related objects, but the

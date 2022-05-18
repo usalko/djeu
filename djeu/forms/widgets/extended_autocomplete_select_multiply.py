@@ -8,8 +8,8 @@ from .extended_model_multiple_choice_field import \
 
 class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
 
-    template_name = 'forms/widgets/select.html'
-    option_template_name = 'forms/widgets/select_option.html'
+    template_name = 'djeu/forms/widgets/select.html'
+    option_template_name = 'djeu/forms/widgets/select_option.html'
 
     # FIXME: https://stackoverflow.com/questions/63199404/django-choice-list-dynamic-choices
     def __init__(self, *args, **kwargs):
@@ -26,11 +26,13 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         }
         if not self.is_required and not self.allow_multiple_selected:
             default[1].append(self.create_option(name, '', '', False, 0))
-        # remote_model_opts = self.field.remote_field._meta
-        remote_model_opts = None # Relationship._meta
-        # to_field_name = getattr(self.field.remote_field, 'field_name', remote_model_opts.pk.attname)
-        # to_field_name = remote_model_opts.get_field(to_field_name).attname
-        to_field_name = 'relative_id'
+        if self.field.through:
+            to_field_name = self.field.through_fields[-1]
+        else:
+            remote_model_opts = self.field.remote_field.model._meta
+            to_field_name = getattr(self.field.remote_field, 'field_name', remote_model_opts.pk.attname)
+            to_field_name = remote_model_opts.get_field(to_field_name).attname
+
         choices = (
             (getattr(obj, to_field_name), self.choices.field.label_from_instance(obj))
             for obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % to_field_name: selected_choices})
@@ -55,15 +57,15 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         return forms.Media(
             js=(
                 'admin/js/vendor/jquery/jquery%s.js' % extra,
-                'mem/js/select2.mod.js',
+                'djeu/js/select2.mod.js',
             ) + i18n_file + (
                 'admin/js/jquery.init.js',
                 'admin/js/autocomplete.js',
             ),
             css={
                 'screen': (
-                    'mem/css/select2.mod.css',
-                    'mem/css/autocomplete.mod.css',
+                    'djeu/css/select2.mod.css',
+                    'djeu/css/autocomplete.mod.css',
                 ),
             },
         )
