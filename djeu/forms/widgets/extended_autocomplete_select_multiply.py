@@ -57,7 +57,7 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         return forms.Media(
             js=(
                 'admin/js/vendor/jquery/jquery%s.js' % extra,
-                'djeu/js/select2.mod.js',
+                'djeu/js/jquery-select2.js',
             ) + i18n_file + (
                 'admin/js/jquery.init.js',
                 'admin/js/autocomplete.js',
