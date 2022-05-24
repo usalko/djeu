@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "node ./build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -45,5 +45,8 @@
   "resolutions": {
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "rewire": "^6.0.0"
   }
 }
