@@ -1,11 +1,27 @@
 // in ./build.js
 const rewire = require('rewire');
+const path = require('path');
 const defaults = rewire('react-scripts/scripts/build.js');
 const config = defaults.__get__('config');
 
-const { FileListPlugin } = require('./file-list-plugin.js');
+const { ReactComponentToJQueryPlugin } = require('./component-to-jquery-plugin');
+config.plugins.push(new ReactComponentToJQueryPlugin({
+    'componentName': 'PDFwrapper',
+    'jqueryPluginName': 'pdfViewer',
+    'inputFile': './src/components/PDFwrapper.tsx',
+    'outputFile': 'jquery-pdf-viewer.js',
+}))
 
-config.plugins.push(new FileListPlugin())
+// Disable stuff warnings
+config.ignoreWarnings = [/Failed to parse source map/]
+
+config.entry = './src/jquery-pdf-viewer.jsx';
+config.output.filename = 'jquery-pdf-viewer.js';
+config.output.path = path.join(__dirname, 'build');
+
+// const { FileListPlugin } = require('./file-list-plugin');
+
+// config.plugins.push(new FileListPlugin())
 
 // /**
 //  * Do not mangle component names in production, for a better learning experience
