@@ -1,6 +1,6 @@
 import PDFwrapper from "./components/PDFwrapper";
-const React = require('react');
-const jQuery = require('jquery');
+import React from 'react';
+import jQuery from 'jquery';
 
 if (typeof jQuery !== 'undefined') {
     (function ($) {
