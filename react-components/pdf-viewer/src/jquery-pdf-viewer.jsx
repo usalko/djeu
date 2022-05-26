@@ -1,5 +1,6 @@
 import PDFwrapper from "./components/PDFwrapper";
-import React from 'react';
+import ReactDOM from 'react-dom';
+import "./styles/index.css";
 import jQuery from 'jquery';
 
 if (typeof jQuery !== 'undefined') {
@@ -19,21 +20,31 @@ if (typeof jQuery !== 'undefined') {
 
         $.extend(Plugin.prototype, {
             init: function () {
-                this.component = React.render(
-                    <PDFwrapper value={this.settings.value} />,
+                this.component = ReactDOM.render(
+                    <PDFwrapper url={this.settings.url} highlights={this.settings.highlights} />,
                     this.element
                 );
                 return this;
             },
 
-            val: function (val) {
+            url: function (url) {
                 if (!arguments.length) {
-                    return this.component.state.counter;
+                    return this.component.state.url;
                 } else {
-                    this.settings.value = val;
+                    this.settings.url = url;
                     this.init();
                 }
-            }
+            },
+
+            highlights: function (highlights) {
+                if (!arguments.length) {
+                    return this.component.state.highlights;
+                } else {
+                    this.settings.highlights = highlights;
+                    this.init();
+                }
+            },
+
         });
 
         $.fn[pluginName] = function (options) {

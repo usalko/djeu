@@ -18,8 +18,8 @@ config.ignoreWarnings = [/Failed to parse source map/]
 config.entry = './src/jquery-pdf-viewer.jsx';
 config.output.filename = 'jquery-pdf-viewer.js';
 config.output.path = path.join(__dirname, 'build');
-config.output.libraryTarget = 'umd';
-config.output.library = 'jquery-pdf-viewer'
+// config.output.libraryTarget = 'umd';
+// config.output.library = 'jquery-pdf-viewer'
 
 config.optimization.minimize = false;
 
@@ -28,6 +28,11 @@ config.externals = {
     // 'react/addons': 'React',
     'jquery': 'jQuery'
 }
+
+// CSS file-name
+config.plugins.filter((plugin) => plugin.constructor.name === 'MiniCssExtractPlugin').forEach((plugin) => {
+    plugin.options['filename'] = 'jquery-pdf-viewer.default.css';
+})
 
 // const { FileListPlugin } = require('./file-list-plugin');
 
