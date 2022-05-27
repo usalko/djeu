@@ -9,7 +9,7 @@ Requirements
 
 ::
 
-    Django>=4.0
+    Django>=3.2
 
 
 Optional Requirements
