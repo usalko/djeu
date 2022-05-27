@@ -3,6 +3,12 @@ Some useful django widgets
 
 ``djeu`` is a collection of the widgets
 
+Components
+----------
+
+- DatePickerInput
+- LinkedFileInput
+- PdfViewer
 
 Requirements
 ------------
