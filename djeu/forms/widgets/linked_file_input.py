@@ -17,6 +17,17 @@ class LinkedFileInput(forms.FileInput):
         """
         return bool(value and getattr(value, 'url', False))
 
+    def get_context(self, name, value, attrs):
+        data_label = 'Загрузить'
+        if 'button-label' in self.attrs:
+            data_label = self.attrs['button-label']
+        if 'data-label' in self.attrs:
+            data_label = self.attrs['data-label']
+        return super(LinkedFileInput, self).get_context(name, value, {**attrs, **{
+            'class': 'filepicker',
+            'data-label': data_label,
+        }})
+
     @property
     def media(self):
         extra = '' if settings.DEBUG else '.min'

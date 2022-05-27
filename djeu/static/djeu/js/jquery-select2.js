@@ -5703,7 +5703,7 @@
 
                             var data = Utils.GetData(self.$selection[0], 'data')
 
-                            self.trigger('results:append', {'data': {'results': [{'id': '-1', 'title': 'New element'}]}});
+                            self.trigger('results:append', { 'data': { 'results': [{ 'id': '-1', 'title': 'New element' }] } });
                             self.trigger('results:select', {});
 
                             evt.preventDefault();

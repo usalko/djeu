@@ -134,13 +134,16 @@ function react_build {
     npm run build
     cd $CURRENT_DIRECTORY
 
-    cp $2/build/$1 $3/$1
-    cp $2/build/$1.LICENSE.txt $3/
-    cp $2/build/$1.map $3/
+    cp $2/build/$1.js $3/js/
+    cp $2/build/$1.js.LICENSE.txt $3/js/
+    cp $2/build/$1.js.map $3/js/
+
+    cp $2/build/$1.default.css $3/css/
+    cp $2/build/$1.default.css.map $3/css/
 }
 
 function build {
-    react_build jquery-pdf-viewer.js react-components/pdf-viewer djeu/static/djeu/js
+    react_build jquery-pdf-viewer react-components/pdf-viewer djeu/static/djeu
 }
 
 if [ "x$COMMAND" == "xbuild" ]; then

@@ -9,8 +9,10 @@
 .filepicker-ui button {
     background: var(--default-button-bg);
     color: var(--button-fg);
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
+    /* border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px; */
+    border: 1px solid;
+    border-radius: 4px;
 }
 
 .filepicker-ui input {

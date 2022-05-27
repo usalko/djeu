@@ -1,14 +1,4 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jQuery"));
-	else if(typeof define === 'function' && define.amd)
-		define(["jQuery"], factory);
-	else if(typeof exports === 'object')
-		exports["jquery-pdf-viewer"] = factory(require("jQuery"));
-	else
-		root["jquery-pdf-viewer"] = factory(root["jQuery"]);
-})(self, function(__WEBPACK_EXTERNAL_MODULE__145__) {
-return /******/ (function() { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 182:
@@ -52531,7 +52521,7 @@ if (true) {
 
 /***/ }),
 
-/***/ 226:
+/***/ 37:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -52572,15 +52562,15 @@ var _reactDom = _interopRequireDefault(__webpack_require__(164));
 
 var _clsx2 = _interopRequireDefault(__webpack_require__(182));
 
-var _domFns = __webpack_require__(270);
+var _domFns = __webpack_require__(280);
 
-var _positionFns = __webpack_require__(917);
+var _positionFns = __webpack_require__(580);
 
-var _shims = __webpack_require__(414);
+var _shims = __webpack_require__(693);
 
-var _DraggableCore = _interopRequireDefault(__webpack_require__(974));
+var _DraggableCore = _interopRequireDefault(__webpack_require__(91));
 
-var _log = _interopRequireDefault(__webpack_require__(3));
+var _log = _interopRequireDefault(__webpack_require__(655));
 
 var _excluded = ["axis", "bounds", "children", "defaultPosition", "defaultClassName", "defaultClassNameDragging", "defaultClassNameDragged", "position", "positionOffset", "scale"];
 
@@ -53285,7 +53275,7 @@ _defineProperty(Draggable, "defaultProps", _objectSpread(_objectSpread({}, _Drag
 
 /***/ }),
 
-/***/ 974:
+/***/ 91:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -53318,13 +53308,13 @@ var _propTypes = _interopRequireDefault(__webpack_require__(7));
 
 var _reactDom = _interopRequireDefault(__webpack_require__(164));
 
-var _domFns = __webpack_require__(270);
+var _domFns = __webpack_require__(280);
 
-var _positionFns = __webpack_require__(917);
+var _positionFns = __webpack_require__(580);
 
-var _shims = __webpack_require__(414);
+var _shims = __webpack_require__(693);
 
-var _log = _interopRequireDefault(__webpack_require__(3));
+var _log = _interopRequireDefault(__webpack_require__(655));
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
@@ -54056,13 +54046,13 @@ _defineProperty(DraggableCore, "defaultProps", {
 
 /***/ }),
 
-/***/ 247:
+/***/ 962:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
 
-var _require = __webpack_require__(226),
+var _require = __webpack_require__(37),
     Draggable = _require.default,
     DraggableCore = _require.DraggableCore; // Previous versions of this lib exported <Draggable> as the root export. As to no-// them, or TypeScript, we export *both* as the root and as 'default'.
 // See https://github.com/mzabriskie/react-draggable/pull/254
@@ -54075,7 +54065,7 @@ module.exports.DraggableCore = DraggableCore;
 
 /***/ }),
 
-/***/ 270:
+/***/ 280:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -54119,9 +54109,9 @@ exports.removeUserSelectStyles = removeUserSelectStyles;
 exports.addClassName = addClassName;
 exports.removeClassName = removeClassName;
 
-var _shims = __webpack_require__(414);
+var _shims = __webpack_require__(693);
 
-var _getPrefix = _interopRequireWildcard(__webpack_require__(319));
+var _getPrefix = _interopRequireWildcard(__webpack_require__(21));
 
 function _getRequireWildcardCache(nodeInterop) {
   if (typeof WeakMap !== "function") return null;
@@ -54544,7 +54534,7 @@ function removeClassName(el
 
 /***/ }),
 
-/***/ 319:
+/***/ 21:
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
@@ -54636,7 +54626,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 3:
+/***/ 655:
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
@@ -54656,7 +54646,7 @@ function log() {
 
 /***/ }),
 
-/***/ 917:
+/***/ 580:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -54673,9 +54663,9 @@ exports.getControlPosition = getControlPosition;
 exports.createCoreData = createCoreData;
 exports.createDraggableData = createDraggableData;
 
-var _shims = __webpack_require__(414);
+var _shims = __webpack_require__(693);
 
-var _domFns = __webpack_require__(270);
+var _domFns = __webpack_require__(280);
 
 function getBoundPosition(draggable
 /*: Draggable*/
@@ -54871,7 +54861,7 @@ function findDOMNode(draggable
 
 /***/ }),
 
-/***/ 414:
+/***/ 693:
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
@@ -55837,14 +55827,6 @@ if (true) {
 
 /***/ }),
 
-/***/ 145:
-/***/ (function(module) {
-
-"use strict";
-module.exports = __WEBPACK_EXTERNAL_MODULE__145__;
-
-/***/ }),
-
 /***/ 601:
 /***/ (function() {
 
@@ -55971,8 +55953,6 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 !function() {
 "use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
 
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
 function _objectWithoutPropertiesLoose(source, excluded) {
@@ -56120,11 +56100,10 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
 function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
     o.__proto__ = p;
     return o;
   };
-
   return _setPrototypeOf(o, p);
 }
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/inherits.js
@@ -56148,7 +56127,7 @@ function _inherits(subClass, superClass) {
 }
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js
 function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
   };
   return _getPrototypeOf(o);
@@ -58031,10 +58010,10 @@ var Popup = /*#__PURE__*/function (_Component) {
   return Popup;
 }(react.Component);
 /* harmony default export */ var components_Popup = ((/* unused pure expression or super */ null && (Popup)));
-// EXTERNAL MODULE: ./node_modules/react-pdf-highlighter/node_modules/react-rnd/node_modules/react-draggable/build/cjs/cjs.js
-var cjs = __webpack_require__(247);
+// EXTERNAL MODULE: ./node_modules/react-draggable/build/cjs/cjs.js
+var cjs = __webpack_require__(962);
 var cjs_default = /*#__PURE__*/__webpack_require__.n(cjs);
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/node_modules/react-rnd/node_modules/re-resizable/lib/resizer.js
+;// CONCATENATED MODULE: ./node_modules/re-resizable/lib/resizer.js
 var __extends = undefined && undefined.__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
     _extendStatics = Object.setPrototypeOf || {
@@ -58179,7 +58158,7 @@ function (_super) {
 // EXTERNAL MODULE: ./node_modules/fast-memoize/src/index.js
 var src = __webpack_require__(959);
 var src_default = /*#__PURE__*/__webpack_require__.n(src);
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/node_modules/react-rnd/node_modules/re-resizable/lib/index.js
+;// CONCATENATED MODULE: ./node_modules/re-resizable/lib/index.js
 var lib_extends = undefined && undefined.__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
     _extendStatics = Object.setPrototypeOf || {
@@ -59124,7 +59103,7 @@ function (_super) {
 }(react.PureComponent);
 
 
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/node_modules/react-rnd/lib/index.js
+;// CONCATENATED MODULE: ./node_modules/react-rnd/lib/index.js
 
 
 
@@ -60060,16 +60039,17 @@ var testHighlights={"files/vedomosti_spb_1727.pdf":[{content:{text:"Type Checkin
 ;// CONCATENATED MODULE: ./src/components/Sidebar.tsx
 var updateHash=function updateHash(highlight){document.location.hash="highlight-".concat(highlight.id);};function Sidebar(_ref){var highlights=_ref.highlights,resetHighlights=_ref.resetHighlights;return/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"sidebar",style:{width:"25vw"},children:[/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"description",style:{padding:"1rem"},children:[/*#__PURE__*/(0,jsx_runtime.jsx)("h2",{style:{marginBottom:"1rem"},children:"\u041C\u0410\u0421\u0422 marked-pdf"}),/*#__PURE__*/(0,jsx_runtime.jsx)("p",{children:/*#__PURE__*/(0,jsx_runtime.jsx)("small",{children:"\u0427\u0442\u043E\u0431\u044B \u043E\u0442\u043C\u0435\u0442\u0438\u0442\u044C \u043E\u0431\u043B\u0430\u0441\u0442\u044C \u043D\u0430\u0436\u043C\u0438\u0442\u0435 \"Alt\" \u0438 \u0432\u044B\u0434\u0435\u043B\u044F\u0439\u0442\u0435."})})]}),/*#__PURE__*/(0,jsx_runtime.jsx)("ul",{className:"sidebar__highlights",children:highlights.map(function(highlight,index){return/*#__PURE__*/(0,jsx_runtime.jsxs)("li",{className:"sidebar__highlight",onClick:function onClick(){updateHash(highlight);},children:[/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{children:[/*#__PURE__*/(0,jsx_runtime.jsx)("strong",{children:highlight.comment.text}),highlight.content.text?/*#__PURE__*/(0,jsx_runtime.jsx)("blockquote",{style:{marginTop:"0.5rem"},children:"".concat(highlight.content.text.slice(0,90).trim(),"\u2026")}):null,highlight.content.image?/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"highlight__image",style:{marginTop:"0.5rem"},children:/*#__PURE__*/(0,jsx_runtime.jsx)("img",{src:highlight.content.image,alt:"Screenshot"})}):null]}),/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"highlight__location",children:["Page ",highlight.position.pageNumber]})]},index);})}),highlights.length>0?/*#__PURE__*/(0,jsx_runtime.jsx)("div",{style:{padding:"1rem"},children:/*#__PURE__*/(0,jsx_runtime.jsx)("button",{onClick:resetHighlights,children:"Reset highlights"})}):null]});}
 ;// CONCATENATED MODULE: ./src/components/PDFwrapper.tsx
-var _excluded=["id","position","content"];var PDFwrapper_testHighlights=testHighlights;var getNextId=function getNextId(){return String(Math.random()).slice(2);};var parseIdFromHash=function parseIdFromHash(){return document.location.hash.slice("#highlight-".length);};var resetHash=function resetHash(){document.location.hash="";};var HighlightPopup=function HighlightPopup(_ref){var comment=_ref.comment;return comment.text?/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"Highlight__popup",children:[comment.emoji," ",comment.text]}):null;};var PRIMARY_PDF_URL="files/vedomosti_spb_1727.pdf";var SECONDARY_PDF_URL="https://arxiv.org/pdf/1604.02480.pdf";var initialUrl=PRIMARY_PDF_URL;console.log(initialUrl);var PDFwrapper=/*#__PURE__*/function(_Component){_inherits(PDFwrapper,_Component);var _super=_createSuper(PDFwrapper);function PDFwrapper(){var _this;_classCallCheck(this,PDFwrapper);for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_super.call.apply(_super,[this].concat(args));_this.state={url:initialUrl,highlights:PDFwrapper_testHighlights[initialUrl]?_toConsumableArray(PDFwrapper_testHighlights[initialUrl]):[]};_this.resetHighlights=function(){_this.setState({highlights:[]});};_this.toggleDocument=function(){var newUrl=_this.state.url===PRIMARY_PDF_URL?SECONDARY_PDF_URL:PRIMARY_PDF_URL;_this.setState({url:newUrl,highlights:PDFwrapper_testHighlights[newUrl]?_toConsumableArray(PDFwrapper_testHighlights[newUrl]):[]});};_this.scrollViewerTo=function(highlight){};_this.scrollToHighlightFromHash=function(){var highlight=_this.getHighlightById(parseIdFromHash());if(highlight){_this.scrollViewerTo(highlight);}};return _this;}_createClass(PDFwrapper,[{key:"componentDidMount",value:function componentDidMount(){window.addEventListener("hashchange",this.scrollToHighlightFromHash,false);}},{key:"getHighlightById",value:function getHighlightById(id){var highlights=this.state.highlights;return highlights.find(function(highlight){return highlight.id===id;});}},{key:"addHighlight",value:function addHighlight(highlight){var highlights=this.state.highlights;console.log("Saving highlight",highlight);this.setState({highlights:[_objectSpread2(_objectSpread2({},highlight),{},{id:getNextId()})].concat(_toConsumableArray(highlights))});}},{key:"updateHighlight",value:function updateHighlight(highlightId,position,content){console.log("Updating highlight",highlightId,position,content);this.setState({highlights:this.state.highlights.map(function(h){var id=h.id,originalPosition=h.position,originalContent=h.content,rest=_objectWithoutProperties(h,_excluded);return id===highlightId?_objectSpread2({id:id,position:_objectSpread2(_objectSpread2({},originalPosition),position),content:_objectSpread2(_objectSpread2({},originalContent),content)},rest):h;})});}},{key:"render",value:function render(){var _this2=this;var _this$state=this.state,url=_this$state.url,highlights=_this$state.highlights;return/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"App",style:{display:"flex",height:"100vh"},children:[/*#__PURE__*/(0,jsx_runtime.jsx)(Sidebar,{highlights:highlights,resetHighlights:this.resetHighlights}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{style:{height:"100vh",width:"100vw",position:"relative"},children:/*#__PURE__*/(0,jsx_runtime.jsx)(PdfLoader,{url:url,beforeLoad:/*#__PURE__*/(0,jsx_runtime.jsx)(Spinner,{}),children:function children(pdfDocument){return/*#__PURE__*/(0,jsx_runtime.jsx)(PdfHighlighter_PdfHighlighter,{pdfDocument:pdfDocument,enableAreaSelection:function enableAreaSelection(event){return event.altKey;},onScrollChange:resetHash// pdfScaleValue="page-width"
+var _excluded=["id","position","content"];var PDFwrapper_testHighlights=testHighlights;var getNextId=function getNextId(){return String(Math.random()).slice(2);};var parseIdFromHash=function parseIdFromHash(){return document.location.hash.slice("#highlight-".length);};var resetHash=function resetHash(){document.location.hash="";};var HighlightPopup=function HighlightPopup(_ref){var comment=_ref.comment;return comment.text?/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"Highlight__popup",children:[comment.emoji," ",comment.text]}):null;};var PRIMARY_PDF_URL="files/vedomosti_spb_1727.pdf";var SECONDARY_PDF_URL="https://arxiv.org/pdf/1604.02480.pdf";var initialUrl=SECONDARY_PDF_URL;console.log(initialUrl);var PDFwrapper=/*#__PURE__*/function(_Component){_inherits(PDFwrapper,_Component);var _super=_createSuper(PDFwrapper);function PDFwrapper(){var _this;_classCallCheck(this,PDFwrapper);for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_super.call.apply(_super,[this].concat(args));_this.state={url:initialUrl,highlights:PDFwrapper_testHighlights[initialUrl]?_toConsumableArray(PDFwrapper_testHighlights[initialUrl]):[]};_this.resetHighlights=function(){_this.setState({highlights:[]});};_this.toggleDocument=function(){var newUrl=_this.state.url===PRIMARY_PDF_URL?SECONDARY_PDF_URL:PRIMARY_PDF_URL;_this.setState({url:newUrl,highlights:PDFwrapper_testHighlights[newUrl]?_toConsumableArray(PDFwrapper_testHighlights[newUrl]):[]});};_this.scrollViewerTo=function(highlight){};_this.scrollToHighlightFromHash=function(){var highlight=_this.getHighlightById(parseIdFromHash());if(highlight){_this.scrollViewerTo(highlight);}};return _this;}_createClass(PDFwrapper,[{key:"componentDidMount",value:function componentDidMount(){window.addEventListener("hashchange",this.scrollToHighlightFromHash,false);}},{key:"getHighlightById",value:function getHighlightById(id){var highlights=this.state.highlights;return highlights.find(function(highlight){return highlight.id===id;});}},{key:"addHighlight",value:function addHighlight(highlight){var highlights=this.state.highlights;console.log("Saving highlight",highlight);this.setState({highlights:[_objectSpread2(_objectSpread2({},highlight),{},{id:getNextId()})].concat(_toConsumableArray(highlights))});}},{key:"updateHighlight",value:function updateHighlight(highlightId,position,content){console.log("Updating highlight",highlightId,position,content);this.setState({highlights:this.state.highlights.map(function(h){var id=h.id,originalPosition=h.position,originalContent=h.content,rest=_objectWithoutProperties(h,_excluded);return id===highlightId?_objectSpread2({id:id,position:_objectSpread2(_objectSpread2({},originalPosition),position),content:_objectSpread2(_objectSpread2({},originalContent),content)},rest):h;})});}},{key:"render",value:function render(){var _this2=this;var _this$state=this.state,url=_this$state.url,highlights=_this$state.highlights;return/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"App",style:{display:"flex",height:"100vh"},children:[/*#__PURE__*/(0,jsx_runtime.jsx)(Sidebar,{highlights:highlights,resetHighlights:this.resetHighlights}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{style:{height:"100vh",width:"100vw",position:"relative"},children:/*#__PURE__*/(0,jsx_runtime.jsx)(PdfLoader,{url:url,beforeLoad:/*#__PURE__*/(0,jsx_runtime.jsx)(Spinner,{}),children:function children(pdfDocument){return/*#__PURE__*/(0,jsx_runtime.jsx)(PdfHighlighter_PdfHighlighter,{pdfDocument:pdfDocument,enableAreaSelection:function enableAreaSelection(event){return event.altKey;},onScrollChange:resetHash// pdfScaleValue="page-width"
 ,scrollRef:function scrollRef(scrollTo){_this2.scrollViewerTo=scrollTo;_this2.scrollToHighlightFromHash();},onSelectionFinished:function onSelectionFinished(position,content,hideTipAndSelection,transformSelection){return/*#__PURE__*/(0,jsx_runtime.jsx)(Tip_Tip,{onOpen:transformSelection,onConfirm:function onConfirm(comment){_this2.addHighlight({content:content,position:position,comment:comment});hideTipAndSelection();}});},highlightTransform:function highlightTransform(highlight,index,setTip,hideTip,viewportToScaled,screenshot,isScrolledTo){var isTextHighlight=!Boolean(highlight.content&&highlight.content.image);var component=isTextHighlight?/*#__PURE__*/(0,jsx_runtime.jsx)(Highlight_Highlight,{isScrolledTo:isScrolledTo,position:highlight.position,comment:highlight.comment}):/*#__PURE__*/(0,jsx_runtime.jsx)(AreaHighlight_AreaHighlight,{isScrolledTo:isScrolledTo,highlight:highlight,onChange:function onChange(boundingRect){_this2.updateHighlight(highlight.id,{boundingRect:viewportToScaled(boundingRect)},{image:screenshot(boundingRect)});}});return/*#__PURE__*/(0,jsx_runtime.jsx)(Popup,{popupContent:/*#__PURE__*/(0,jsx_runtime.jsx)(HighlightPopup,_objectSpread2({},highlight)),onMouseOver:function onMouseOver(popupContent){return setTip(highlight,function(highlight){return popupContent;});},onMouseOut:hideTip,children:component},index);},highlights:highlights});}})})]});}}]);return PDFwrapper;}(react.Component);/* harmony default export */ var components_PDFwrapper = (PDFwrapper);
-// EXTERNAL MODULE: external "jQuery"
-var external_jQuery_ = __webpack_require__(145);
-var external_jQuery_default = /*#__PURE__*/__webpack_require__.n(external_jQuery_);
+;// CONCATENATED MODULE: ./src/styles/index.css
+// extracted by mini-css-extract-plugin
+/* harmony default export */ var src_styles = ({});
+;// CONCATENATED MODULE: external "jQuery"
+var external_jQuery_namespaceObject = jQuery;
+var external_jQuery_default = /*#__PURE__*/__webpack_require__.n(external_jQuery_namespaceObject);
 ;// CONCATENATED MODULE: ./src/jquery-pdf-viewer.jsx
-if(typeof (external_jQuery_default())!=='undefined'){(function($){var pluginName="pdfViewer",defaults={value:0};function Plugin(element,options){this.element=element;this.settings=$.extend({},defaults,options);this._defaults=defaults;this._name=pluginName;this.init();}$.extend(Plugin.prototype,{init:function init(){this.component=react.render(/*#__PURE__*/(0,jsx_runtime.jsx)(components_PDFwrapper,{value:this.settings.value}),this.element);return this;},val:function val(_val){if(!arguments.length){return this.component.state.counter;}else{this.settings.value=_val;this.init();}}});$.fn[pluginName]=function(options){return this.map(function(){if(!$.data(this,'plugin_'+pluginName)){$.data(this,'plugin_'+pluginName,new Plugin(this,options));}return $.data(this,'plugin_'+pluginName);});};})((external_jQuery_default()));}
+if(typeof (external_jQuery_default())!=='undefined'){(function($){var pluginName="pdfViewer",defaults={value:0};function Plugin(element,options){this.element=element;this.settings=$.extend({},defaults,options);this._defaults=defaults;this._name=pluginName;this.init();}$.extend(Plugin.prototype,{init:function init(){this.component=react_dom.render(/*#__PURE__*/(0,jsx_runtime.jsx)(components_PDFwrapper,{url:this.settings.url,highlights:this.settings.highlights}),this.element);return this;},url:function url(_url){if(!arguments.length){return this.component.state.url;}else{this.settings.url=_url;this.init();}},highlights:function highlights(_highlights){if(!arguments.length){return this.component.state.highlights;}else{this.settings.highlights=_highlights;this.init();}}});$.fn[pluginName]=function(options){return this.map(function(){if(!$.data(this,'plugin_'+pluginName)){$.data(this,'plugin_'+pluginName,new Plugin(this,options));}return $.data(this,'plugin_'+pluginName);});};})((external_jQuery_default()));}
 }();
-/******/ 	return __webpack_exports__;
 /******/ })()
 ;
-});
 //# sourceMappingURL=jquery-pdf-viewer.js.map

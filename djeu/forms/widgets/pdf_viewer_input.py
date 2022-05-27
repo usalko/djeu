@@ -2,9 +2,12 @@ from django import forms
 from django.conf import settings
 
 
-class PdfViewerInput(forms.FileInput):
+class PdfViewerInput(forms.widgets.Input):
 
+    input_type = 'file'
+    needs_multipart_form = True
     template_name = 'djeu/forms/widgets/pdf-viewer-input.html'
+    #template_name = 'django/forms/widgets/clearable_file_input.html'
 
     def format_value(self, value):
         """File input never renders a value."""
@@ -16,6 +19,9 @@ class PdfViewerInput(forms.FileInput):
         Return whether value is considered to be initial value.
         """
         return bool(value and getattr(value, 'url', False))
+
+    def get_context(self, name, value, attrs):
+        return super(PdfViewerInput, self).get_context(name, value, attrs)
 
     @property
     def media(self):
@@ -30,7 +36,7 @@ class PdfViewerInput(forms.FileInput):
             ),
             css={
                 'screen': (
-                    #'djeu/css/pdf-viewer.default.css',
+                    'djeu/css/jquery-pdf-viewer.default.css',
                 ),
             },
         )

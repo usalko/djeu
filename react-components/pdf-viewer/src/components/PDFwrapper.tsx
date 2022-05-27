@@ -39,7 +39,7 @@ const HighlightPopup = ({
 
 const PRIMARY_PDF_URL = "files/vedomosti_spb_1727.pdf";
 const SECONDARY_PDF_URL = "https://arxiv.org/pdf/1604.02480.pdf";
-const initialUrl = PRIMARY_PDF_URL;
+const initialUrl = SECONDARY_PDF_URL;
 console.log(initialUrl);
 
 class PDFwrapper extends Component<{}, State> {

@@ -1,1 +1,7 @@
-{% include "django/forms/widgets/input.html" %}
+<b>1234567890</b>
+<div class="pdfViewer"/>
+<br/>
+<input type="{{ widget.type }}"
+       name="{{ widget.name }}"
+       {% if widget.value != None %} value="{{ widget.value }}"{% endif %}
+       {% include "django/forms/widgets/attrs.html" %}/>
