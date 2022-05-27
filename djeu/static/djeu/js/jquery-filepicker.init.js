@@ -10,7 +10,6 @@
 })(function ($) {
   $(function () {
     $("input.filepicker[type='file']").each(function () {
-      console.log(`File picker is: ${$(this)}`);
       var ui = null;
       $(this).filepicker({
         renderUI: function (element, button, input, preview) {

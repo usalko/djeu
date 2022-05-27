@@ -130,6 +130,7 @@
 .annotationLayer .buttonWidgetAnnotation.checkBox input,
 .annotationLayer .buttonWidgetAnnotation.radioButton input {
   background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+  background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
   background-image: var(--annotation-unfocused-field-background);
   border: 1px solid transparent;
   box-sizing: border-box;
@@ -492,6 +493,7 @@
   border: none;
   resize: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+  background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
   background-image: var(--xfa-unfocused-field-background);
 }
 
@@ -639,6 +641,7 @@
 
 .pdfViewer {
   padding-bottom: none;
+  padding-bottom: none;
   padding-bottom: var(--pdfViewer-padding-bottom);
 }
 
@@ -651,9 +654,11 @@
   width: 816px;
   height: 1056px;
   margin: 1px auto -8px;
+  margin: 1px auto -8px;
   margin: var(--page-margin);
   position: relative;
   overflow: visible;
+  border: 9px solid transparent;
   border: 9px solid transparent;
   border: var(--page-border);
   background-clip: content-box;
@@ -708,7 +713,9 @@
 .pdfViewer.scrollHorizontal .page,
 .pdfViewer.scrollWrapped .page {
   margin-left: -3.5px;
+  margin-left: -3.5px;
   margin-left: var(--spreadHorizontalWrapped-margin-LR);
+  margin-right: -3.5px;
   margin-right: -3.5px;
   margin-right: var(--spreadHorizontalWrapped-margin-LR);
 }

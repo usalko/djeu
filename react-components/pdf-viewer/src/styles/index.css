@@ -3,14 +3,14 @@
     padding: 0;
 }
 
-body {
+/* body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
         "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
         sans-serif;
     background-color: #ffffff;
     color: #fff;
-}
+} */
 
 .sidebar {
     overflow: auto;
@@ -50,9 +50,9 @@ body {
     background: rgba(58, 56, 52, 0.08);
 }
 
-a {
+/* a {
     color: #d35400;
-}
+} */
 
 blockquote {
     padding: 0;

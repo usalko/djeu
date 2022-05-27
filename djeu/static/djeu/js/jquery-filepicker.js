@@ -26,7 +26,7 @@
         return null;
     }
 
-    function Filepicker(element, options) {
+    function FilePicker(element, options) {
 
         var $element = $(element);
 
@@ -77,9 +77,9 @@
 
             if (typeof options.renderUI == "function") {
                 var retVal = options.renderUI.call(this, element, button, input, preview);
-                // if (typeof retVal != 'undefined') {
-                //     renderStyle = retVal;
-                // }
+                if (typeof retVal != 'undefined') {
+                    renderStyle = retVal;
+                }
             }
             if (renderStyle) {
                 // render
@@ -89,6 +89,7 @@
                     preview: preview
                 });
             }
+            return result;
         }
 
         function changed() {
@@ -225,7 +226,7 @@
 
     }
 
-    var pluginClass = Filepicker;
+    var pluginClass = FilePicker;
 
     // register plugin
     $.fn[pluginName] = function (options) {

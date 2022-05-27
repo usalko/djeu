@@ -50,6 +50,9 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.17.12",
+    "postcss": "^8.4.14",
+    "postcss-loader": "^7.0.0",
+    "postcss-short": "^5.0.0",
     "rewire": "^6.0.0"
   }
 }

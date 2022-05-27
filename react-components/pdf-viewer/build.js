@@ -29,6 +29,11 @@ config.externals = {
     'jquery': 'jQuery'
 }
 
+// postcss activation
+config.module.rules.push({
+    test: /\.css$/i,
+    use: ["postcss-loader"],
+});
 // CSS file-name
 config.plugins.filter((plugin) => plugin.constructor.name === 'MiniCssExtractPlugin').forEach((plugin) => {
     plugin.options['filename'] = 'jquery-pdf-viewer.default.css';
