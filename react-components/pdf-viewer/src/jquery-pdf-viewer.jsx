@@ -51,7 +51,7 @@ if (typeof jQuery !== 'undefined') {
             var $button = $('<button type="button"></button>'), button = $button.get(0);
 
             var style = typeof options.style == 'string' ? $.fn.filepicker.getStyle(
-                options.style == "auto" ?
+                options.style === "auto" ?
                     // detect styles
                     isBootstrap() ? 'bootstrap' :
                         isJQueryUI() ? 'jquery-ui' :

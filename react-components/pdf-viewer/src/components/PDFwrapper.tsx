@@ -37,72 +37,70 @@ const HighlightPopup = ({
     </div>
   ) : null;
 
-const PRIMARY_PDF_URL = "files/vedomosti_spb_1727.pdf";
-const SECONDARY_PDF_URL = "https://arxiv.org/pdf/1604.02480.pdf";
-const initialUrl = SECONDARY_PDF_URL;
-console.log(initialUrl);
+// const PRIMARY_PDF_URL = "files/vedomosti_spb_1727.pdf";
+// const SECONDARY_PDF_URL = "https://arxiv.org/pdf/1604.02480.pdf";
+// const initialUrl = SECONDARY_PDF_URL;
+// console.log(initialUrl);
 
 class PDFwrapper extends Component<{}, State> {
-  state = {
-    url: initialUrl,
-    highlights: testHighlights[initialUrl]
-      ? [...testHighlights[initialUrl]]
-      : [],
-  };
 
+  constructor(props: any) {
+    super(props)
+    this.state = {
+      url: props.url,
+      highlights: props.highlights || [],
+    }
+  }
 
   resetHighlights = () => {
     this.setState({
       highlights: [],
-    });
-  };
+    })
+  }
 
-  toggleDocument = () => {
-    const newUrl =
-      this.state.url === PRIMARY_PDF_URL ? SECONDARY_PDF_URL : PRIMARY_PDF_URL;
-
+  toggleDocument = (newUrl: string) => {
     this.setState({
       url: newUrl,
       highlights: testHighlights[newUrl] ? [...testHighlights[newUrl]] : [],
-    });
-  };
+    })
+  }
 
-  scrollViewerTo = (highlight: any) => { };
+  scrollViewerTo = (highlight: any) => { }
 
   scrollToHighlightFromHash = () => {
-    const highlight = this.getHighlightById(parseIdFromHash());
+    const highlight = this.getHighlightById(parseIdFromHash())
 
     if (highlight) {
-      this.scrollViewerTo(highlight);
+      this.scrollViewerTo(highlight)
     }
-  };
+  }
 
   componentDidMount() {
     window.addEventListener(
       "hashchange",
       this.scrollToHighlightFromHash,
       false
-    );
+    )
   }
 
   getHighlightById(id: string) {
     const { highlights } = this.state;
 
-    return highlights.find((highlight) => highlight.id === id);
+    return highlights.find((highlight) => highlight.id === id)
   }
 
   addHighlight(highlight: NewHighlight) {
-    const { highlights } = this.state;
+    const { highlights } = this.state
 
-    console.log("Saving highlight", highlight);
+    console.log("Saving highlight", highlight)
 
     this.setState({
       highlights: [{ ...highlight, id: getNextId() }, ...highlights],
-    });
+    })
   }
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
-    console.log("Updating highlight", highlightId, position, content);
+    console.log("Updating highlight", highlightId, position, content)
 
     this.setState({
       highlights: this.state.highlights.map((h) => {
@@ -119,13 +117,13 @@ class PDFwrapper extends Component<{}, State> {
             content: { ...originalContent, ...content },
             ...rest,
           }
-          : h;
+          : h
       }),
     });
   }
 
   render() {
-    const { url, highlights } = this.state;
+    const { url, highlights } = this.state
 
     return (
       <div className="App" style={{ display: "flex", height: "100vh" }}>
@@ -218,8 +216,8 @@ class PDFwrapper extends Component<{}, State> {
           </PdfLoader>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default PDFwrapper;
+export default PDFwrapper

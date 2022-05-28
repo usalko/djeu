@@ -58,11 +58,11 @@ export function Sidebar({
           </li>
         ))}
       </ul>
-      {highlights.length > 0 ? (
+      {/* {highlights.length > 0 ? (
         <div style={{ padding: "1rem" }}>
           <button onClick={resetHighlights}>Reset highlights</button>
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   );
 }
