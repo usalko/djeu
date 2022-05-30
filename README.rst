@@ -3,13 +3,19 @@ Some useful django widgets
 
 ``djeu`` is a collection of the widgets
 
+Components
+----------
+
+- DatePickerInput
+- LinkedFileInput
+- PdfViewer
 
 Requirements
 ------------
 
 ::
 
-    Django>=4.0
+    Django>=3.2
 
 
 Optional Requirements
