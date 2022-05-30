@@ -23,9 +23,11 @@ class LinkedFileInput(forms.FileInput):
             data_label = self.attrs['button-label']
         if 'data-label' in self.attrs:
             data_label = self.attrs['data-label']
+        url = f'{settings.MEDIA_URL}{value}' if value else None
         return super(LinkedFileInput, self).get_context(name, value, {**attrs, **{
             'class': 'filepicker',
             'data-label': data_label,
+            'url': url
         }})
 
     @property

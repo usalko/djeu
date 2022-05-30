@@ -60062,7 +60062,7 @@ var $window=$(window);var pluginName="pdfViewer",defaults={value:0};var dataOpti
 //     this.init();
 // }
 function PdfViewer(element,options){var $element=$(element);var instance=this;var files=[];// var mugine = new Mugine();
-var $preview=$('<div></div>'),preview=$preview.get(0);var $input=$('<input/>'),input=$input.get(0);var $button=$('<button type="button"></button>'),button=$button.get(0);var style=typeof options.style=='string'?$.fn.filepicker.getStyle(options.style=="auto"?// detect styles
+var $preview=$('<div></div>'),preview=$preview.get(0);var $input=$('<input/>'),input=$input.get(0);var $button=$('<button type="button"></button>'),button=$button.get(0);var style=typeof options.style=='string'?$.fn.filepicker.getStyle(options.style==="auto"?// detect styles
 isBootstrap()?'bootstrap':isJQueryUI()?'jquery-ui':'default'// option value
 :options.style):options.style;$window.on('resize',function(e){layout.call(instance);});$element.on('change',function(e){handleFileSelect(e);});$button.on('click',function(){$element.trigger('click');});$input.on('click',function(){$element.trigger('click');}).on('focus',function(){$(this).blur();});function renderUI(){var renderStyle=true;if(typeof options.renderUI=="function"){var retVal=options.renderUI.call(this,element,button,input,preview);if(typeof retVal!='undefined'){renderStyle=retVal;}}// if (renderStyle) {
 //     // render
@@ -60093,7 +60093,7 @@ react_dom.render(/*#__PURE__*/(0,jsx_runtime.jsx)(components_PDFwrapper,{url:fil
 for(var i=0,file;file=files[i];i++){// Only process pdf files.
 if(!file.type.match('application/pdf')){continue;}var reader=new FileReader();// Closure to capture the file information.
 reader.onload=function(file){return function(e){file.src=e.target.result;renderPreview();};}(file);// Read in the image file as a data URL.
-reader.readAsDataURL(file);}if(typeof options.change==='function'){options.change.call(this,files);}update.call(instance);}function isBootstrap(){return $('<div></div>').addClass('pull-right').css('float')=="right";}function isJQueryUI(){return $('<div></div>').addClass('ui-front').css('z-index')>1;}function init(){var value=$element.attr('value');var values=value?value.split(","):[];files=$(values).map(function(){var filename=getFilename(this);var fileExtension=getFileExtension(this);var type="";if($.inArray(fileExtension,['jpg','jpeg','png','gif'])>=0){// image
+reader.readAsDataURL(file);}if(typeof options.change==='function'){options.change.call(this,files);}update.call(instance);}function isBootstrap(){return $('<div></div>').addClass('pull-right').css('float')=="right";}function isJQueryUI(){return $('<div></div>').addClass('ui-front').css('z-index')>1;}function init(){var value=$element.attr('value')||$element.attr('url');var values=value?value.split(","):[];files=$(values).map(function(){var filename=getFilename(this);var fileExtension=getFileExtension(this);var type="";if($.inArray(fileExtension,['jpg','jpeg','png','gif'])>=0){// image
 type="image/"+fileExtension;}if($.inArray(fileExtension,['pdf'])>=0){// image
 type="application/"+fileExtension;}return{name:filename,type:type,src:this};}).get();renderUI.call(this);renderPreview.call(this);layout.call(this);update.call(this);}init.call(this);}$.extend(PdfViewer.prototype,{//     init: function () {
 //         this.component = ReactDOM.render(

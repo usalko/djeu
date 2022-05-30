@@ -207,7 +207,7 @@ if (typeof jQuery !== 'undefined') {
 
             function init() {
 
-                var value = $element.attr('value');
+                var value = $element.attr('value') || $element.attr('url');
                 var values = value ? value.split(",") : [];
 
                 files = $(values).map(function () {

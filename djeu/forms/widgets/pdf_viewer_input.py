@@ -2,7 +2,7 @@ from django import forms
 from django.conf import settings
 
 
-class PdfViewerInput(forms.widgets.Input):
+class PdfViewerInput(forms.FileInput):
 
     input_type = 'file'
     needs_multipart_form = True
@@ -26,9 +26,11 @@ class PdfViewerInput(forms.widgets.Input):
             data_label = self.attrs['button-label']
         if 'data-label' in self.attrs:
             data_label = self.attrs['data-label']
+        url = f'{settings.MEDIA_URL}{value}' if value else None
         return super(PdfViewerInput, self).get_context(name, value, {**attrs, **{
             'class': 'pdfViewer',
             'data-label': data_label,
+            'url': url
         }})
 
     @property
