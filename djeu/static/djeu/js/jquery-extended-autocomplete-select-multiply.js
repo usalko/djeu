@@ -1,5 +1,5 @@
 /*!
- * Select2 4.0.13
+ * ExtendedAutocompleteSelectMultiply 4.0.13
  * https://select2.github.io
  *
  * Released under the MIT license
@@ -35,15 +35,15 @@
     // This is needed so we can catch the AMD loader configuration and use it
     // The inner file should be wrapped (by `banner.start.js`) in a function that
     // returns the AMD loader references.
-    var S2 = (function () {
-        // Restore the Select2 AMD loader so it can be used
+    var ExtendedAutocompleteSelectMultiply = (function () {
+        // Restore the ExtendedAutocompleteSelectMultiply AMD loader so it can be used
         // Needed mostly in the language files, where the loader is not inserted
-        if (jQuery && jQuery.fn && jQuery.fn.select2 && jQuery.fn.select2.amd) {
-            var S2 = jQuery.fn.select2.amd;
+        if (jQuery && jQuery.fn && jQuery.fn.extendedAutocompleteSelectMultiply && jQuery.fn.extendedAutocompleteSelectMultiply.amd) {
+            var ExtendedAutocompleteSelectMultiply = jQuery.fn.extendedAutocompleteSelectMultiply.amd;
         }
-        var S2; (function () {
-            if (!S2 || !S2.requirejs) {
-                if (!S2) { S2 = {}; } else { require = S2; }
+        var ExtendedAutocompleteSelectMultiply; (function () {
+            if (!ExtendedAutocompleteSelectMultiply || !ExtendedAutocompleteSelectMultiply.requirejs) {
+                if (!ExtendedAutocompleteSelectMultiply) { ExtendedAutocompleteSelectMultiply = {}; } else { require = ExtendedAutocompleteSelectMultiply; }
                 /**
                  * @license almond 0.3.3 Copyright jQuery Foundation and other contributors.
                  * Released under MIT license, http://github.com/requirejs/almond/LICENSE
@@ -479,19 +479,19 @@
                     };
                 }());
 
-                S2.requirejs = requirejs; S2.require = require; S2.define = define;
+                ExtendedAutocompleteSelectMultiply.requirejs = requirejs; ExtendedAutocompleteSelectMultiply.require = require; ExtendedAutocompleteSelectMultiply.define = define;
             }
         }());
-        S2.define("almond", function () { });
+        ExtendedAutocompleteSelectMultiply.define("almond", function () { });
 
         /* global jQuery:false, $:false */
-        S2.define('jquery', [], function () {
+        ExtendedAutocompleteSelectMultiply.define('jquery', [], function () {
             var _$ = jQuery || $;
 
             if (_$ == null && console && console.error) {
                 console.error(
-                    'Select2: An instance of jQuery or a jQuery-compatible library was not ' +
-                    'found. Make sure that you are including jQuery before Select2 on your ' +
+                    'ExtendedAutocompleteSelectMultiply: An instance of jQuery or a jQuery-compatible library was not ' +
+                    'found. Make sure that you are including jQuery before ExtendedAutocompleteSelectMultiply on your ' +
                     'web page.'
                 );
             }
@@ -499,7 +499,7 @@
             return _$;
         });
 
-        S2.define('select2/utils', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/utils', [
             'jquery'
         ], function ($) {
             var Utils = {};
@@ -783,18 +783,18 @@
                 // attribute and returns the new id.
                 // If an id already exists, it simply returns it.
 
-                var select2Id = element.getAttribute('data-select2-id');
-                if (select2Id == null) {
+                var extendedAutocompleteSelectMultiplyId = element.getAttribute('data-extended-autocomplete-select-multiply-id');
+                if (extendedAutocompleteSelectMultiplyId == null) {
                     // If element has id, use it.
                     if (element.id) {
-                        select2Id = element.id;
-                        element.setAttribute('data-select2-id', select2Id);
+                        extendedAutocompleteSelectMultiplyId = element.id;
+                        element.setAttribute('data-extended-autocomplete-select-multiply-id', extendedAutocompleteSelectMultiplyId);
                     } else {
-                        element.setAttribute('data-select2-id', ++id);
-                        select2Id = id.toString();
+                        element.setAttribute('data-extended-autocomplete-select-multiply-id', ++id);
+                        extendedAutocompleteSelectMultiplyId = id.toString();
                     }
                 }
-                return select2Id;
+                return extendedAutocompleteSelectMultiplyId;
             };
 
             Utils.StoreData = function (element, name, value) {
@@ -834,13 +834,13 @@
                     delete Utils.__cache[id];
                 }
 
-                element.removeAttribute('data-select2-id');
+                element.removeAttribute('data-extended-autocomplete-select-multiply-id');
             };
 
             return Utils;
         });
 
-        S2.define('select2/results', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/results', [
             'jquery',
             './utils'
         ], function ($, Utils) {
@@ -856,7 +856,7 @@
 
             Results.prototype.render = function () {
                 var $results = $(
-                    '<ul class="select2-results__options" role="listbox"></ul>'
+                    '<ul class="extended-autocomplete-select-multiply-results__options" role="listbox"></ul>'
                 );
 
                 if (this.options.get('multiple')) {
@@ -880,7 +880,7 @@
 
                 var $message = $(
                     '<li role="alert" aria-live="assertive"' +
-                    ' class="select2-results__option"></li>'
+                    ' class="extended-autocomplete-select-multiply-results__option"></li>'
                 );
 
                 var message = this.options.get('translations').get(params.message);
@@ -891,13 +891,13 @@
                     )
                 );
 
-                $message[0].className += ' select2-results__message';
+                $message[0].className += ' extended-autocomplete-select-multiply-results__message';
 
                 this.$results.append($message);
             };
 
             Results.prototype.hideMessages = function () {
-                this.$results.find('.select2-results__message').remove();
+                this.$results.find('.extended-autocomplete-select-multiply-results__message').remove();
             };
 
             Results.prototype.append = function (data) {
@@ -929,7 +929,7 @@
             };
 
             Results.prototype.position = function ($results, $dropdown) {
-                var $resultsContainer = $dropdown.find('.select2-results');
+                var $resultsContainer = $dropdown.find('.extended-autocomplete-select-multiply-results');
                 $resultsContainer.append($results);
             };
 
@@ -941,7 +941,7 @@
 
             Results.prototype.highlightFirstItem = function () {
                 var $options = this.$results
-                    .find('.select2-results__option[aria-selected]');
+                    .find('.extended-autocomplete-select-multiply-results__option[aria-selected]');
 
                 var $selected = $options.filter('[aria-selected=true]');
 
@@ -967,7 +967,7 @@
                     });
 
                     var $options = self.$results
-                        .find('.select2-results__option[aria-selected]');
+                        .find('.extended-autocomplete-select-multiply-results__option[aria-selected]');
 
                     $options.each(function () {
                         var $option = $(this);
@@ -1010,7 +1010,7 @@
 
             Results.prototype.option = function (data) {
                 var option = document.createElement('li');
-                option.className = 'select2-results__option';
+                option.className = 'extended-autocomplete-select-multiply-results__option';
 
                 var attrs = {
                     'role': 'option',
@@ -1055,7 +1055,7 @@
                     var $option = $(option);
 
                     var label = document.createElement('strong');
-                    label.className = 'select2-results__group';
+                    label.className = 'extended-autocomplete-select-multiply-results__group';
 
                     var $label = $(label);
                     this.template(data, label);
@@ -1071,7 +1071,7 @@
                     }
 
                     var $childrenContainer = $('<ul></ul>', {
-                        'class': 'select2-results__options select2-results__options--nested'
+                        'class': 'extended-autocomplete-select-multiply-results__options extended-autocomplete-select-multiply-results__options--nested'
                     });
 
                     $childrenContainer.append($children);
@@ -1251,7 +1251,7 @@
                 });
 
                 container.on('results:focus', function (params) {
-                    params.element.addClass('select2-results__option--highlighted');
+                    params.element.addClass('extended-autocomplete-select-multiply-results__option--highlighted');
                 });
 
                 container.on('results:message', function (params) {
@@ -1283,7 +1283,7 @@
                     });
                 }
 
-                this.$results.on('mouseup', '.select2-results__option[aria-selected]',
+                this.$results.on('mouseup', '.extended-autocomplete-select-multiply-results__option[aria-selected]',
                     function (evt) {
                         var $this = $(this);
 
@@ -1308,12 +1308,12 @@
                         });
                     });
 
-                this.$results.on('mouseenter', '.select2-results__option[aria-selected]',
+                this.$results.on('mouseenter', '.extended-autocomplete-select-multiply-results__option[aria-selected]',
                     function (evt) {
                         var data = Utils.GetData(this, 'data');
 
                         self.getHighlightedResults()
-                            .removeClass('select2-results__option--highlighted');
+                            .removeClass('extended-autocomplete-select-multiply-results__option--highlighted');
 
                         self.trigger('results:focus', {
                             data: data,
@@ -1324,7 +1324,7 @@
 
             Results.prototype.getHighlightedResults = function () {
                 var $highlighted = this.$results
-                    .find('.select2-results__option--highlighted');
+                    .find('.extended-autocomplete-select-multiply-results__option--highlighted');
 
                 return $highlighted;
             };
@@ -1376,7 +1376,7 @@
             return Results;
         });
 
-        S2.define('select2/keys', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/keys', [
 
         ], function () {
             var KEYS = {
@@ -1402,7 +1402,7 @@
             return KEYS;
         });
 
-        S2.define('select2/selection/base', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/selection/base', [
             'jquery',
             '../utils',
             '../keys'
@@ -1418,7 +1418,7 @@
 
             BaseSelection.prototype.render = function () {
                 var $selection = $(
-                    '<span class="select2-selection" role="combobox" ' +
+                    '<span class="extended-autocomplete-select-multiply-selection" role="combobox" ' +
                     ' aria-haspopup="true" aria-expanded="false">' +
                     '</span>'
                 );
@@ -1521,12 +1521,12 @@
 
             BaseSelection.prototype._attachCloseHandler = function (container) {
 
-                $(document.body).on('mousedown.select2.' + container.id, function (e) {
+                $(document.body).on('mousedown.extendedAutocompleteSelectMultiply.' + container.id, function (e) {
                     var $target = $(e.target);
 
-                    var $select = $target.closest('.select2');
+                    var $select = $target.closest('.extendedAutocompleteSelectMultiply');
 
-                    var $all = $('.select2.select2-container--open');
+                    var $all = $('.extendedAutocompleteSelectMultiply.extended-autocomplete-select-multiply-container--open');
 
                     $all.each(function () {
                         if (this == $select[0]) {
@@ -1535,13 +1535,13 @@
 
                         var $element = Utils.GetData(this, 'element');
 
-                        $element.select2('close');
+                        $element.extendedAutocompleteSelectMultiply('close');
                     });
                 });
             };
 
             BaseSelection.prototype._detachCloseHandler = function (container) {
-                $(document.body).off('mousedown.select2.' + container.id);
+                $(document.body).off('mousedown.extendedAutocompleteSelectMultiply.' + container.id);
             };
 
             BaseSelection.prototype.position = function ($selection, $container) {
@@ -1581,7 +1581,7 @@
             return BaseSelection;
         });
 
-        S2.define('select2/selection/single', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/selection/single', [
             'jquery',
             './base',
             '../utils',
@@ -1596,11 +1596,11 @@
             SingleSelection.prototype.render = function () {
                 var $selection = SingleSelection.__super__.render.call(this);
 
-                $selection.addClass('select2-selection--single');
+                $selection.addClass('extended-autocomplete-select-multiply-selection--single');
 
                 $selection.html(
-                    '<span class="select2-selection__rendered"></span>' +
-                    '<span class="select2-selection__arrow" role="presentation">' +
+                    '<span class="extended-autocomplete-select-multiply-selection__rendered"></span>' +
+                    '<span class="extended-autocomplete-select-multiply-selection__arrow" role="presentation">' +
                     '<b role="presentation"></b>' +
                     '</span>'
                 );
@@ -1615,7 +1615,7 @@
 
                 var id = container.id + '-container';
 
-                this.$selection.find('.select2-selection__rendered')
+                this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered')
                     .attr('id', id)
                     .attr('role', 'textbox')
                     .attr('aria-readonly', 'true');
@@ -1648,7 +1648,7 @@
             };
 
             SingleSelection.prototype.clear = function () {
-                var $rendered = this.$selection.find('.select2-selection__rendered');
+                var $rendered = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered');
                 $rendered.empty();
                 $rendered.removeAttr('title'); // clear tooltip on empty
             };
@@ -1672,7 +1672,7 @@
 
                 var selection = data[0];
 
-                var $rendered = this.$selection.find('.select2-selection__rendered');
+                var $rendered = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered');
                 var formatted = this.display(selection, $rendered);
 
                 $rendered.empty().append(formatted);
@@ -1689,7 +1689,7 @@
             return SingleSelection;
         });
 
-        S2.define('select2/selection/multiple', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/selection/multiple', [
             'jquery',
             './base',
             '../utils'
@@ -1703,10 +1703,10 @@
             MultipleSelection.prototype.render = function () {
                 var $selection = MultipleSelection.__super__.render.call(this);
 
-                $selection.addClass('select2-selection--multiple');
+                $selection.addClass('extended-autocomplete-select-multiply-selection--multiple');
 
                 $selection.html(
-                    '<ul class="select2-selection__rendered"></ul>'
+                    '<ul class="extended-autocomplete-select-multiply-selection__rendered"></ul>'
                 );
 
                 return $selection;
@@ -1725,7 +1725,7 @@
 
                 this.$selection.on(
                     'click',
-                    '.select2-selection__choice__remove',
+                    '.extended-autocomplete-select-multiply-selection__choice__remove',
                     function (evt) {
                         // Ignore the event if it is disabled
                         if (self.isDisabled()) {
@@ -1746,7 +1746,7 @@
             };
 
             MultipleSelection.prototype.clear = function () {
-                var $rendered = this.$selection.find('.select2-selection__rendered');
+                var $rendered = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered');
                 $rendered.empty();
                 $rendered.removeAttr('title');
             };
@@ -1760,8 +1760,8 @@
 
             MultipleSelection.prototype.selectionContainer = function () {
                 var $container = $(
-                    '<li class="select2-selection__choice">' +
-                    '<span class="select2-selection__choice__remove" role="presentation">' +
+                    '<li class="extended-autocomplete-select-multiply-selection__choice">' +
+                    '<span class="extended-autocomplete-select-multiply-selection__choice__remove" role="presentation">' +
                     '&times;' +
                     '</span>' +
                     '</li>'
@@ -1798,7 +1798,7 @@
                     $selections.push($selection);
                 }
 
-                var $rendered = this.$selection.find('.select2-selection__rendered');
+                var $rendered = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered');
 
                 Utils.appendMany($rendered, $selections);
             };
@@ -1806,7 +1806,7 @@
             return MultipleSelection;
         });
 
-        S2.define('select2/selection/placeholder', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/selection/placeholder', [
             '../utils'
         ], function (Utils) {
             function Placeholder(decorated, $element, options) {
@@ -1830,8 +1830,8 @@
                 var $placeholder = this.selectionContainer();
 
                 $placeholder.html(this.display(placeholder));
-                $placeholder.addClass('select2-selection__placeholder')
-                    .removeClass('select2-selection__choice');
+                $placeholder.addClass('extended-autocomplete-select-multiply-selection__placeholder')
+                    .removeClass('extended-autocomplete-select-multiply-selection__choice');
 
                 return $placeholder;
             };
@@ -1850,13 +1850,13 @@
 
                 var $placeholder = this.createPlaceholder(this.placeholder);
 
-                this.$selection.find('.select2-selection__rendered').append($placeholder);
+                this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered').append($placeholder);
             };
 
             return Placeholder;
         });
 
-        S2.define('select2/selection/allowClear', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/selection/allowClear', [
             'jquery',
             '../keys',
             '../utils'
@@ -1871,13 +1871,13 @@
                 if (this.placeholder == null) {
                     if (this.options.get('debug') && window.console && console.error) {
                         console.error(
-                            'Select2: The `allowClear` option should be used in combination ' +
+                            'ExtendedAutocompleteSelectMultiply: The `allowClear` option should be used in combination ' +
                             'with the `placeholder` option.'
                         );
                     }
                 }
 
-                this.$selection.on('mousedown', '.select2-selection__clear',
+                this.$selection.on('mousedown', '.extended-autocomplete-select-multiply-selection__clear',
                     function (evt) {
                         self._handleClear(evt);
                     });
@@ -1893,7 +1893,7 @@
                     return;
                 }
 
-                var $clear = this.$selection.find('.select2-selection__clear');
+                var $clear = this.$selection.find('.extended-autocomplete-select-multiply-selection__clear');
 
                 // Ignore the event if nothing has been selected
                 if ($clear.length === 0) {
@@ -1950,7 +1950,7 @@
             AllowClear.prototype.update = function (decorated, data) {
                 decorated.call(this, data);
 
-                if (this.$selection.find('.select2-selection__placeholder').length > 0 ||
+                if (this.$selection.find('.extended-autocomplete-select-multiply-selection__placeholder').length > 0 ||
                     data.length === 0) {
                     return;
                 }
@@ -1958,19 +1958,19 @@
                 var removeAll = this.options.get('translations').get('removeAllItems');
 
                 var $remove = $(
-                    '<span class="select2-selection__clear" title="' + removeAll() + '">' +
+                    '<span class="extended-autocomplete-select-multiply-selection__clear" title="' + removeAll() + '">' +
                     '&times;' +
                     '</span>'
                 );
                 Utils.StoreData($remove[0], 'data', data);
 
-                this.$selection.find('.select2-selection__rendered').prepend($remove);
+                this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered').prepend($remove);
             };
 
             return AllowClear;
         });
 
-        S2.define('select2/selection/search', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/selection/search', [
             'jquery',
             '../utils',
             '../keys'
@@ -1981,8 +1981,8 @@
 
             Search.prototype.render = function (decorated) {
                 var $search = $(
-                    '<li class="select2-search select2-search--inline">' +
-                    '<input class="select2-search__field" type="search" tabindex="-1"' +
+                    '<li class="extended-autocomplete-select-multiply-search extended-autocomplete-select-multiply-search--inline">' +
+                    '<input class="extended-autocomplete-select-multiply-search__field" type="search" tabindex="-1"' +
                     ' autocomplete="off" autocorrect="off" autocapitalize="none"' +
                     ' spellcheck="false" role="searchbox" aria-autocomplete="list" />' +
                     '</li>'
@@ -2039,15 +2039,15 @@
                     }
                 });
 
-                this.$selection.on('focusin', '.select2-search--inline', function (evt) {
+                this.$selection.on('focusin', '.extended-autocomplete-select-multiply-search--inline', function (evt) {
                     self.trigger('focus', evt);
                 });
 
-                this.$selection.on('focusout', '.select2-search--inline', function (evt) {
+                this.$selection.on('focusout', '.extended-autocomplete-select-multiply-search--inline', function (evt) {
                     self._handleBlur(evt);
                 });
 
-                this.$selection.on('keydown', '.select2-search--inline', function (evt) {
+                this.$selection.on('keydown', '.extended-autocomplete-select-multiply-search--inline', function (evt) {
                     evt.stopPropagation();
 
                     self.trigger('keypress', evt);
@@ -2058,7 +2058,7 @@
 
                     if (key === KEYS.BACKSPACE && self.$search.val() === '') {
                         var $previousChoice = self.$searchContainer
-                            .prev('.select2-selection__choice');
+                            .prev('.extended-autocomplete-select-multiply-selection__choice');
 
                         if ($previousChoice.length > 0) {
                             var item = Utils.GetData($previousChoice[0], 'data');
@@ -2070,7 +2070,7 @@
                     }
                 });
 
-                this.$selection.on('click', '.select2-search--inline', function (evt) {
+                this.$selection.on('click', '.extended-autocomplete-select-multiply-search--inline', function (evt) {
                     if (self.$search.val()) {
                         evt.stopPropagation();
                     }
@@ -2089,7 +2089,7 @@
                 // both the `keyup` and `input` events.
                 this.$selection.on(
                     'input.searchcheck',
-                    '.select2-search--inline',
+                    '.extended-autocomplete-select-multiply-search--inline',
                     function (evt) {
                         // IE will trigger the `input` event when a placeholder is used on a
                         // search box. To get around this issue, we are forced to ignore all
@@ -2106,7 +2106,7 @@
 
                 this.$selection.on(
                     'keyup.search input.search',
-                    '.select2-search--inline',
+                    '.extended-autocomplete-select-multiply-search--inline',
                     function (evt) {
                         // IE will trigger the `input` event when a placeholder is used on a
                         // search box. To get around this issue, we are forced to ignore all
@@ -2156,7 +2156,7 @@
 
                 decorated.call(this, data);
 
-                this.$selection.find('.select2-selection__rendered')
+                this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered')
                     .append(this.$searchContainer);
 
                 this.resizeSearch();
@@ -2194,7 +2194,7 @@
                 var width = '';
 
                 if (this.$search.attr('placeholder') !== '') {
-                    width = this.$selection.find('.select2-selection__rendered').width();
+                    width = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered').width();
                 } else {
                     var minimumWidth = this.$search.val().length + 1;
 
@@ -2207,7 +2207,7 @@
             return Search;
         });
 
-        S2.define('select2/selection/eventRelay', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/selection/eventRelay', [
             'jquery'
         ], function ($) {
             function EventRelay() { }
@@ -2237,8 +2237,8 @@
                     // The parameters should always be an object
                     params = params || {};
 
-                    // Generate the jQuery event for the Select2 event
-                    var evt = $.Event('select2:' + name, {
+                    // Generate the jQuery event for the ExtendedAutocompleteSelectMultiply event
+                    var evt = $.Event('extendedAutocompleteSelectMultiply:' + name, {
                         params: params
                     });
 
@@ -2256,7 +2256,7 @@
             return EventRelay;
         });
 
-        S2.define('select2/translation', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/translation', [
             'jquery',
             'require'
         ], function ($, require) {
@@ -2293,7 +2293,7 @@
             return Translation;
         });
 
-        S2.define('select2/diacritics', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/diacritics', [
 
         ], function () {
             var diacritics = {
@@ -3144,7 +3144,7 @@
             return diacritics;
         });
 
-        S2.define('select2/data/base', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/data/base', [
             '../utils'
         ], function (Utils) {
             function BaseAdapter($element, options) {
@@ -3185,7 +3185,7 @@
             return BaseAdapter;
         });
 
-        S2.define('select2/data/select', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/data/select', [
             './base',
             '../utils',
             'jquery'
@@ -3305,7 +3305,7 @@
             SelectAdapter.prototype.destroy = function () {
                 // Remove anything added to child elements
                 this.$element.find('*').each(function () {
-                    // Remove any custom data set by Select2
+                    // Remove any custom data set by ExtendedAutocompleteSelectMultiply
                     Utils.RemoveData(this);
                 });
             };
@@ -3471,7 +3471,7 @@
             return SelectAdapter;
         });
 
-        S2.define('select2/data/array', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/data/array', [
             './select',
             '../utils',
             'jquery'
@@ -3555,7 +3555,7 @@
             return ArrayAdapter;
         });
 
-        S2.define('select2/data/ajax', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/data/ajax', [
             './array',
             '../utils',
             'jquery'
@@ -3629,7 +3629,7 @@
                             // Check to make sure that the response included a `results` key.
                             if (!results || !results.results || !$.isArray(results.results)) {
                                 console.error(
-                                    'Select2: The AJAX results did not return an array in the ' +
+                                    'ExtendedAutocompleteSelectMultiply: The AJAX results did not return an array in the ' +
                                     '`results` key of the response.'
                                 );
                             }
@@ -3666,7 +3666,7 @@
             return AjaxAdapter;
         });
 
-        S2.define('select2/data/tags', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/data/tags', [
             'jquery'
         ], function ($) {
             function Tags(decorated, $element, options) {
@@ -3746,7 +3746,7 @@
 
                     if (tag != null) {
                         var $option = self.option(tag);
-                        $option.attr('data-select2-tag', true);
+                        $option.attr('data-extended-autocomplete-select-multiply-tag', true);
 
                         self.addOptions([$option]);
 
@@ -3779,7 +3779,7 @@
             };
 
             Tags.prototype._removeOldTags = function (_) {
-                var $options = this.$element.find('option[data-select2-tag]');
+                var $options = this.$element.find('option[data-extended-autocomplete-select-multiply-tag]');
 
                 $options.each(function () {
                     if (this.selected) {
@@ -3793,7 +3793,7 @@
             return Tags;
         });
 
-        S2.define('select2/data/tokenizer', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/data/tokenizer', [
             'jquery'
         ], function ($) {
             function Tokenizer(decorated, $element, options) {
@@ -3810,7 +3810,7 @@
                 decorated.call(this, container, $container);
 
                 this.$search = container.dropdown.$search || container.selection.$search ||
-                    $container.find('.select2-search__field');
+                    $container.find('.extended-autocomplete-select-multiply-search__field');
             };
 
             Tokenizer.prototype.query = function (decorated, params, callback) {
@@ -3829,7 +3829,7 @@
                     // If an existing option wasn't found for it, create the option
                     if (!$existingOptions.length) {
                         var $option = self.option(item);
-                        $option.attr('data-select2-tag', true);
+                        $option.attr('data-extended-autocomplete-select-multiply-tag', true);
 
                         self._removeOldTags();
                         self.addOptions([$option]);
@@ -3910,7 +3910,7 @@
             return Tokenizer;
         });
 
-        S2.define('select2/data/minimumInputLength', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/data/minimumInputLength', [
 
         ], function () {
             function MinimumInputLength(decorated, $e, options) {
@@ -3941,7 +3941,7 @@
             return MinimumInputLength;
         });
 
-        S2.define('select2/data/maximumInputLength', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/data/maximumInputLength', [
 
         ], function () {
             function MaximumInputLength(decorated, $e, options) {
@@ -3973,7 +3973,7 @@
             return MaximumInputLength;
         });
 
-        S2.define('select2/data/maximumSelectionLength', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/data/maximumSelectionLength', [
 
         ], function () {
             function MaximumSelectionLength(decorated, $e, options) {
@@ -4028,7 +4028,7 @@
             return MaximumSelectionLength;
         });
 
-        S2.define('select2/dropdown', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/dropdown', [
             'jquery',
             './utils'
         ], function ($, Utils) {
@@ -4043,8 +4043,8 @@
 
             Dropdown.prototype.render = function () {
                 var $dropdown = $(
-                    '<span class="select2-dropdown">' +
-                    '<span class="select2-results"></span>' +
+                    '<span class="extended-autocomplete-select-multiply-dropdown">' +
+                    '<span class="extended-autocomplete-select-multiply-results"></span>' +
                     '</span>'
                 );
 
@@ -4071,7 +4071,7 @@
             return Dropdown;
         });
 
-        S2.define('select2/dropdown/search', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/dropdown/search', [
             'jquery',
             '../utils'
         ], function ($, Utils) {
@@ -4081,8 +4081,8 @@
                 var $rendered = decorated.call(this);
 
                 var $search = $(
-                    '<span class="select2-search select2-search--dropdown">' +
-                    '<input class="select2-search__field" type="search" tabindex="-1"' +
+                    '<span class="extended-autocomplete-select-multiply-search extended-autocomplete-select-multiply-search--dropdown">' +
+                    '<input class="extended-autocomplete-select-multiply-search__field" type="search" tabindex="-1"' +
                     ' autocomplete="off" autocorrect="off" autocapitalize="none"' +
                     ' spellcheck="false" role="searchbox" aria-autocomplete="list" />' +
                     '</span>'
@@ -4152,9 +4152,9 @@
                         var showSearch = self.showSearch(params);
 
                         if (showSearch) {
-                            self.$searchContainer.removeClass('select2-search--hide');
+                            self.$searchContainer.removeClass('extended-autocomplete-select-multiply-search--hide');
                         } else {
-                            self.$searchContainer.addClass('select2-search--hide');
+                            self.$searchContainer.addClass('extended-autocomplete-select-multiply-search--hide');
                         }
                     }
                 });
@@ -4187,7 +4187,7 @@
             return Search;
         });
 
-        S2.define('select2/dropdown/hidePlaceholder', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/dropdown/hidePlaceholder', [
 
         ], function () {
             function HidePlaceholder(decorated, $element, options, dataAdapter) {
@@ -4230,7 +4230,7 @@
             return HidePlaceholder;
         });
 
-        S2.define('select2/dropdown/infiniteScroll', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/dropdown/infiniteScroll', [
             'jquery'
         ], function ($) {
             function InfiniteScroll(decorated, $element, options, dataAdapter) {
@@ -4309,7 +4309,7 @@
             InfiniteScroll.prototype.createLoadingMore = function () {
                 var $option = $(
                     '<li ' +
-                    'class="select2-results__option select2-results__option--load-more"' +
+                    'class="extended-autocomplete-select-multiply-results__option extended-autocomplete-select-multiply-results__option--load-more"' +
                     'role="option" aria-disabled="true"></li>'
                 );
 
@@ -4323,7 +4323,7 @@
             return InfiniteScroll;
         });
 
-        S2.define('select2/dropdown/attachBody', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/dropdown/attachBody', [
             'jquery',
             '../utils'
         ], function ($, Utils) {
@@ -4366,8 +4366,8 @@
                 // Clone all of the container classes
                 $dropdown.attr('class', $container.attr('class'));
 
-                $dropdown.removeClass('select2');
-                $dropdown.addClass('select2-container--open');
+                $dropdown.removeClass('extended-autocomplete-select-multiply');
+                $dropdown.addClass('extended-autocomplete-select-multiply-container--open');
 
                 $dropdown.css({
                     position: 'absolute',
@@ -4434,20 +4434,20 @@
                 function (decorated, container) {
                     var self = this;
 
-                    var scrollEvent = 'scroll.select2.' + container.id;
-                    var resizeEvent = 'resize.select2.' + container.id;
-                    var orientationEvent = 'orientationchange.select2.' + container.id;
+                    var scrollEvent = 'scroll.extendedAutocompleteSelectMultiply.' + container.id;
+                    var resizeEvent = 'resize.extendedAutocompleteSelectMultiply.' + container.id;
+                    var orientationEvent = 'orientationchange.extendedAutocompleteSelectMultiply.' + container.id;
 
                     var $watchers = this.$container.parents().filter(Utils.hasScroll);
                     $watchers.each(function () {
-                        Utils.StoreData(this, 'select2-scroll-position', {
+                        Utils.StoreData(this, 'extended-autocomplete-select-multiply-scroll-position', {
                             x: $(this).scrollLeft(),
                             y: $(this).scrollTop()
                         });
                     });
 
                     $watchers.on(scrollEvent, function (ev) {
-                        var position = Utils.GetData(this, 'select2-scroll-position');
+                        var position = Utils.GetData(this, 'extended-autocomplete-select-multiply-scroll-position');
                         $(this).scrollTop(position.y);
                     });
 
@@ -4460,9 +4460,9 @@
 
             AttachBody.prototype._detachPositioningHandler =
                 function (decorated, container) {
-                    var scrollEvent = 'scroll.select2.' + container.id;
-                    var resizeEvent = 'resize.select2.' + container.id;
-                    var orientationEvent = 'orientationchange.select2.' + container.id;
+                    var scrollEvent = 'scroll.extendedAutocompleteSelectMultiply.' + container.id;
+                    var resizeEvent = 'resize.extendedAutocompleteSelectMultiply.' + container.id;
+                    var orientationEvent = 'orientationchange.extendedAutocompleteSelectMultiply.' + container.id;
 
                     var $watchers = this.$container.parents().filter(Utils.hasScroll);
                     $watchers.off(scrollEvent);
@@ -4473,8 +4473,8 @@
             AttachBody.prototype._positionDropdown = function () {
                 var $window = $(window);
 
-                var isCurrentlyAbove = this.$dropdown.hasClass('select2-dropdown--above');
-                var isCurrentlyBelow = this.$dropdown.hasClass('select2-dropdown--below');
+                var isCurrentlyAbove = this.$dropdown.hasClass('extended-autocomplete-select-multiply-dropdown--above');
+                var isCurrentlyBelow = this.$dropdown.hasClass('extended-autocomplete-select-multiply-dropdown--below');
 
                 var newDirection = null;
 
@@ -4547,11 +4547,11 @@
 
                 if (newDirection != null) {
                     this.$dropdown
-                        .removeClass('select2-dropdown--below select2-dropdown--above')
-                        .addClass('select2-dropdown--' + newDirection);
+                        .removeClass('extended-autocomplete-select-multiply-dropdown--below extended-autocomplete-select-multiply-dropdown--above')
+                        .addClass('extended-autocomplete-select-multiply-dropdown--' + newDirection);
                     this.$container
-                        .removeClass('select2-container--below select2-container--above')
-                        .addClass('select2-container--' + newDirection);
+                        .removeClass('extended-autocomplete-select-multiply-container--below extended-autocomplete-select-multiply-container--above')
+                        .addClass('extended-autocomplete-select-multiply-container--' + newDirection);
                 }
 
                 this.$dropdownContainer.css(css);
@@ -4581,7 +4581,7 @@
             return AttachBody;
         });
 
-        S2.define('select2/dropdown/minimumResultsForSearch', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/dropdown/minimumResultsForSearch', [
 
         ], function () {
             function countResults(data) {
@@ -4621,7 +4621,7 @@
             return MinimumResultsForSearch;
         });
 
-        S2.define('select2/dropdown/selectOnClose', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/dropdown/selectOnClose', [
             '../utils'
         ], function (Utils) {
             function SelectOnClose() { }
@@ -4637,8 +4637,8 @@
             };
 
             SelectOnClose.prototype._handleSelectOnClose = function (_, params) {
-                if (params && params.originalSelect2Event != null) {
-                    var event = params.originalSelect2Event;
+                if (params && params.originalExtendedAutocompleteSelectMultiplyEvent != null) {
+                    var event = params.originalExtendedAutocompleteSelectMultiplyEvent;
 
                     // Don't select an item if the close event was triggered from a select or
                     // unselect event
@@ -4672,7 +4672,7 @@
             return SelectOnClose;
         });
 
-        S2.define('select2/dropdown/closeOnSelect', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/dropdown/closeOnSelect', [
 
         ], function () {
             function CloseOnSelect() { }
@@ -4701,14 +4701,14 @@
 
                 this.trigger('close', {
                     originalEvent: originalEvent,
-                    originalSelect2Event: evt
+                    originalExtendedAutocompleteSelectMultiplyEvent: evt
                 });
             };
 
             return CloseOnSelect;
         });
 
-        S2.define('select2/i18n/en', [], function () {
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/i18n/en', [], function () {
             // English
             return {
                 errorLoading: function () {
@@ -4756,7 +4756,7 @@
             };
         });
 
-        S2.define('select2/defaults', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/defaults', [
             'jquery',
             'require',
 
@@ -5178,10 +5178,10 @@
                             } catch (ex) {
                                 // The translation could not be loaded at all. Sometimes this is
                                 // because of a configuration problem, other times this can be
-                                // because of how Select2 helps load all possible translation files
+                                // because of how ExtendedAutocompleteSelectMultiply helps load all possible translation files
                                 if (debug && window.console && console.warn) {
                                     console.warn(
-                                        'Select2: The language file for "' + language + '" could ' +
+                                        'ExtendedAutocompleteSelectMultiply: The language file for "' + language + '" could ' +
                                         'not be automatically loaded. A fallback will be used instead.'
                                     );
                                 }
@@ -5215,7 +5215,7 @@
             return defaults;
         });
 
-        S2.define('select2/options', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/options', [
             'require',
             'jquery',
             './defaults',
@@ -5245,7 +5245,7 @@
             }
 
             Options.prototype.fromElement = function ($e) {
-                var excludedData = ['select2'];
+                var excludedData = ['extendedAutocompleteSelectMultiply'];
 
                 if (this.options.multiple == null) {
                     this.options.multiple = $e.prop('multiple');
@@ -5268,25 +5268,25 @@
                 $e.prop('disabled', this.options.disabled);
                 $e.prop('multiple', this.options.multiple);
 
-                if (Utils.GetData($e[0], 'select2Tags')) {
-                    if (this.options.debug && window.console && console.warn) {
-                        console.warn(
-                            'Select2: The `data-select2-tags` attribute has been changed to ' +
-                            'use the `data-data` and `data-tags="true"` attributes and will be ' +
-                            'removed in future versions of Select2.'
-                        );
-                    }
+                // if (Utils.GetData($e[0], 'extendedAutocompleteSelectMultiplyTags')) {
+                //     if (this.options.debug && window.console && console.warn) {
+                //         console.warn(
+                //             'ExtendedAutocompleteSelectMultiply: The `data-extended-autocomplete-select-multiply-tags` attribute has been changed to ' +
+                //             'use the `data-data` and `data-tags="true"` attributes and will be ' +
+                //             'removed in future versions of ExtendedAutocompleteSelectMultiply.'
+                //         );
+                //     }
 
-                    Utils.StoreData($e[0], 'data', Utils.GetData($e[0], 'select2Tags'));
-                    Utils.StoreData($e[0], 'tags', true);
-                }
+                Utils.StoreData($e[0], 'data', Utils.GetData($e[0], 'extendedAutocompleteSelectMultiplyTags'));
+                Utils.StoreData($e[0], 'tags', true);
+                // }
 
                 if (Utils.GetData($e[0], 'ajaxUrl')) {
                     if (this.options.debug && window.console && console.warn) {
                         console.warn(
-                            'Select2: The `data-ajax-url` attribute has been changed to ' +
+                            'ExtendedAutocompleteSelectMultiply: The `data-ajax-url` attribute has been changed to ' +
                             '`data-ajax--url` and support for the old attribute will be removed' +
-                            ' in future versions of Select2.'
+                            ' in future versions of ExtendedAutocompleteSelectMultiply.'
                         );
                     }
 
@@ -5358,15 +5358,15 @@
             return Options;
         });
 
-        S2.define('select2/core', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/core', [
             'jquery',
             './options',
             './utils',
             './keys'
         ], function ($, Options, Utils, KEYS) {
-            var Select2 = function ($element, options) {
-                if (Utils.GetData($element[0], 'select2') != null) {
-                    Utils.GetData($element[0], 'select2').destroy();
+            var ExtendedAutocompleteSelectMultiply = function ($element, options) {
+                if (Utils.GetData($element[0], 'extendedAutocompleteSelectMultiply') != null) {
+                    Utils.GetData($element[0], 'extendedAutocompleteSelectMultiply').destroy();
                 }
 
                 this.$element = $element;
@@ -5377,7 +5377,7 @@
 
                 this.options = new Options(options, $element);
 
-                Select2.__super__.constructor.call(this);
+                ExtendedAutocompleteSelectMultiply.__super__.constructor.call(this);
 
                 // Set up the tabindex
 
@@ -5437,21 +5437,21 @@
                 });
 
                 // Hide the original select
-                $element.addClass('select2-hidden-accessible');
+                $element.addClass('extended-autocomplete-select-multiply-hidden-accessible');
                 $element.attr('aria-hidden', 'true');
 
                 // Synchronize any monitored attributes
                 this._syncAttributes();
 
-                Utils.StoreData($element[0], 'select2', this);
+                Utils.StoreData($element[0], 'extendedAutocompleteSelectMultiply', this);
 
-                // Ensure backwards compatibility with $element.data('select2').
-                $element.data('select2', this);
+                // Ensure backwards compatibility with $element.data(extendedAutocompleteSelectMultiply').
+                $element.data('extendedAutocompleteSelectMultiply', this);
             };
 
-            Utils.Extend(Select2, Utils.Observable);
+            Utils.Extend(ExtendedAutocompleteSelectMultiply, Utils.Observable);
 
-            Select2.prototype._generateId = function ($element) {
+            ExtendedAutocompleteSelectMultiply.prototype._generateId = function ($element) {
                 var id = '';
 
                 if ($element.attr('id') != null) {
@@ -5463,12 +5463,12 @@
                 }
 
                 id = id.replace(/(:|\.|\[|\]|,)/g, '');
-                id = 'select2-' + id;
+                id = 'extended-autocomplete-select-multiply-' + id;
 
                 return id;
             };
 
-            Select2.prototype._placeContainer = function ($container) {
+            ExtendedAutocompleteSelectMultiply.prototype._placeContainer = function ($container) {
                 $container.insertAfter(this.$element);
 
                 var width = this._resolveWidth(this.$element, this.options.get('width'));
@@ -5483,7 +5483,7 @@
                 }
             };
 
-            Select2.prototype._resolveWidth = function ($element, method) {
+            ExtendedAutocompleteSelectMultiply.prototype._resolveWidth = function ($element, method) {
                 var WIDTH = /^width:(([-+]?([0-9]*\.)?[0-9]+)(px|em|ex|%|in|cm|mm|pt|pc))/i;
 
                 if (method == 'resolve') {
@@ -5536,7 +5536,7 @@
                 return method;
             };
 
-            Select2.prototype._bindAdapters = function () {
+            ExtendedAutocompleteSelectMultiply.prototype._bindAdapters = function () {
                 this.dataAdapter.bind(this, this.$container);
                 this.selection.bind(this, this.$container);
 
@@ -5544,10 +5544,10 @@
                 this.results.bind(this, this.$container);
             };
 
-            Select2.prototype._registerDomEvents = function () {
+            ExtendedAutocompleteSelectMultiply.prototype._registerDomEvents = function () {
                 var self = this;
 
-                this.$element.on('change.select2', function () {
+                this.$element.on('change.extendedAutocompleteSelectMultiply', function () {
                     self.dataAdapter.current(function (data) {
                         self.trigger('selection:update', {
                             data: data
@@ -5555,7 +5555,7 @@
                     });
                 });
 
-                this.$element.on('focus.select2', function (evt) {
+                this.$element.on('focus.extendedAutocompleteSelectMultiply', function (evt) {
                     self.trigger('focus', evt);
                 });
 
@@ -5600,7 +5600,7 @@
                 }
             };
 
-            Select2.prototype._registerDataEvents = function () {
+            ExtendedAutocompleteSelectMultiply.prototype._registerDataEvents = function () {
                 var self = this;
 
                 this.dataAdapter.on('*', function (name, params) {
@@ -5608,7 +5608,7 @@
                 });
             };
 
-            Select2.prototype._registerSelectionEvents = function () {
+            ExtendedAutocompleteSelectMultiply.prototype._registerSelectionEvents = function () {
                 var self = this;
                 var nonRelayEvents = ['toggle', 'focus'];
 
@@ -5629,7 +5629,7 @@
                 });
             };
 
-            Select2.prototype._registerDropdownEvents = function () {
+            ExtendedAutocompleteSelectMultiply.prototype._registerDropdownEvents = function () {
                 var self = this;
 
                 this.dropdown.on('*', function (name, params) {
@@ -5637,7 +5637,7 @@
                 });
             };
 
-            Select2.prototype._registerResultsEvents = function () {
+            ExtendedAutocompleteSelectMultiply.prototype._registerResultsEvents = function () {
                 var self = this;
 
                 this.results.on('*', function (name, params) {
@@ -5645,27 +5645,27 @@
                 });
             };
 
-            Select2.prototype._registerEvents = function () {
+            ExtendedAutocompleteSelectMultiply.prototype._registerEvents = function () {
                 var self = this;
 
                 this.on('open', function () {
-                    self.$container.addClass('select2-container--open');
+                    self.$container.addClass('extended-autocomplete-select-multiply-container--open');
                 });
 
                 this.on('close', function () {
-                    self.$container.removeClass('select2-container--open');
+                    self.$container.removeClass('extended-autocomplete-select-multiply-container--open');
                 });
 
                 this.on('enable', function () {
-                    self.$container.removeClass('select2-container--disabled');
+                    self.$container.removeClass('extended-autocomplete-select-multiply-container--disabled');
                 });
 
                 this.on('disable', function () {
-                    self.$container.addClass('select2-container--disabled');
+                    self.$container.addClass('extended-autocomplete-select-multiply-container--disabled');
                 });
 
                 this.on('blur', function () {
-                    self.$container.removeClass('select2-container--focus');
+                    self.$container.removeClass('extended-autocomplete-select-multiply-container--focus');
                 });
 
                 this.on('query', function (params) {
@@ -5731,7 +5731,7 @@
                 });
             };
 
-            Select2.prototype._syncAttributes = function () {
+            ExtendedAutocompleteSelectMultiply.prototype._syncAttributes = function () {
                 this.options.set('disabled', this.$element.prop('disabled'));
 
                 if (this.isDisabled()) {
@@ -5745,7 +5745,7 @@
                 }
             };
 
-            Select2.prototype._isChangeMutation = function (evt, mutations) {
+            ExtendedAutocompleteSelectMultiply.prototype._isChangeMutation = function (evt, mutations) {
                 var changed = false;
                 var self = this;
 
@@ -5786,7 +5786,7 @@
                 return changed;
             };
 
-            Select2.prototype._syncSubtree = function (evt, mutations) {
+            ExtendedAutocompleteSelectMultiply.prototype._syncSubtree = function (evt, mutations) {
                 var changed = this._isChangeMutation(evt, mutations);
                 var self = this;
 
@@ -5804,8 +5804,8 @@
              * Override the trigger method to automatically trigger pre-events when
              * there are events that can be prevented.
              */
-            Select2.prototype.trigger = function (name, args) {
-                var actualTrigger = Select2.__super__.trigger;
+            ExtendedAutocompleteSelectMultiply.prototype.trigger = function (name, args) {
+                var actualTrigger = ExtendedAutocompleteSelectMultiply.__super__.trigger;
                 var preTriggerMap = {
                     'open': 'opening',
                     'close': 'closing',
@@ -5838,7 +5838,7 @@
                 actualTrigger.call(this, name, args);
             };
 
-            Select2.prototype.toggleDropdown = function () {
+            ExtendedAutocompleteSelectMultiply.prototype.toggleDropdown = function () {
                 if (this.isDisabled()) {
                     return;
                 }
@@ -5850,7 +5850,7 @@
                 }
             };
 
-            Select2.prototype.open = function () {
+            ExtendedAutocompleteSelectMultiply.prototype.open = function () {
                 if (this.isOpen()) {
                     return;
                 }
@@ -5862,7 +5862,7 @@
                 this.trigger('query', {});
             };
 
-            Select2.prototype.close = function (evt) {
+            ExtendedAutocompleteSelectMultiply.prototype.close = function (evt) {
                 if (!this.isOpen()) {
                     return;
                 }
@@ -5877,7 +5877,7 @@
              * @return {true} if the instance is not disabled.
              * @return {false} if the instance is disabled.
              */
-            Select2.prototype.isEnabled = function () {
+            ExtendedAutocompleteSelectMultiply.prototype.isEnabled = function () {
                 return !this.isDisabled();
             };
 
@@ -5887,33 +5887,33 @@
              * @return {true} if the disabled option is true.
              * @return {false} if the disabled option is false.
              */
-            Select2.prototype.isDisabled = function () {
+            ExtendedAutocompleteSelectMultiply.prototype.isDisabled = function () {
                 return this.options.get('disabled');
             };
 
-            Select2.prototype.isOpen = function () {
-                return this.$container.hasClass('select2-container--open');
+            ExtendedAutocompleteSelectMultiply.prototype.isOpen = function () {
+                return this.$container.hasClass('extended-autocomplete-select-multiply-container--open');
             };
 
-            Select2.prototype.hasFocus = function () {
-                return this.$container.hasClass('select2-container--focus');
+            ExtendedAutocompleteSelectMultiply.prototype.hasFocus = function () {
+                return this.$container.hasClass('extended-autocomplete-select-multiply-container--focus');
             };
 
-            Select2.prototype.focus = function (data) {
+            ExtendedAutocompleteSelectMultiply.prototype.focus = function (data) {
                 // No need to re-trigger focus events if we are already focused
                 if (this.hasFocus()) {
                     return;
                 }
 
-                this.$container.addClass('select2-container--focus');
+                this.$container.addClass('extended-autocomplete-select-multiply-container--focus');
                 this.trigger('focus', {});
             };
 
-            Select2.prototype.enable = function (args) {
+            ExtendedAutocompleteSelectMultiply.prototype.enable = function (args) {
                 if (this.options.get('debug') && window.console && console.warn) {
                     console.warn(
-                        'Select2: The `select2("enable")` method has been deprecated and will' +
-                        ' be removed in later Select2 versions. Use $element.prop("disabled")' +
+                        'ExtendedAutocompleteSelectMultiply: The `extendedAutocompleteSelectMultiply("enable")` method has been deprecated and will' +
+                        ' be removed in later ExtendedAutocompleteSelectMultiply versions. Use $element.prop("disabled")' +
                         ' instead.'
                     );
                 }
@@ -5927,11 +5927,11 @@
                 this.$element.prop('disabled', disabled);
             };
 
-            Select2.prototype.data = function () {
+            ExtendedAutocompleteSelectMultiply.prototype.data = function () {
                 if (this.options.get('debug') &&
                     arguments.length > 0 && window.console && console.warn) {
                     console.warn(
-                        'Select2: Data can no longer be set using `select2("data")`. You ' +
+                        'ExtendedAutocompleteSelectMultiply: Data can no longer be set using `extendedAutocompleteSelectMultiply("data")`. You ' +
                         'should consider setting the value instead using `$element.val()`.'
                     );
                 }
@@ -5945,11 +5945,11 @@
                 return data;
             };
 
-            Select2.prototype.val = function (args) {
+            ExtendedAutocompleteSelectMultiply.prototype.val = function (args) {
                 if (this.options.get('debug') && window.console && console.warn) {
                     console.warn(
-                        'Select2: The `select2("val")` method has been deprecated and will be' +
-                        ' removed in later Select2 versions. Use $element.val() instead.'
+                        'ExtendedAutocompleteSelectMultiply: The `extendedAutocompleteSelectMultiply("val")` method has been deprecated and will be' +
+                        ' removed in later ExtendedAutocompleteSelectMultiply versions. Use $element.val() instead.'
                     );
                 }
 
@@ -5968,7 +5968,7 @@
                 this.$element.val(newVal).trigger('input').trigger('change');
             };
 
-            Select2.prototype.destroy = function () {
+            ExtendedAutocompleteSelectMultiply.prototype.destroy = function () {
                 this.$container.remove();
 
                 if (this.$element[0].detachEvent) {
@@ -5990,14 +5990,14 @@
                 this._syncA = null;
                 this._syncS = null;
 
-                this.$element.off('.select2');
+                this.$element.off('.extendedAutocompleteSelectMultiply');
                 this.$element.attr('tabindex',
                     Utils.GetData(this.$element[0], 'old-tabindex'));
 
-                this.$element.removeClass('select2-hidden-accessible');
+                this.$element.removeClass('extended-autocomplete-select-multiply-hidden-accessible');
                 this.$element.attr('aria-hidden', 'false');
                 Utils.RemoveData(this.$element[0]);
-                this.$element.removeData('select2');
+                this.$element.removeData('extendedAutocompleteSelectMultiply');
 
                 this.dataAdapter.destroy();
                 this.selection.destroy();
@@ -6010,9 +6010,9 @@
                 this.results = null;
             };
 
-            Select2.prototype.render = function () {
+            ExtendedAutocompleteSelectMultiply.prototype.render = function () {
                 var $container = $(
-                    '<span class="select2 select2-container">' +
+                    '<span class="extended-autocomplete-select-multiply extended-autocomplete-select-multiply-container">' +
                     '<span class="selection"></span>' +
                     '<span class="dropdown-wrapper" aria-hidden="true"></span>' +
                     '</span>'
@@ -6022,17 +6022,17 @@
 
                 this.$container = $container;
 
-                this.$container.addClass('select2-container--' + this.options.get('theme'));
+                this.$container.addClass('extended-autocomplete-select-multiply-container--' + this.options.get('theme'));
 
                 Utils.StoreData($container[0], 'element', this.$element);
 
                 return $container;
             };
 
-            return Select2;
+            return ExtendedAutocompleteSelectMultiply;
         });
 
-        S2.define('select2/compat/utils', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/compat/utils', [
             'jquery'
         ], function ($) {
             function syncCssClasses($dest, $src, adapter) {
@@ -6044,8 +6044,8 @@
                     classes = '' + classes; // for IE which returns object
 
                     $(classes.split(/\s+/)).each(function () {
-                        // Save all Select2 classes
-                        if (this.indexOf('select2-') === 0) {
+                        // Save all ExtendedAutocompleteSelectMultiply classes
+                        if (this.indexOf('extended-autocomplete-select-multiply-') === 0) {
                             replacements.push(this);
                         }
                     });
@@ -6057,8 +6057,8 @@
                     classes = '' + classes; // for IE which returns object
 
                     $(classes.split(/\s+/)).each(function () {
-                        // Only adapt non-Select2 classes
-                        if (this.indexOf('select2-') !== 0) {
+                        // Only adapt non-ExtendedAutocompleteSelectMultiply classes
+                        if (this.indexOf('extended-autocomplete-select-multiply-') !== 0) {
                             adapted = adapter(this);
 
                             if (adapted != null) {
@@ -6076,7 +6076,7 @@
             };
         });
 
-        S2.define('select2/compat/containerCss', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/compat/containerCss', [
             'jquery',
             './utils'
         ], function ($, CompatUtils) {
@@ -6133,7 +6133,7 @@
             return ContainerCSS;
         });
 
-        S2.define('select2/compat/dropdownCss', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/compat/dropdownCss', [
             'jquery',
             './utils'
         ], function ($, CompatUtils) {
@@ -6190,17 +6190,17 @@
             return DropdownCSS;
         });
 
-        S2.define('select2/compat/initSelection', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/compat/initSelection', [
             'jquery'
         ], function ($) {
             function InitSelection(decorated, $element, options) {
                 if (options.get('debug') && window.console && console.warn) {
                     console.warn(
-                        'Select2: The `initSelection` option has been deprecated in favor' +
+                        'ExtendedAutocompleteSelectMultiply: The `initSelection` option has been deprecated in favor' +
                         ' of a custom data adapter that overrides the `current` method. ' +
                         'This method is now called multiple times instead of a single ' +
                         'time when the instance is initialized. Support will be removed ' +
-                        'for the `initSelection` option in future versions of Select2'
+                        'for the `initSelection` option in future versions of ExtendedAutocompleteSelectMultiply'
                     );
                 }
 
@@ -6233,7 +6233,7 @@
             return InitSelection;
         });
 
-        S2.define('select2/compat/inputData', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/compat/inputData', [
             'jquery',
             '../utils'
         ], function ($, Utils) {
@@ -6244,7 +6244,7 @@
                 if ($element.prop('type') === 'hidden') {
                     if (options.get('debug') && console && console.warn) {
                         console.warn(
-                            'Select2: Using a hidden input with Select2 is no longer ' +
+                            'ExtendedAutocompleteSelectMultiply: Using a hidden input with ExtendedAutocompleteSelectMultiply is no longer ' +
                             'supported and may stop working in the future. It is recommended ' +
                             'to use a `<select>` element instead.'
                         );
@@ -6362,7 +6362,7 @@
             return InputData;
         });
 
-        S2.define('select2/compat/matcher', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/compat/matcher', [
             'jquery'
         ], function ($) {
             function oldMatcher(matcher) {
@@ -6405,16 +6405,16 @@
             return oldMatcher;
         });
 
-        S2.define('select2/compat/query', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/compat/query', [
 
         ], function () {
             function Query(decorated, $element, options) {
                 if (options.get('debug') && window.console && console.warn) {
                     console.warn(
-                        'Select2: The `query` option has been deprecated in favor of a ' +
+                        'ExtendedAutocompleteSelectMultiply: The `query` option has been deprecated in favor of a ' +
                         'custom data adapter that overrides the `query` method. Support ' +
                         'will be removed for the `query` option in future versions of ' +
-                        'Select2.'
+                        'ExtendedAutocompleteSelectMultiply.'
                     );
                 }
 
@@ -6432,7 +6432,7 @@
             return Query;
         });
 
-        S2.define('select2/dropdown/attachContainer', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/dropdown/attachContainer', [
 
         ], function () {
             function AttachContainer(decorated, $element, options) {
@@ -6444,14 +6444,14 @@
                     var $dropdownContainer = $container.find('.dropdown-wrapper');
                     $dropdownContainer.append($dropdown);
 
-                    $dropdown.addClass('select2-dropdown--below');
-                    $container.addClass('select2-container--below');
+                    $dropdown.addClass('extended-autocomplete-select-multiply-dropdown--below');
+                    $container.addClass('extended-autocomplete-select-multiply-container--below');
                 };
 
             return AttachContainer;
         });
 
-        S2.define('select2/dropdown/stopPropagation', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/dropdown/stopPropagation', [
 
         ], function () {
             function StopPropagation() { }
@@ -6490,7 +6490,7 @@
             return StopPropagation;
         });
 
-        S2.define('select2/selection/stopPropagation', [
+        ExtendedAutocompleteSelectMultiply.define('extendedAutocompleteSelectMultiply/selection/stopPropagation', [
 
         ], function () {
             function StopPropagation() { }
@@ -6538,9 +6538,9 @@
          */
 
         (function (factory) {
-            if (typeof S2.define === 'function' && S2.define.amd) {
+            if (typeof ExtendedAutocompleteSelectMultiply.define === 'function' && ExtendedAutocompleteSelectMultiply.define.amd) {
                 // AMD. Register as an anonymous module.
-                S2.define('jquery-mousewheel', ['jquery'], factory);
+                ExtendedAutocompleteSelectMultiply.define('jquery-mousewheel', ['jquery'], factory);
             } else if (typeof exports === 'object') {
                 // Node/CommonJS style for Browserify
                 module.exports = factory;
@@ -6751,26 +6751,26 @@
 
         }));
 
-        S2.define('jquery.select2', [
+        ExtendedAutocompleteSelectMultiply.define('jquery.extendedAutocompleteSelectMultiply', [
             'jquery',
             'jquery-mousewheel',
 
-            './select2/core',
-            './select2/defaults',
-            './select2/utils'
-        ], function ($, _, Select2, Defaults, Utils) {
-            if ($.fn.select2 == null) {
+            './extendedAutocompleteSelectMultiply/core',
+            './extendedAutocompleteSelectMultiply/defaults',
+            './extendedAutocompleteSelectMultiply/utils'
+        ], function ($, _, ExtendedAutocompleteSelectMultiply, Defaults, Utils) {
+            if ($.fn.extendedAutocompleteSelectMultiply == null) {
                 // All methods that should return the element
                 var thisMethods = ['open', 'close', 'destroy'];
 
-                $.fn.select2 = function (options) {
+                $.fn.extendedAutocompleteSelectMultiply = function (options) {
                     options = options || {};
 
                     if (typeof options === 'object') {
                         this.each(function () {
                             var instanceOptions = $.extend(true, {}, options);
 
-                            var instance = new Select2($(this), instanceOptions);
+                            var instance = new ExtendedAutocompleteSelectMultiply($(this), instanceOptions);
                         });
 
                         return this;
@@ -6779,12 +6779,12 @@
                         var args = Array.prototype.slice.call(arguments, 1);
 
                         this.each(function () {
-                            var instance = Utils.GetData(this, 'select2');
+                            var instance = Utils.GetData(this, 'extendedAutocompleteSelectMultiply');
 
                             if (instance == null && window.console && console.error) {
                                 console.error(
-                                    'The select2(\'' + options + '\') method was called on an ' +
-                                    'element that is not using Select2.'
+                                    'The extendedAutocompleteSelectMultiply(\'' + options + '\') method was called on an ' +
+                                    'element that is not using ExtendedAutocompleteSelectMultiply.'
                                 );
                             }
 
@@ -6798,34 +6798,34 @@
 
                         return ret;
                     } else {
-                        throw new Error('Invalid arguments for Select2: ' + options);
+                        throw new Error('Invalid arguments for ExtendedAutocompleteSelectMultiply: ' + options);
                     }
                 };
             }
 
-            if ($.fn.select2.defaults == null) {
-                $.fn.select2.defaults = Defaults;
+            if ($.fn.extendedAutocompleteSelectMultiply.defaults == null) {
+                $.fn.extendedAutocompleteSelectMultiply.defaults = Defaults;
             }
 
-            return Select2;
+            return ExtendedAutocompleteSelectMultiply;
         });
 
         // Return the AMD loader configuration so it can be used outside of this file
         return {
-            define: S2.define,
-            require: S2.require
+            define: ExtendedAutocompleteSelectMultiply.define,
+            require: ExtendedAutocompleteSelectMultiply.require
         };
     }());
 
     // Autoload the jQuery bindings
     // We know that all of the modules exist above this, so we're safe
-    var select2 = S2.require('jquery.select2');
+    var extendedAutocompleteSelectMultiply = ExtendedAutocompleteSelectMultiply.require('jquery.extendedAutocompleteSelectMultiply');
 
     // Hold the AMD module references on the jQuery function that was just loaded
-    // This allows Select2 to use the internal loader outside of this file, such
+    // This allows ExtendedAutocompleteSelectMultiply to use the internal loader outside of this file, such
     // as in the language files.
-    jQuery.fn.select2.amd = S2;
+    jQuery.fn.extendedAutocompleteSelectMultiply.amd = ExtendedAutocompleteSelectMultiply;
 
-    // Return the Select2 instance for anyone who is importing it.
-    return select2;
+    // Return the ExtendedAutocompleteSelectMultiply instance for anyone who is importing it.
+    return extendedAutocompleteSelectMultiply;
 }));

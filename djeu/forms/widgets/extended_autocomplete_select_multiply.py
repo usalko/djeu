@@ -49,6 +49,22 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
                 name, option_value, option_label, selected_choices, index))
         return groups
 
+    def get_context(self, name, value, attrs):
+        # Request models and fields for the autocomplete requests
+        # As an example:
+        #
+        # For the many to many field in document
+        # through_fields = (document, relative, kind)
+        # => relative: relationship
+        # => kind: relationship
+        extended_many_to_many_field = self.field
+        relation_model_name = extended_many_to_many_field.through._meta.model_name
+        owner_model_name = extended_many_to_many_field.model._meta.model_name
+        result = super(ExtendedAutocompleteSelectMultiple, self).get_context(name, value, {**attrs, **{
+            'data-components': [{field: relation_model_name} for field in extended_many_to_many_field.through_fields if field != owner_model_name],
+        }})
+        return result
+
     @property
     def media(self):
         extra = '' if settings.DEBUG else '.min'
@@ -57,14 +73,14 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         return forms.Media(
             js=(
                 'admin/js/vendor/jquery/jquery%s.js' % extra,
-                'djeu/js/jquery-select2.js',
+                'djeu/js/jquery-extended-autocomplete-select-multiply.js',
             ) + i18n_file + (
                 'admin/js/jquery.init.js',
-                'admin/js/autocomplete.js',
+                'djeu/js/jquery-extended-autocomplete-select-multiply.init.js',
             ),
             css={
                 'screen': (
-                    'djeu/css/select2.mod.css',
+                    'djeu/css/jquery-extended-autocomplete-select-multiply.css',
                     'djeu/css/autocomplete.mod.css',
                 ),
             },
