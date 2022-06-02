@@ -2168,6 +2168,7 @@
             Search.prototype.handleSearch = function () {
                 this.resizeSearch();
 
+                // TODO: get index component_selector
                 if (!this._keyUpPrevented) {
                     var input = this.$search.val();
 
