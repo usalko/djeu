@@ -5701,6 +5701,9 @@
                             evt.preventDefault();
                         } else if (key === KEYS.ENTER) {
 
+                            //TODO: if components count > 1 and component_index < components count - 1
+                            //Switch component index only
+
                             var data = Utils.GetData(self.$selection[0], 'data')
 
                             self.trigger('results:append', { 'data': { 'results': [{ 'id': '-1', 'title': 'New element' }] } });
