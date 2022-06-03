@@ -870,6 +870,9 @@
 
             Results.prototype.clear = function () {
                 this.$results.empty();
+                //TODO: Results.prototype.clear
+                var $input = this.$element.find('input');
+                $input.attr('component_selector', 0);
             };
 
             Results.prototype.displayMessage = function (params) {
@@ -1651,6 +1654,9 @@
                 var $rendered = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered');
                 $rendered.empty();
                 $rendered.removeAttr('title'); // clear tooltip on empty
+                //TODO: SingleSelection.prototype.clear
+                var $input = this.$selection.find('input');
+                $input.attr('component_selector', 0);
             };
 
             SingleSelection.prototype.display = function (data, container) {
@@ -1684,6 +1690,10 @@
                 } else {
                     $rendered.removeAttr('title');
                 }
+
+                //TODO: SingleSelection.prototype.update
+                var $input = this.$selection.find('input');
+                $input.attr('component_selector', 0);
             };
 
             return SingleSelection;
@@ -1749,6 +1759,9 @@
                 var $rendered = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered');
                 $rendered.empty();
                 $rendered.removeAttr('title');
+                //TODO: MultipleSelection.prototype.clear
+                var $input = this.$selection.find('input');
+                $input.attr('component_selector', 0);
             };
 
             MultipleSelection.prototype.display = function (data, container) {
@@ -2015,6 +2028,9 @@
                     self.$search.removeAttr('aria-controls');
                     self.$search.removeAttr('aria-activedescendant');
                     self.$search.trigger('focus');
+                    // //TODO: container.on('close', function () {
+                    // // Reset component selector index
+                    self.$search.attr('component_selector', 0);
                 });
 
                 container.on('enable', function () {
@@ -2168,12 +2184,18 @@
             Search.prototype.handleSearch = function () {
                 this.resizeSearch();
 
-                // TODO: get index component_selector
+                // TODO:
                 if (!this._keyUpPrevented) {
+                    var component_selector = parseInt(this.$search.attr('component_selector') || '0');
+                    var regexp = new RegExp( ':', 'g' );
                     var input = this.$search.val();
+                    regexp.test(input);
+                    var term = input.substring(regexp.lastIndex)
+                    console.log(term);
 
                     this.trigger('query', {
-                        term: input
+                        term: term,
+                        component_selector,
                     });
                 }
 
@@ -3244,8 +3266,20 @@
                             }
                         }
 
+                        //TODO: SelectAdapter.prototype.select
                         self.$element.val(val);
-                        self.$element.trigger('input').trigger('change');
+                        var $input = self.container.selection.$search;
+                        var component_selector = parseInt($input.attr('component_selector') || '0');
+                        if (component_selector > 0) {
+                            self.$element
+                                .trigger('input')
+                                .trigger('change');
+                        } else {
+                            $input.val(data[0].text + ':');
+                            self.container.selection.resizeSearch();
+                            $input.attr('component_selector', component_selector + 1);
+                        }
+
                     });
                 } else {
                     var val = data.id;
@@ -4140,6 +4174,9 @@
 
                     self.$search.val('');
                     self.$search.trigger('blur');
+
+                    //TODO: container.on('close', function () {
+                    self.$search.attr('component_selector', 0);
                 });
 
                 container.on('focus', function () {
@@ -5704,11 +5741,17 @@
 
                             //TODO: if components count > 1 and component_index < components count - 1
                             //Switch component index only
+                            var $input = self.$selection.find('input');
+                            var component_selector = parseInt($input.attr('component_selector') || '0');
+                            if (component_selector == 0) {
+                                $input.attr('component_selector', component_selector + 1);
+                                $input.val($input.val() + ':')
+                            } else {
+                                var data = Utils.GetData(self.$selection[0], 'data')
 
-                            var data = Utils.GetData(self.$selection[0], 'data')
-
-                            self.trigger('results:append', { 'data': { 'results': [{ 'id': '-1', 'title': 'New element' }] } });
-                            self.trigger('results:select', {});
+                                self.trigger('results:append', { 'data': { 'results': [{ 'id': '-1', 'title': 'New element' }] } });
+                                self.trigger('results:select', {});
+                            }
 
                             evt.preventDefault();
                         } else if ((key === KEYS.SPACE && evt.ctrlKey)) {
