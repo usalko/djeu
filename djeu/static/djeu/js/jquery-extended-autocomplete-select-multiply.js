@@ -2024,13 +2024,22 @@
                 });
 
                 container.on('close', function () {
-                    self.$search.val('');
+                    // TODO: container.on('close', function () {
+                    // Reset component selector index
+                    var component_selector = parseInt(self.$search.attr('component_selector') || '0');
+                    if (component_selector > 0) {
+                        var regexp = new RegExp(':', 'g');
+                        var input = self.$search.val();
+                        regexp.test(input);
+                        self.$search.val(input.substring(0, regexp.lastIndex));
+                        //self.$search.attr('component_selector', component_selector - 1);
+                    } else {
+                        self.$search.val('');
+                        self.$search.attr('component_selector', 0);
+                    }
                     self.$search.removeAttr('aria-controls');
                     self.$search.removeAttr('aria-activedescendant');
                     self.$search.trigger('focus');
-                    // //TODO: container.on('close', function () {
-                    // // Reset component selector index
-                    self.$search.attr('component_selector', 0);
                 });
 
                 container.on('enable', function () {
@@ -2187,7 +2196,7 @@
                 // TODO:
                 if (!this._keyUpPrevented) {
                     var component_selector = parseInt(this.$search.attr('component_selector') || '0');
-                    var regexp = new RegExp( ':', 'g' );
+                    var regexp = new RegExp(':', 'g');
                     var input = this.$search.val();
                     regexp.test(input);
                     var term = input.substring(regexp.lastIndex)
@@ -3229,6 +3238,7 @@
                 this.$element.find(':selected').each(function () {
                     var $option = $(this);
 
+                    //FIXME:
                     var option = self.item($option);
 
                     data.push(option);
@@ -3255,6 +3265,7 @@
                     this.current(function (currentData) {
                         var val = [];
 
+                        // FIXME: apply compound elements
                         data = [data];
                         data.push.apply(data, currentData);
 
@@ -3274,6 +3285,8 @@
                             self.$element
                                 .trigger('input')
                                 .trigger('change');
+                            // Reset data components index
+                            $input.attr('component_selector', 0);
                         } else {
                             $input.val(data[0].text + ':');
                             self.container.selection.resizeSearch();
@@ -4208,10 +4221,17 @@
 
             Search.prototype.handleSearch = function (evt) {
                 if (!this._keyUpPrevented) {
+                    // TODO:
                     var input = this.$search.val();
+                    var component_selector = parseInt(this.$search.attr('component_selector') || '0');
+                    var regexp = new RegExp(':', 'g');
+                    regexp.test(input);
+                    var term = input.substring(regexp.lastIndex)
+                    console.log(term);
 
                     this.trigger('query', {
-                        term: input
+                        term: term,
+                        component_selector,
                     });
                 }
 
@@ -5906,7 +5926,13 @@
                     return;
                 }
 
-                this.trigger('query', {});
+                // TODO:
+                var $input = this.selection.$search;
+                var component_selector = parseInt($input.attr('component_selector') || '0');
+
+                this.trigger('query', {
+                    component_selector: component_selector,
+                });
             };
 
             ExtendedAutocompleteSelectMultiply.prototype.close = function (evt) {
