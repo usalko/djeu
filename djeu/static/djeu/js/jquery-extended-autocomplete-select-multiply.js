@@ -871,8 +871,8 @@
             Results.prototype.clear = function () {
                 this.$results.empty();
                 //TODO: Results.prototype.clear
-                var $input = this.$element.find('input');
-                $input.attr('component_selector', 0);
+                //var $input = this.$element.find('input');
+                //$input.attr('component_selector', 0);
             };
 
             Results.prototype.displayMessage = function (params) {
@@ -1759,9 +1759,9 @@
                 var $rendered = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered');
                 $rendered.empty();
                 $rendered.removeAttr('title');
-                //TODO: MultipleSelection.prototype.clear
-                var $input = this.$selection.find('input');
-                $input.attr('component_selector', 0);
+                // TODO: MultipleSelection.prototype.clear
+                // var $input = this.$selection.find('input');
+                // $input.attr('component_selector', 0);
             };
 
             MultipleSelection.prototype.display = function (data, container) {
@@ -1945,7 +1945,9 @@
                     }
                 }
 
-                this.$element.trigger('input').trigger('change');
+                this.$element
+                    .trigger('input')
+                    .trigger('change');
 
                 this.trigger('toggle', {});
             };
@@ -3256,7 +3258,9 @@
                 if ($(data.element).is('option')) {
                     data.element.selected = true;
 
-                    this.$element.trigger('input').trigger('change');
+                    this.$element
+                        .trigger('input')
+                        .trigger('change');
 
                     return;
                 }
@@ -3298,7 +3302,9 @@
                     var val = data.id;
 
                     this.$element.val(val);
-                    this.$element.trigger('input').trigger('change');
+                    this.$element
+                        .trigger('input')
+                        .trigger('change');
                 }
             };
 
@@ -3314,7 +3320,9 @@
                 if ($(data.element).is('option')) {
                     data.element.selected = false;
 
-                    this.$element.trigger('input').trigger('change');
+                    this.$element
+                        .trigger('input')
+                        .trigger('change');
 
                     return;
                 }
@@ -3332,7 +3340,9 @@
 
                     self.$element.val(val);
 
-                    self.$element.trigger('input').trigger('change');
+                    self.$element
+                        .trigger('input')
+                        .trigger('change');
                 });
             };
 
@@ -6038,7 +6048,9 @@
                     });
                 }
 
-                this.$element.val(newVal).trigger('input').trigger('change');
+                this.$element.val(newVal)
+                    .trigger('input')
+                    .trigger('change');
             };
 
             ExtendedAutocompleteSelectMultiply.prototype.destroy = function () {
@@ -6373,13 +6385,17 @@
                     });
 
                     this.$element.val(data.id);
-                    this.$element.trigger('input').trigger('change');
+                    this.$element
+                        .trigger('input')
+                        .trigger('change');
                 } else {
                     var value = this.$element.val();
                     value += this._valueSeparator + data.id;
 
                     this.$element.val(value);
-                    this.$element.trigger('input').trigger('change');
+                    this.$element
+                        .trigger('input')
+                        .trigger('change');
                 }
             };
 
@@ -6402,7 +6418,9 @@
                     }
 
                     self.$element.val(values.join(self._valueSeparator));
-                    self.$element.trigger('input').trigger('change');
+                    self.$element
+                        .trigger('input')
+                        .trigger('change');
                 });
             };
 
