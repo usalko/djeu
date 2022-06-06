@@ -142,8 +142,27 @@ function react_build {
     cp $2/build/$1.default.css.map $3/css/
 }
 
+function npm_build {
+    echo "Build react component $1 from $2 to file $3"
+    CURRENT_DIRECTORY=$PWD
+    cd $2
+    npm i phantomjs-prebuilt@2.1.14 --ignore-scripts
+    npm i
+    npm i grunt-cli
+    npx grunt-cli --force
+    cd $CURRENT_DIRECTORY
+
+    mkdir -p $3/js/$1
+    cp $2/dist/js/* $3/js/$1/
+    mkdir -p $3/css/$1
+    cp $2/dist/css/* $3/css/$1/
+    mkdir -p $3/img/$1
+    cp $2/dist/img/* $3/img/$1/
+}
+
 function build {
-    react_build jquery-pdf-viewer react-components/pdf-viewer djeu/static/djeu
+    react_build jquery-pdf-viewer complex-components/pdf-viewer djeu/static/djeu
+    npm_build jquery-calendars complex-components/jquery-calendars djeu/static/djeu
 }
 
 if [ "x$COMMAND" == "xbuild" ]; then

@@ -1,0 +1,49 @@
+{
+	"name": "kbw-calendars",
+	"description": "This plugin provides support for various world calendars, including a datepicker.",
+	"keywords": [
+		"calendar",
+		"coptic",
+		"date",
+		"datepicker",
+		"discworld",
+		"ethiopian",
+		"gregorian",
+		"hebrew",
+		"i18n",
+		"input",
+		"islamic",
+		"julian",
+		"mayan",
+		"nanakshahi",
+		"nepali",
+		"persian",
+		"taiwanese",
+		"thai",
+		"ui",
+		"umm al-qura",
+		"validation"
+	],
+	"homepage": "https://github.com/kbwood/calendars",
+	"authors": [
+		"Keith Wood <wood.keith@optusnet.com.au> (http://keith-wood.name)"
+	],
+	"licence": "MIT",
+	"main": [
+		"src/css/jquery.calendars.picker.css",
+		"src/js/jquery.calendars.js"
+	],
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"src/bower_components"
+	],
+	"dependencies": {
+		"jquery": ">=1.7",
+		"kbw-plugin": "~1.0.3"
+	},
+	"devDependencies": {
+		"jquery-validation": "~1.12",
+		"qunit": "~1.23"
+	}
+}

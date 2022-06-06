@@ -1,0 +1,6 @@
+dist
+doc/fonts
+doc/scripts
+node_modules
+report
+src/bower_components

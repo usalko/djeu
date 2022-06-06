@@ -17,6 +17,11 @@ class DatePickerInput(forms.TextInput):
         """
         return bool(value and getattr(value, 'url', False))
 
+    def get_context(self, name, value, attrs):
+        return super(DatePickerInput, self).get_context(name, value, {**attrs, **{
+            'class': 'datepicker',
+        }})
+
     @property
     def media(self):
         extra = '' if settings.DEBUG else '.min'
