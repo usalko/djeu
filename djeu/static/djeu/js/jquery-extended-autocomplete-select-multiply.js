@@ -5774,8 +5774,9 @@
                             var $input = self.$selection.find('input');
                             var component_selector = parseInt($input.attr('component_selector') || '0');
                             if (component_selector == 0) {
-                                $input.attr('component_selector', component_selector + 1);
-                                $input.val($input.val() + ':')
+                                self.trigger('results:select', {});
+                                // $input.attr('component_selector', component_selector + 1);
+                                // $input.val($input.val() + ':')
                             } else {
                                 var data = Utils.GetData(self.$selection[0], 'data')
 
@@ -5805,6 +5806,16 @@
                             evt.preventDefault();
                         }
                     }
+
+                    // TODO: if components count > 1 and component_index < components count - 1
+                    // Update component_selector
+                    // Switch component index only
+                    var $input = self.$selection.find('input');
+                    var componentsCount = ($input.val().match(/([^\:]+)\:/g) || []).length;
+                    if (key === ':'.charCodeAt(0)) {
+                        componentsCount += 1;
+                    }
+                    $input.attr('component_selector', componentsCount);
                 });
             };
 
