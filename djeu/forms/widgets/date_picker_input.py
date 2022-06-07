@@ -18,9 +18,12 @@ class DatePickerInput(forms.TextInput):
         return bool(value and getattr(value, 'url', False))
 
     def get_context(self, name, value, attrs):
-        return super(DatePickerInput, self).get_context(name, value, {**attrs, **{
+        context = super(DatePickerInput, self).get_context(name, value, {**attrs, **{
             'class': 'datepicker',
         }})
+        #  Override string value
+        context['widget']['value'] = value if isinstance(value, str) else context['widget']['value']
+        return context
 
     @property
     def media(self):
