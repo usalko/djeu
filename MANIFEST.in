@@ -4,3 +4,4 @@ include requirements.txt
 recursive-include djeu/static *
 recursive-include djeu/templates *
 recursive-include djeu/locale *
+recursive-include djeu/utils *
