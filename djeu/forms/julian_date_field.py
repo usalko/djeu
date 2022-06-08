@@ -23,9 +23,12 @@ class JulianDateField(forms.DateField):
         return int(value)
 
     def strptime(self, value, format):
+        formated_date = value
+        if '(' in value:
+            formated_date = value[:value.index('(')].strip()
         # Convert from julian to gregorian
         julian_day, julian_month, julian_year = [
-            self._int(v) for v in value.split('.')]
+            self._int(v) for v in formated_date.split('.')]
         year, month, day, _ = jd2gcal(
             *jcal2jd(julian_year, julian_month, julian_day))
         # super -> return datetime.strptime(value, format).date()s
@@ -35,6 +38,4 @@ class JulianDateField(forms.DateField):
         if isinstance(value, date):
             julian_year, julian_month, julian_day, _ = jd2jcal(*gcal2jd(value.year, value.month, value.day))
             return f'{julian_day:02d}.{julian_month:02d}.{julian_year:04d} ({value.year:04d}-{value.month:02d}-{value.day:02d})'
-        if isinstance(value, str) and '(' in value:
-            return value[:value.index('(')].strip()
         return value
