@@ -1,3 +1,4 @@
+from json import dumps
 from django import forms
 from django.conf import settings
 from django.contrib.admin import widgets
@@ -13,6 +14,8 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
 
     # FIXME: https://stackoverflow.com/questions/63199404/django-choice-list-dynamic-choices
     def __init__(self, *args, **kwargs):
+        self.additional_data_components = kwargs.pop(
+            'additional_data_components', None)
         super().__init__(*args, **kwargs)
 
     def optgroups(self, name, value, attr=None):
@@ -30,7 +33,8 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
             to_field_name = self.field.through_fields[-1]
         else:
             remote_model_opts = self.field.remote_field.model._meta
-            to_field_name = getattr(self.field.remote_field, 'field_name', remote_model_opts.pk.attname)
+            to_field_name = getattr(
+                self.field.remote_field, 'field_name', remote_model_opts.pk.attname)
             to_field_name = remote_model_opts.get_field(to_field_name).attname
 
         choices = (
@@ -60,8 +64,14 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         extended_many_to_many_field = self.field
         relation_model_name = extended_many_to_many_field.through._meta.model_name
         owner_model_name = extended_many_to_many_field.model._meta.model_name
+
+        data_components = [{field: relation_model_name}
+                           for field in extended_many_to_many_field.through_fields if field != owner_model_name]
+        if self.additional_data_components:
+            data_components.extend(self.additional_data_components)
+
         result = super(ExtendedAutocompleteSelectMultiple, self).get_context(name, value, {**attrs, **{
-            'data-components': [{field: relation_model_name} for field in extended_many_to_many_field.through_fields if field != owner_model_name],
+            'data-components': dumps(data_components),
         }})
         return result
 
