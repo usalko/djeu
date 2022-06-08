@@ -68,6 +68,9 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         data_components = [{field: relation_model_name}
                            for field in extended_many_to_many_field.through_fields if field != owner_model_name]
         if self.additional_data_components:
+            for additional_data_component in self.additional_data_components:
+                if additional_data_component in data_components:
+                    data_components.remove(additional_data_component)
             data_components.extend(self.additional_data_components)
 
         result = super(ExtendedAutocompleteSelectMultiple, self).get_context(name, value, {**attrs, **{
