@@ -75,7 +75,15 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
 
         result = super(ExtendedAutocompleteSelectMultiple, self).get_context(name, value, {**attrs, **{
             'data-components': dumps(data_components),
+            'data-data': dumps([]),
+            'data-tags': True,
         }})
+        # remove garbage
+        widget_attrs = result['widget']['attrs']
+        if 'data-model-name' in widget_attrs:
+            del widget_attrs['data-model-name']
+        if 'data-field-name' in widget_attrs:
+            del widget_attrs['data-field-name']
         return result
 
     @property

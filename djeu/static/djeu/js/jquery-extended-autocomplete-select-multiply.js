@@ -5430,18 +5430,18 @@
                     $e.prop('disabled', this.options.disabled);
                     $e.prop('multiple', this.options.multiple);
 
-                    // if (Utils.GetData($e[0], 'extendedAutocompleteSelectMultiplyTags')) {
-                    //     if (this.options.debug && window.console && console.warn) {
-                    //         console.warn(
-                    //             'ExtendedAutocompleteSelectMultiply: The `data-extended-autocomplete-select-multiply-tags` attribute has been changed to ' +
-                    //             'use the `data-data` and `data-tags="true"` attributes and will be ' +
-                    //             'removed in future versions of ExtendedAutocompleteSelectMultiply.'
-                    //         );
-                    //     }
+                    // // if (Utils.GetData($e[0], 'extendedAutocompleteSelectMultiplyTags')) {
+                    // //     if (this.options.debug && window.console && console.warn) {
+                    // //         console.warn(
+                    // //             'ExtendedAutocompleteSelectMultiply: The `data-extended-autocomplete-select-multiply-tags` attribute has been changed to ' +
+                    // //             'use the `data-data` and `data-tags="true"` attributes and will be ' +
+                    // //             'removed in future versions of ExtendedAutocompleteSelectMultiply.'
+                    // //         );
+                    // //     }
 
-                    Utils.StoreData($e[0], 'data', Utils.GetData($e[0], 'extendedAutocompleteSelectMultiplyTags'));
-                    Utils.StoreData($e[0], 'tags', true);
-                    // }
+                    // Utils.StoreData($e[0], 'data', Utils.GetData($e[0], 'extendedAutocompleteSelectMultiplyTags'));
+                    // Utils.StoreData($e[0], 'tags', true);
+                    // // }
 
                     if (Utils.GetData($e[0], 'ajaxUrl')) {
                         if (this.options.debug && window.console && console.warn) {
@@ -5463,6 +5463,10 @@
                     }
 
                     // Pre-load all of the attributes which are prefixed with `data-`
+                    // As an example:
+                    // data-components = [{'some_field_name':'some_model_name'}, ...]
+                    // data-data = []
+                    // data-tags = true
                     for (var attr = 0; attr < $e[0].attributes.length; attr++) {
                         var attributeName = $e[0].attributes[attr].name;
                         var prefix = 'data-';
@@ -5766,18 +5770,7 @@
 
                 //DATACOMPONENTS:
                 ExtendedAutocompleteSelectMultiply.prototype._dataComponent = function (index) {
-
-                    // this.options.set('disabled', this.$element.prop('disabled'));
-
-                    // if (this.isDisabled()) {
-                    //     if (this.isOpen()) {
-                    //         this.close();
-                    //     }
-
-                    //     this.trigger('disable', {});
-                    // } else {
-                    //     this.trigger('enable', {});
-                    // }
+                    return this.options.get('components')[index];
                 };
 
                 ExtendedAutocompleteSelectMultiply.prototype._registerDataEvents = function () {
