@@ -2030,10 +2030,11 @@
             ],
             function ($, Utils, KEYS) {
                 function Search(decorated, $element, options) {
+                    initialIndex = 0;
                     this._dataComponent = {
-                        'index': 0,
-                        'model': '',
-                        'field': '',
+                        index: initialIndex,
+                        model: Object.values(options.options.components[initialIndex])[0],
+                        field: Object.keys(options.options.components[initialIndex])[0],
                     }
 
                     decorated.call(this, $element, options);
@@ -2243,8 +2244,8 @@
                     if (!this._keyUpPrevented) {
                         this.trigger('query', {
                             term: this.$search.val(),
-                            model: this._dataComponent['model'],
-                            field: this._dataComponent['field'],
+                            model: this._dataComponent.model,
+                            field: this._dataComponent.field,
                         });
                     }
 
@@ -3924,6 +3925,13 @@
                         this.tokenizer = tokenizer;
                     }
 
+                    initialIndex = 0;
+                    this._dataComponent = {
+                        index: initialIndex,
+                        model: Object.values(options.options.components[initialIndex])[0],
+                        field: Object.keys(options.options.components[initialIndex])[0],
+                    }
+
                     decorated.call(this, $element, options);
                 }
 
@@ -4006,7 +4014,9 @@
 
                         var part = term.substr(0, i);
                         var partParams = $.extend({}, params, {
-                            term: part
+                            term: part,
+                            model: this._dataComponent.model,
+                            field: this._dataComponent.field,
                         });
 
                         var data = createTag(partParams);
@@ -4024,7 +4034,9 @@
                     }
 
                     return {
-                        term: term
+                        term: term,
+                        model: this._dataComponent.model,
+                        field: this._dataComponent.field,
                     };
                 };
 
@@ -4303,17 +4315,10 @@
 
                 Search.prototype.handleSearch = function (evt) {
                     if (!this._keyUpPrevented) {
-                        // TODO:
-                        var input = this.$search.val();
-                        var component_selector = parseInt(this.$search.attr('component_selector') || '0');
-                        var regexp = new RegExp('\u2022', 'g');
-                        regexp.test(input);
-                        var term = input.substring(regexp.lastIndex)
-                        console.log(term);
-
                         this.trigger('query', {
-                            term: term,
-                            component_selector,
+                            term: this.$search.val(),
+                            model: this._dataComponent.model,
+                            field: this._dataComponent.field,
                         });
                     }
 
@@ -5770,7 +5775,12 @@
 
                 //DATACOMPONENTS:
                 ExtendedAutocompleteSelectMultiply.prototype._dataComponent = function (index) {
-                    return this.options.get('components')[index];
+                    var dataComponent = this.options.get('components')[index];
+                    return {
+                        index: 0,
+                        model: Object.values(dataComponent)[0],
+                        field: Object.keys(dataComponent)[0],
+                    }
                 };
 
                 ExtendedAutocompleteSelectMultiply.prototype._registerDataEvents = function () {
@@ -6059,8 +6069,9 @@
                         return;
                     }
 
-                    var dataComponent = this._dataComponent()
+                    var dataComponent = this._dataComponent(0)
                     this.trigger('query', {
+                        term: '',
                         model: dataComponent.model,
                         field: dataComponent.field,
                     });
