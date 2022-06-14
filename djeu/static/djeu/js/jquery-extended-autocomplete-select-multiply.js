@@ -5884,6 +5884,18 @@
                                 evt.preventDefault();
                             } else if (key === KEYS.ENTER) {
 
+                                var $selected = this.$results
+                                    .find('.extended-autocomplete-select-multiply-results__option[aria-selected]')
+                                    .filter('[class$="--highlighted"]');
+                                var $value = null;
+                                if ($selected.length !== 0) {
+                                    var data = Utils.GetData($selected[0], 'data');
+                                    console.log(data);
+                                }
+                                var $selectedValue = $selected.length ? $selected[0] : null;
+
+
+
                                 //TODO: if components count > 1 and component_index < components count - 1
                                 //Switch component index only
                                 var $input = self.$selection.find('input');
