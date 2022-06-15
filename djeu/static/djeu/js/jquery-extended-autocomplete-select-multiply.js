@@ -5773,15 +5773,15 @@
                     }
                 };
 
-                //DATACOMPONENTS:
-                ExtendedAutocompleteSelectMultiply.prototype._dataComponent = function (index) {
-                    var dataComponent = this.options.get('components')[index];
-                    return {
-                        index: 0,
-                        model: Object.values(dataComponent)[0],
-                        field: Object.keys(dataComponent)[0],
-                    }
-                };
+                // //DATACOMPONENTS:
+                // ExtendedAutocompleteSelectMultiply.prototype._dataComponent = function (index) {
+                //     var dataComponent = this.options.get('components')[index];
+                //     return {
+                //         index: 0,
+                //         model: Object.values(dataComponent)[0],
+                //         field: Object.keys(dataComponent)[0],
+                //     }
+                // };
 
                 ExtendedAutocompleteSelectMultiply.prototype._registerDataEvents = function () {
                     var self = this;
@@ -6081,11 +6081,10 @@
                         return;
                     }
 
-                    var dataComponent = this._dataComponent(0)
                     this.trigger('query', {
                         term: '',
-                        model: dataComponent.model,
-                        field: dataComponent.field,
+                        model: this.selection._dataComponent.model,
+                        field: this.selection._dataComponent.field,
                     });
                 };
 

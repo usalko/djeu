@@ -229,6 +229,7 @@ select.admin-autocomplete {
     background-color: rgba(0,0,0,0.11);
     color: rgba(0,0,0,1);
     margin-top: 1px;
+    margin-right: 1px;
 }
 
 .extended-autocomplete-select-multiply-container--admin-autocomplete .extended-autocomplete-select-multiply-results__option .extended-autocomplete-select-multiply-results__option {
@@ -268,6 +269,7 @@ select.admin-autocomplete {
     background-color: rgba(0,0,0,0.11);
     color: rgba(0,0,0,1);
     margin-top: 1px;
+    margin-right: 1px;
 }
 
 .extended-autocomplete-select-multiply-container--admin-autocomplete .extended-autocomplete-select-multiply-results__group {
