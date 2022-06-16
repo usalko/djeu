@@ -962,6 +962,14 @@
                     return sorter(data);
                 };
 
+                Results.prototype.selectedData = function () {
+                    var $options = this.$results
+                        .find('.extended-autocomplete-select-multiply-results__option[aria-selected]')
+                        .filter('[class$="--highlighted"]');
+
+                    return $options.length ? Utils.GetData($options[0], 'data') : null;
+                };
+
                 Results.prototype.highlightFirstItem = function () {
                     var $options = this.$results
                         .find('.extended-autocomplete-select-multiply-results__option[aria-selected]');
@@ -2030,7 +2038,7 @@
             ],
             function ($, Utils, KEYS) {
                 function Search(decorated, $element, options) {
-                    initialIndex = 0;
+                    var initialIndex = 0;
                     this._dataComponent = {
                         index: initialIndex,
                         model: Object.values(options.options.components[initialIndex])[0],
@@ -2276,6 +2284,77 @@
 
                     this.$search.css('width', width);
                 };
+
+                Search.prototype.nextDataComponent = function (decorated, data) {
+
+                    var nextDataComponentIndex = this._dataComponent.index + 1;
+                    var dataComponents = this.container.options.options.components;
+                    if (dataComponents.length <= nextDataComponentIndex) {
+                        throw 'The last data component exceeds. Try to call prevDataComponent before or reset.';
+                    }
+                    this._dataComponent.index = nextDataComponentIndex;
+                    this._dataComponent.model = Object.values(dataComponents[nextDataComponentIndex])[0];
+                    this._dataComponent.field = Object.keys(dataComponents[nextDataComponentIndex])[0];
+
+                    var dataVector = this._dataVector();
+                    if (data) {
+                        dataVector.push(data);
+                    } else {
+                        var term = this.$search.val();
+                        dataVector.push({
+                            id: term,
+                            text: term,
+                        });
+                    }
+                    this.$search.val('');
+                    this.handleSearch();
+                };
+
+                Search.prototype.prevDataComponent = function (decorated, data) {
+
+                    var prevDataComponentIndex = this._dataComponent.index - 1;
+                    var dataComponents = this.container.options.options.components;
+                    if (prevDataComponentIndex < 0) {
+                        throw 'No previous data component. Try to call nextDataComponent before.';
+                    }
+                    this._dataComponent.index = prevDataComponentIndex;
+                    this._dataComponent.model = Object.values(dataComponents[prevDataComponentIndex])[0];
+                    this._dataComponent.field = Object.keys(dataComponents[prevDataComponentIndex])[0];
+
+                    var dataVector = this._dataVector();
+                    if (data) {
+                        dataVector.push(data);
+                    } else {
+                        var term = this.$search.val();
+                        dataVector.push({
+                            id: term,
+                            text: term,
+                        });
+                    }
+                    this.$search.val('');
+                    this.handleSearch();
+                };
+
+                Search.prototype.isLastDataComponent = function () {
+                    return this.container.options.options.components.length === (this._dataComponent.index + 1);
+                };
+
+                Search.prototype._dataVector = function () {
+                    var result = Utils.GetData(this.$search[0], 'data');
+                    if (result === null || result === undefined) {
+                        result = [];
+                        Utils.StoreData(this.$search[0], 'data', result);
+                    }
+                    return result;
+                };
+
+                Search.prototype.reset = function () {
+                    this._dataVector().length = 0;
+                    var initialIndex = 0;
+                    this._dataComponent.index = initialIndex;
+                    this._dataComponent.model = Object.values(options.options.components[initialIndex])[0];
+                    this._dataComponent.field = Object.keys(options.options.components[initialIndex])[0];
+                }
 
                 return Search;
             });
@@ -3768,14 +3847,19 @@
                         self._request = $request;
                     }
 
-                    if (this.ajaxOptions.delay && params.term != null) {
+                    if (this.ajaxOptions.delay && params.term != null && options.data != null) {
                         if (this._queryTimeout) {
                             window.clearTimeout(this._queryTimeout);
                         }
 
                         this._queryTimeout = window.setTimeout(request, this.ajaxOptions.delay);
-                    } else {
+                    } else if (options.data != null) {
                         request();
+                    } else {
+                        // Block empty request, but keep the same application logic
+                        callback({
+                            results: ['-'],
+                        });
                     }
                 };
 
@@ -5884,27 +5968,7 @@
                                 evt.preventDefault();
                             } else if (key === KEYS.ENTER) {
 
-                                var $selected = this.$results
-                                    .find('.extended-autocomplete-select-multiply-results__option[aria-selected]')
-                                    .filter('[class$="--highlighted"]');
-                                var $value = null;
-                                if ($selected.length !== 0) {
-                                    var data = Utils.GetData($selected[0], 'data');
-                                    console.log(data);
-                                }
-                                var $selectedValue = $selected.length ? $selected[0] : null;
-
-
-
-                                //TODO: if components count > 1 and component_index < components count - 1
-                                //Switch component index only
-                                var $input = self.$selection.find('input');
-                                var component_selector = parseInt($input.attr('component_selector') || '0');
-                                if (component_selector == 0) {
-                                    // self.trigger('results:select', {});
-                                    // $input.attr('component_selector', component_selector + 1);
-                                    $input.val($input.val() + '\u2022')
-                                } else {
+                                if (self.selection.isLastDataComponent()) {
                                     var data = Utils.GetData(self.$selection[0], 'data')
 
                                     self.trigger('results:append', {
@@ -5916,6 +5980,9 @@
                                         }
                                     });
                                     self.trigger('results:select', {});
+                                    self.selection.reset();
+                                } else {
+                                    self.selection.nextDataComponent(self.results.selectedData());
                                 }
 
                                 evt.preventDefault();

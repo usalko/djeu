@@ -6,15 +6,18 @@
             $(element).extendedAutocompleteSelectMultiply({
                 ajax: {
                     data: (params) => {
-                        return {
-                            term: params.term,
-                            page: params.page,
-                            app_label: element.dataset.appLabel,
-                            // model_name: element.dataset.modelName,
-                            // field_name: element.dataset.fieldName
-                            model_name: params.model,
-                            field_name: params.field,
-                        };
+                        if (params.model && params.field) {
+                            return {
+                                term: params.term,
+                                page: params.page,
+                                app_label: element.dataset.appLabel,
+                                // model_name: element.dataset.modelName,
+                                // field_name: element.dataset.fieldName
+                                model_name: params.model,
+                                field_name: params.field,
+                            };
+                        }
+                        return null;
                     }
                 }
             });
