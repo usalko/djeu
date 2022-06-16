@@ -137,7 +137,7 @@ select.admin-autocomplete {
     float: left;
     margin-right: 5px;
     margin-top: 5px;
-    padding: 0 5px;
+    padding: 5px;
 }
 
 .extended-autocomplete-select-multiply-container--admin-autocomplete .extended-autocomplete-select-multiply-selection--multiple .extended-autocomplete-select-multiply-selection__choice__remove {
@@ -276,4 +276,10 @@ select.admin-autocomplete {
     cursor: default;
     display: block;
     padding: 6px;
+}
+
+.extended-autocomplete-select-multiply-selection__span {
+    padding: 2px;
+    border-left: dashed 1px rgba(0,0,0,0.11);
+    margin: 2px 3px 0px 3px;
 }

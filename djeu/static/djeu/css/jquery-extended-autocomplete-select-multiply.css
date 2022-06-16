@@ -626,3 +626,10 @@
 .extended-autocomplete-select-multiply-container--classic.extended-autocomplete-select-multiply-container--open .extended-autocomplete-select-multiply-dropdown {
     border-color: #5897fb;
 }
+
+/** TODO: We need to add different styles like classic and so on... **/
+.extended-autocomplete-select-multiply-selection__span {
+    padding: 2px;
+    border-left: solid 1px #888;
+    margin: 2px 3px 0px 3px;
+}

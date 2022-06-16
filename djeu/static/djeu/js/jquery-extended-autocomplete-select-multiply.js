@@ -1199,21 +1199,30 @@
                     });
 
                     container.on('results:select', function () {
-                        var $highlighted = self.getHighlightedResults();
-
-                        if ($highlighted.length === 0) {
+                        if (!container.selection.isLastDataComponent()) {
+                            // Prevent too early selection
                             return;
                         }
+                        // var $highlighted = self.getHighlightedResults();
 
-                        var data = Utils.GetData($highlighted[0], 'data');
+                        // if ($highlighted.length === 0) {
+                        //     return;
+                        // }s
 
-                        if ($highlighted.attr('aria-selected') == 'true') {
-                            self.trigger('close', {});
-                        } else {
+                        //var data = Utils.GetData($highlighted[0], 'data');
+                        var data = container.selection.dataVector();
+
+                        // FIXME: Prevent double selection the same data
+                        // if ($highlighted.attr('aria-selected') == 'true') {
+                        //     self.trigger('close', {});
+                        // } else {
                             self.trigger('select', {
-                                data: data
+                                data: {
+                                    id: data.map((e) => e.id),
+                                    data: data,
+                                }
                             });
-                        }
+                        // }
                     });
 
                     container.on('results:previous', function () {
@@ -1803,10 +1812,12 @@
                 };
 
                 MultipleSelection.prototype.display = function (data, container) {
-                    var template = this.options.get('templateSelection');
-                    var escapeMarkup = this.options.get('escapeMarkup');
+                    // var template = this.options.get('templateSelection');
+                    // var escapeMarkup = this.options.get('escapeMarkup');
 
-                    return escapeMarkup(template(data, container));
+                    // return escapeMarkup(template(data, container));
+                    var innerHtml = data.data.map((e) => `<span class="extended-autocomplete-select-multiply-selection__span">${e.text}</span>`).join('')
+                    return innerHtml;
                 };
 
                 MultipleSelection.prototype.selectionContainer = function () {
@@ -2332,6 +2343,7 @@
                         });
                     }
                     this.$search.val('');
+                    this._keyUpPrevented = false;
                     this.handleSearch();
                 };
 
@@ -2352,8 +2364,32 @@
                     this._dataVector().length = 0;
                     var initialIndex = 0;
                     this._dataComponent.index = initialIndex;
-                    this._dataComponent.model = Object.values(options.options.components[initialIndex])[0];
-                    this._dataComponent.field = Object.keys(options.options.components[initialIndex])[0];
+                    this._dataComponent.model = Object.values(this.container.options.options.components[initialIndex])[0];
+                    this._dataComponent.field = Object.keys(this.container.options.options.components[initialIndex])[0];
+
+                    this.$search.val('');
+                    this._keyUpPrevented = false;
+                    // this.handleSearch();
+                }
+
+                Search.prototype.dataVector = function (decorated, data) {
+                    // Method complete the dataVector and return copy
+                    var dataVector = this._dataVector();
+                    var dataComponents = this.container.options.options.components;
+                    if (dataVector.length >= dataComponents.length) {
+                        return dataVector.slice(0);
+                    }
+                    // FIXME: We are needs to add missed elements
+                    if (data) {
+                        dataVector.push(data);
+                    } else {
+                        var term = this.$search.val();
+                        dataVector.push({
+                            id: term,
+                            text: term,
+                        });
+                    }
+                    return dataVector.slice(0);
                 }
 
                 return Search;
@@ -3400,7 +3436,6 @@
                         this.current(function (currentData) {
                             var val = [];
 
-                            // FIXME: apply compound elements
                             data = [data];
                             data.push.apply(data, currentData);
 
@@ -3412,22 +3447,10 @@
                                 }
                             }
 
-                            //TODO: SelectAdapter.prototype.select
                             self.$element.val(val);
-                            var $input = self.container.selection.$search;
-                            var component_selector = parseInt($input.attr('component_selector') || '0');
-                            if (component_selector > 0) {
-                                self.$element
-                                    .trigger('input')
-                                    .trigger('change');
-                                // Reset data components index
-                                $input.attr('component_selector', 0);
-                            } else {
-                                $input.val(data[0].text + '\u2022');
-                                self.container.selection.resizeSearch();
-                                $input.attr('component_selector', component_selector + 1);
-                            }
-
+                            self.$element
+                                .trigger('input')
+                                .trigger('change');
                         });
                     } else {
                         var val = data.id;
@@ -5857,16 +5880,6 @@
                     }
                 };
 
-                // //DATACOMPONENTS:
-                // ExtendedAutocompleteSelectMultiply.prototype._dataComponent = function (index) {
-                //     var dataComponent = this.options.get('components')[index];
-                //     return {
-                //         index: 0,
-                //         model: Object.values(dataComponent)[0],
-                //         field: Object.keys(dataComponent)[0],
-                //     }
-                // };
-
                 ExtendedAutocompleteSelectMultiply.prototype._registerDataEvents = function () {
                     var self = this;
 
@@ -5969,16 +5982,12 @@
                             } else if (key === KEYS.ENTER) {
 
                                 if (self.selection.isLastDataComponent()) {
-                                    var data = Utils.GetData(self.$selection[0], 'data')
-
                                     self.trigger('results:append', {
                                         'data': {
-                                            'results': [{
-                                                'id': '-1',
-                                                'title': 'New element'
-                                            }]
+                                            'results': [{}]
                                         }
                                     });
+                                    // data is extracting in select handler
                                     self.trigger('results:select', {});
                                     self.selection.reset();
                                 } else {
