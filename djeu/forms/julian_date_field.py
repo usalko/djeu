@@ -4,12 +4,12 @@ from datetime import datetime, date
 from django import forms
 from djeu.utils.jdcal import jcal2jd, jd2gcal, gcal2jd, jd2jcal
 
-from .widgets import DatePickerInput
+from .widgets import JulianDatePickerInput
 
 
 class JulianDateField(forms.DateField):
 
-    widget = DatePickerInput
+    widget = JulianDatePickerInput
 
     def __init__(self, *, input_formats=None, **kwargs):
         super().__init__(**{**kwargs, 'widget': JulianDateField.widget})
