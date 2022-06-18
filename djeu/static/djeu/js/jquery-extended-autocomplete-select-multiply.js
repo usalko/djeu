@@ -2330,6 +2330,14 @@
                             text: term,
                         });
                     }
+
+                    // Rerendering
+                    var prevComponentText = data ? data.text : this.$search.val();
+                    if (nextDataComponentIndex == 1) {
+                        this.$searchContainer.prepend(`<span class="extended-autocomplete-select-multiply-selection__span">${prevComponentText}</span>`);
+                    } else {
+                        $(`<span class="extended-autocomplete-select-multiply-selection__span">${prevComponentText}</span>`).insertAfter(this.$searchContainer.find('span').last());
+                    }
                     this.$search.val('');
                     this.handleSearch();
                 };
@@ -2380,6 +2388,8 @@
                     this._dataComponent.model = Object.values(this.container.options.options.components[initialIndex])[0];
                     this._dataComponent.field = Object.keys(this.container.options.options.components[initialIndex])[0];
 
+                    // Rendering
+                    this.$searchContainer.find('span').remove()
                     this.$search.val('');
                     this._keyUpPrevented = false;
                     // this.handleSearch();
