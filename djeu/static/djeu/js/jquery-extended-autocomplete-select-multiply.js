@@ -2334,9 +2334,9 @@
                     // Rerendering
                     var prevComponentText = data ? data.text : this.$search.val();
                     if (nextDataComponentIndex == 1) {
-                        this.$searchContainer.prepend(`<span class="extended-autocomplete-select-multiply-selection__span">${prevComponentText}</span>`);
+                        this.$searchContainer.prepend(`<span class="extended-autocomplete-select-multiply-selection__span_input">${prevComponentText}</span>`);
                     } else {
-                        $(`<span class="extended-autocomplete-select-multiply-selection__span">${prevComponentText}</span>`).insertAfter(this.$searchContainer.find('span').last());
+                        $(`<span class="extended-autocomplete-select-multiply-selection__span_input">${prevComponentText}</span>`).insertAfter(this.$searchContainer.find('span').last());
                     }
                     this.$search.val('');
                     this.handleSearch();
