@@ -1342,10 +1342,23 @@
                                 return;
                             }
 
-                            self.trigger('select', {
-                                originalEvent: evt,
-                                data: data
-                            });
+                            if (container.selection.isLastDataComponent()) {
+                                self.trigger('results:append', {
+                                    'data': {
+                                        'results': [{}]
+                                    }
+                                });
+                                // data is extracting in select handler
+                                self.trigger('results:select', {});
+                                container.selection.reset();
+                            } else {
+                                container.selection.nextDataComponent(data);
+                            }
+
+                            // self.trigger('select', {
+                            //     originalEvent: evt,
+                            //     data: data
+                            // });
                         });
 
                     this.$results.on('mouseenter', '.extended-autocomplete-select-multiply-results__option[aria-selected]',
