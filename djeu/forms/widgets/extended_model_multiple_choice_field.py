@@ -1,4 +1,8 @@
+from typing import Optional
+from re import split as regexp_split
 from django.forms.models import ModelMultipleChoiceField
+from django.db import models
+
 
 class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
 
@@ -12,3 +16,79 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
         customize the display of the choices.
         """
         return str(obj)
+
+    def to_python(self, value):
+        return value
+
+    def _default_procedure_to_missed_key(self, django_model, particular_value) -> Optional[int]:
+        instance = django_model()
+        tokens = regexp_split(r'\s+', particular_value)
+        char_fields = [field for field in django_model._meta.fields if isinstance(field, models.CharField)]
+        if len(tokens) <= len(char_fields):
+            for i in range(0, len(tokens)):
+                setattr(instance, char_fields[i].attname, tokens[i])
+        elif len(char_fields) > 0:
+            setattr(instance, char_fields[0].name, particular_value)
+        else:
+            raise BaseException('Can\'t set automatically {particular_value} for {django_model}. Try to do in manual manner.')
+
+        instance.save()
+        return instance.pk
+
+    def _compound_key_values(self, through, compound_key, values, missed_key_procedure):
+        result_count = 0
+        result = None
+        for value in values:
+            compound_key_values = dict()
+            previous_comma_position = 0
+            comma_position = str(value).find(',')
+            for particular_field_name in compound_key:
+                particular_field_value = str(
+                    value)[previous_comma_position:comma_position]
+                pk_value = int(
+                    particular_field_value) if particular_field_value.isdigit() else None
+                if not pk_value and missed_key_procedure:
+                    # For ForeignKey
+                    django_model = through._meta.get_field(
+                        particular_field_name).related_model
+                    pk_value = missed_key_procedure(
+                        django_model, particular_field_value)
+                if not pk_value:
+                    break
+                compound_key_values[particular_field_name] = pk_value
+
+                previous_comma_position = comma_position + 1
+                comma_position = str(value).find(',', previous_comma_position)
+
+            # check full key
+            if len(compound_key_values) == len(compound_key):
+                result_count += 1
+                if result_count == 1:
+                    result = compound_key_values
+                elif result_count == 2:
+                    for particular_field_name in compound_key_values:
+                        result[particular_field_name] = [
+                            result[particular_field_name], compound_key_values[particular_field_name]]
+                else:
+                    for particular_field_name in compound_key_values:
+                        result[particular_field_name].append(
+                            compound_key_values[particular_field_name])
+
+        return result, result_count
+
+    def clean(self, value):
+        if self.widget and self.widget.field and self.widget.field.through:
+            # Search by field.
+            through = self.widget.field.through
+            compound_key = self.widget.field.key_data_components
+            compound_key_values, compound_key_values_count = \
+                self._compound_key_values(
+                    through, compound_key, value, self._default_procedure_to_missed_key)
+            if compound_key_values_count == 1:
+                return through.objects.filter(**{k: v for k, v in compound_key_values.items()})
+            elif compound_key_values_count > 1:
+                return through.objects.filter(**{'%s__in' % k: v for k, v in compound_key_values.items()})
+            else:
+                return self.queryset.none()
+
+        return super(ExtendedModelMultipleChoiceField, self).clean(new_value)
