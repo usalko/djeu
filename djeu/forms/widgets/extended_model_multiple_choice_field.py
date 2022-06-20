@@ -8,6 +8,7 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
 
     def __init__(self, queryset, **kwargs):
         super().__init__(queryset, **kwargs)
+        self.missed_keys_cache = dict()
 
     def label_from_instance(self, obj):
         """
@@ -21,6 +22,10 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
         return value
 
     def _default_procedure_to_missed_key(self, django_model, particular_value) -> Optional[int]:
+        missed_key_key = f'{django_model._meta.model_name}.{particular_value}'.lower()
+        if missed_key_key in self.missed_keys_cache:
+            return self.missed_keys_cache[missed_key_key]
+
         instance = django_model()
         tokens = regexp_split(r'\s+', particular_value)
         char_fields = [field for field in django_model._meta.fields if isinstance(field, models.CharField)]
@@ -33,6 +38,7 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
             raise BaseException('Can\'t set automatically {particular_value} for {django_model}. Try to do in manual manner.')
 
         instance.save()
+        self.missed_keys_cache[missed_key_key] = instance.pk
         return instance.pk
 
     def _compound_key_values(self, through, compound_key, values, missed_key_procedure):
@@ -100,4 +106,4 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
             else:
                 return self.queryset.none()
 
-        return super(ExtendedModelMultipleChoiceField, self).clean(new_value)
+        return super(ExtendedModelMultipleChoiceField, self).clean(value)
