@@ -78,16 +78,25 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
 
     def clean(self, value):
         if self.widget and self.widget.field and self.widget.field.through:
-            # Search by field.
+            # Search by field. Eager approach
             through = self.widget.field.through
             compound_key = self.widget.field.key_data_components
             compound_key_values, compound_key_values_count = \
                 self._compound_key_values(
                     through, compound_key, value, self._default_procedure_to_missed_key)
+            # create relations
             if compound_key_values_count == 1:
-                return through.objects.filter(**{k: v for k, v in compound_key_values.items()})
+                result = list(through.objects.filter(**{k: v for k, v in compound_key_values.items()}))
+                return result if result else [through(**{f'{k}_id': v for k, v in compound_key_values.items()})]
             elif compound_key_values_count > 1:
-                return through.objects.filter(**{'%s__in' % k: v for k, v in compound_key_values.items()})
+                result = list(through.objects.filter(**{'%s__in' % k: v for k, v in compound_key_values.items()}))
+                result_index = {tuple([getattr(x, attname) for attname in compound_key]): x for x in result}
+                # merge
+                for i in range(0, compound_key_values_count):
+                    compound_key_value = tuple([v[i] for k, v in compound_key_values.items()])
+                    if not compound_key_value in result_index:
+                        result.append(through(**{f'{compound_key[i]}_id': compound_key_value[i] for i in range(0, len(compound_key))}))
+                return result
             else:
                 return self.queryset.none()
 

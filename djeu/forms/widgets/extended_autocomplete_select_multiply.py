@@ -30,7 +30,7 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         if not self.is_required and not self.allow_multiple_selected:
             default[1].append(self.create_option(name, '', '', False, 0))
         if self.field.through:
-            to_field_name = self.field.through_fields[-1]
+            to_field_name = self.field.key_data_components[-1]
         else:
             remote_model_opts = self.field.remote_field.model._meta
             to_field_name = getattr(
@@ -66,7 +66,7 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         owner_model_name = extended_many_to_many_field.model._meta.model_name
 
         data_components = [{field: relation_model_name}
-                           for field in extended_many_to_many_field.through_fields if field != owner_model_name]
+                           for field in extended_many_to_many_field.key_data_components]
         if self.additional_data_components:
             for additional_data_component in self.additional_data_components:
                 if additional_data_component in data_components:
