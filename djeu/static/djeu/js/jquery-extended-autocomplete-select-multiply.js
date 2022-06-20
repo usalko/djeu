@@ -1981,6 +1981,10 @@
                         return;
                     }
 
+                    if (!this.container.selection.isFirstDataComponent()) {
+                        return;
+                    }
+
                     evt.stopPropagation();
 
                     var data = Utils.GetData($clear[0], 'data');
@@ -2161,7 +2165,9 @@
 
                         var key = evt.which;
 
-                        if (key === KEYS.BACKSPACE && self.$search.val() === '') {
+                        if (key === KEYS.BACKSPACE
+                            && self.$search.val() === ''
+                            && self.container.selection.isFirstDataComponent()) {
                             var $previousChoice = self.$searchContainer
                                 .prev('.extended-autocomplete-select-multiply-selection__choice');
 
@@ -2172,6 +2178,9 @@
 
                                 evt.preventDefault();
                             }
+                        } else if (key === KEYS.BACKSPACE
+                            && self.$search.val() === '') {
+                            self.container.selection.removeLastDataComponent();
                         }
                     });
 
@@ -2342,7 +2351,11 @@
                     this.handleSearch();
                 };
 
-                Search.prototype.prevDataComponent = function (decorated, data) {
+                Search.prototype.isFirstDataComponent = function () {
+                    return this._dataComponent.index === 0;
+                };
+
+                Search.prototype.removeLastDataComponent = function () {
 
                     var prevDataComponentIndex = this._dataComponent.index - 1;
                     var dataComponents = this.container.options.options.components;
@@ -2354,15 +2367,10 @@
                     this._dataComponent.field = Object.keys(dataComponents[prevDataComponentIndex])[0];
 
                     var dataVector = this._dataVector();
-                    if (data) {
-                        dataVector.push(data);
-                    } else {
-                        var term = this.$search.val();
-                        dataVector.push({
-                            id: term,
-                            text: term,
-                        });
-                    }
+                    dataVector.pop();
+
+                    // Rendering
+                    this.$searchContainer.find('span:last').remove()
                     this.$search.val('');
                     this._keyUpPrevented = false;
                     this.handleSearch();
