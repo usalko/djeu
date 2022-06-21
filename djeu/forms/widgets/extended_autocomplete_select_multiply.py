@@ -1,7 +1,9 @@
 from json import dumps
+from typing import Tuple
 from django import forms
 from django.conf import settings
 from django.contrib.admin import widgets
+from json import dumps
 
 from .extended_model_multiple_choice_field import \
     ExtendedModelMultipleChoiceField
@@ -18,6 +20,16 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
             'additional_data_components', None)
         super().__init__(*args, **kwargs)
 
+    def _label(self, obj) -> str:
+        return str(obj)
+
+    def _option(self, through_obj) -> Tuple[Tuple, Tuple]:
+        # field.label_from_instance(obj)
+        return (
+            ','.join([str(getattr(through_obj, key_attr).pk) for key_attr in  self.field.key_data_components]),
+            dumps([self._label(getattr(through_obj, key_attr)) for key_attr in [*self.field.key_data_components, *self.field.additional_fields]]),
+        )
+
     def optgroups(self, name, value, attr=None):
         """Return selected options based on the ModelChoiceIterator."""
         default = (None, [], 0)
@@ -30,17 +42,22 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         if not self.is_required and not self.allow_multiple_selected:
             default[1].append(self.create_option(name, '', '', False, 0))
         if self.field.through:
-            to_field_name = self.field.key_data_components[-1]
+            choices = (
+                self._option(obj)
+                for obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % self.field.through._meta.pk.attname: selected_choices})
+            )
+
         else:
             remote_model_opts = self.field.remote_field.model._meta
             to_field_name = getattr(
                 self.field.remote_field, 'field_name', remote_model_opts.pk.attname)
             to_field_name = remote_model_opts.get_field(to_field_name).attname
 
-        choices = (
-            (getattr(obj, to_field_name), self.choices.field.label_from_instance(obj))
-            for obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % to_field_name: selected_choices})
-        )
+            choices = (
+                (getattr(obj, to_field_name), self.choices.field.label_from_instance(obj))
+                for obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % to_field_name: selected_choices})
+            )
+
         for option_value, option_label in choices:
             selected = (
                 str(option_value) in value and
