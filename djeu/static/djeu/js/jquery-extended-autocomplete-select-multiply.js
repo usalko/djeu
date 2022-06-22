@@ -1825,12 +1825,15 @@
                 };
 
                 MultipleSelection.prototype.display = function (data, container) {
-                    // var template = this.options.get('templateSelection');
-                    // var escapeMarkup = this.options.get('escapeMarkup');
-
-                    // return escapeMarkup(template(data, container));
-                    var innerHtml = data.data.map((e) => `<span class="extended-autocomplete-select-multiply-selection__span">${e.text}</span>`).join('')
-                    return innerHtml;
+                    // Previous code:
+                    //      var template = this.options.get('templateSelection');
+                    //      var escapeMarkup = this.options.get('escapeMarkup');
+                    //
+                    //      return escapeMarkup(template(data, container));
+                    if (data.data) {
+                        return data.data.map((e) => `<span class="extended-autocomplete-select-multiply-selection__span">${e.text}</span>`).join('');
+                    }
+                    return JSON.parse(data.text).map((s) => `<span class="extended-autocomplete-select-multiply-selection__span">${s}</span>`).join('');
                 };
 
                 MultipleSelection.prototype.selectionContainer = function () {
@@ -2108,19 +2111,6 @@
                     });
 
                     container.on('close', function () {
-                        // TODO: container.on('close', function () {
-                        // Reset component selector index
-                        var component_selector = parseInt(self.$search.attr('component_selector') || '0');
-                        if (component_selector > 0) {
-                            var regexp = new RegExp('\u2022', 'g');
-                            var input = self.$search.val();
-                            regexp.test(input);
-                            self.$search.val(input.substring(0, regexp.lastIndex));
-                            //self.$search.attr('component_selector', component_selector - 1);
-                        } else {
-                            self.$search.val('');
-                            self.$search.attr('component_selector', 0);
-                        }
                         self.$search.removeAttr('aria-controls');
                         self.$search.removeAttr('aria-activedescendant');
                         self.$search.trigger('focus');
@@ -3642,7 +3632,8 @@
                             text: $option.text(),
                             disabled: $option.prop('disabled'),
                             selected: $option.prop('selected'),
-                            title: $option.prop('title')
+                            title: $option.prop('title'),
+                            data: $option.attr('data') ? JSON.parse($option.attr('data')): null,
                         };
                     } else if ($option.is('optgroup')) {
                         data = {

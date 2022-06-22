@@ -22,29 +22,33 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
         return value
 
     def _default_procedure_to_missed_key(self, django_model, particular_value) -> Optional[int]:
-        missed_key_key = f'{django_model._meta.model_name}.{particular_value}'.lower()
+        missed_key_key = f'{django_model._meta.model_name}.{particular_value}'.lower(
+        )
         if missed_key_key in self.missed_keys_cache:
             return self.missed_keys_cache[missed_key_key]
 
         instance = django_model()
         tokens = regexp_split(r'\s+', particular_value)
-        char_fields = [field for field in django_model._meta.fields if isinstance(field, models.CharField)]
+        char_fields = [field for field in django_model._meta.fields if isinstance(
+            field, models.CharField)]
         if len(tokens) <= len(char_fields):
             for i in range(0, len(tokens)):
                 setattr(instance, char_fields[i].attname, tokens[i])
         elif len(char_fields) > 0:
             setattr(instance, char_fields[0].name, particular_value)
         else:
-            raise BaseException('Can\'t set automatically {particular_value} for {django_model}. Try to do in manual manner.')
+            raise BaseException(
+                'Can\'t set automatically {particular_value} for {django_model}. Try to do in manual manner.')
 
         instance.save()
         self.missed_keys_cache[missed_key_key] = instance.pk
         return instance.pk
 
-    def _compound_key_values(self, through, compound_key, values, missed_key_procedure):
+    def _compound_key_values(self, through, compound_key, additional_fields,
+                             values, missed_key_procedure):
         result_count = 0
         result = None
-        for value in values:
+        for value in values:  # value is comma searatd string
             compound_key_values = dict()
             previous_comma_position = 0
             comma_position = str(value).find(',')
@@ -66,19 +70,29 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
                 previous_comma_position = comma_position + 1
                 comma_position = str(value).find(',', previous_comma_position)
 
+            additional_fields_values = dict()
+            for additional_field_name in additional_fields:
+                particular_field_value = str(value)[previous_comma_position:] if comma_position == -1 else str(
+                    value)[previous_comma_position:comma_position]
+                additional_fields_values[additional_field_name] = particular_field_value
+
+                previous_comma_position = comma_position + 1
+                comma_position = str(value).find(',', previous_comma_position)
+
             # check full key
             if len(compound_key_values) == len(compound_key):
+                stored_values = {**compound_key_values, **additional_fields_values}
                 result_count += 1
                 if result_count == 1:
-                    result = compound_key_values
+                    result = stored_values
                 elif result_count == 2:
-                    for particular_field_name in compound_key_values:
+                    for particular_field_name in [*compound_key_values, *additional_fields]:
                         result[particular_field_name] = [
-                            result[particular_field_name], compound_key_values[particular_field_name]]
+                            result[particular_field_name], stored_values[particular_field_name]]
                 else:
-                    for particular_field_name in compound_key_values:
+                    for particular_field_name in [*compound_key_values, *additional_fields]:
                         result[particular_field_name].append(
-                            compound_key_values[particular_field_name])
+                            stored_values[particular_field_name])
 
         return result, result_count
 
@@ -87,21 +101,27 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
             # Search by field. Eager approach
             through = self.widget.field.through
             compound_key = self.widget.field.key_data_components
-            compound_key_values, compound_key_values_count = \
+            additional_fields = self.widget.field.additional_fields
+            compound_values, compound_values_count = \
                 self._compound_key_values(
-                    through, compound_key, value, self._default_procedure_to_missed_key)
+                    through, compound_key, additional_fields, value, self._default_procedure_to_missed_key)
             # create relations
-            if compound_key_values_count == 1:
-                result = list(through.objects.filter(**{k: v for k, v in compound_key_values.items()}))
-                return result if result else [through(**{f'{k}_id': v for k, v in compound_key_values.items()})]
-            elif compound_key_values_count > 1:
-                result = list(through.objects.filter(**{'%s__in' % k: v for k, v in compound_key_values.items()}))
-                result_index = {tuple([getattr(x, attname) for attname in compound_key]): x for x in result}
+            if compound_values_count == 1:
+                result = list(through.objects.filter(
+                    **{k: v for k, v in compound_values.items()}))
+                return result if result else [through(**{f'{k}_id' if k in compound_key else k: v for k, v in compound_values.items()})]
+            elif compound_values_count > 1:
+                result = list(through.objects.filter(
+                    **{'%s__in' % k: v for k, v in compound_values.items()}))
+                result_index = {
+                    tuple([getattr(x, attname) for attname in compound_key]): x for x in result}
                 # merge
-                for i in range(0, compound_key_values_count):
-                    compound_key_value = tuple([v[i] for k, v in compound_key_values.items()])
+                for i in range(0, compound_values_count):
+                    compound_key_value = tuple(
+                        [v[i] for k, v in compound_values.items()])
                     if not compound_key_value in result_index:
-                        result.append(through(**{f'{compound_key[i]}_id': compound_key_value[i] for i in range(0, len(compound_key))}))
+                        result.append(through(
+                            **{**{f'{compound_key[i]}_id': compound_key_value[i] for i in range(0, len(compound_key))}}))
                 return result
             else:
                 return self.queryset.none()

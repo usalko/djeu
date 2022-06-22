@@ -23,13 +23,6 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
     def _label(self, obj) -> str:
         return str(obj)
 
-    def _option(self, through_obj) -> Tuple[Tuple, Tuple]:
-        # field.label_from_instance(obj)
-        return (
-            ','.join([str(getattr(through_obj, key_attr).pk) for key_attr in  self.field.key_data_components]),
-            dumps([self._label(getattr(through_obj, key_attr)) for key_attr in [*self.field.key_data_components, *self.field.additional_fields]]),
-        )
-
     def optgroups(self, name, value, attr=None):
         """Return selected options based on the ModelChoiceIterator."""
         default = (None, [], 0)
@@ -42,11 +35,24 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         if not self.is_required and not self.allow_multiple_selected:
             default[1].append(self.create_option(name, '', '', False, 0))
         if self.field.through:
-            choices = (
-                self._option(obj)
-                for obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % self.field.through._meta.pk.attname: selected_choices})
-            )
+            for through_obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % self.field.through._meta.pk.attname: selected_choices}):
+                option_value = through_obj.pk
+                option_label = ''
+                
+                selected = (
+                    str(option_value) in value and
+                    (has_selected is False or self.allow_multiple_selected)
+                )
+                has_selected |= selected
+                index = len(default[1])
+                subgroup = default[1]
 
+                data = [{
+                    'id': getattr(through_obj, attr).pk if attr in self.field.key_data_components else str(getattr(through_obj, attr)),
+                    'text': self._label(getattr(through_obj, attr)),
+                } for attr in [*self.field.key_data_components, *self.field.additional_fields]]
+                subgroup.append(self.create_option(
+                    name, option_value, option_label, selected_choices, index, attrs={'data' : dumps(data)}))
         else:
             remote_model_opts = self.field.remote_field.model._meta
             to_field_name = getattr(
@@ -58,17 +64,22 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
                 for obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % to_field_name: selected_choices})
             )
 
-        for option_value, option_label in choices:
-            selected = (
-                str(option_value) in value and
-                (has_selected is False or self.allow_multiple_selected)
-            )
-            has_selected |= selected
-            index = len(default[1])
-            subgroup = default[1]
-            subgroup.append(self.create_option(
-                name, option_value, option_label, selected_choices, index))
+            for option_value, option_label in choices:
+                selected = (
+                    str(option_value) in value and
+                    (has_selected is False or self.allow_multiple_selected)
+                )
+                has_selected |= selected
+                index = len(default[1])
+                subgroup = default[1]
+                subgroup.append(self.create_option(
+                    name, option_value, option_label, selected_choices, index))
         return groups
+
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        result = super(ExtendedAutocompleteSelectMultiple, self).create_option(name, value, label, selected, index, subindex, attrs)
+        result['attrs'] = {**result['attrs'], **attrs}
+        return result
 
     def get_context(self, name, value, attrs):
         # Request models and fields for the autocomplete requests
