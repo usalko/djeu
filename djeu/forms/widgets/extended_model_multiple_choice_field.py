@@ -53,8 +53,7 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
             previous_comma_position = 0
             comma_position = str(value).find(',')
             for particular_field_name in compound_key:
-                particular_field_value = str(
-                    value)[previous_comma_position:comma_position]
+                particular_field_value = str(value)[previous_comma_position:comma_position] if comma_position > -1 else str(value)[previous_comma_position]
                 pk_value = int(
                     particular_field_value) if particular_field_value.isdigit() else None
                 if not pk_value and missed_key_procedure:
@@ -67,17 +66,22 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
                     break
                 compound_key_values[particular_field_name] = pk_value
 
-                previous_comma_position = comma_position + 1
-                comma_position = str(value).find(',', previous_comma_position)
+                previous_comma_position = comma_position + 1 if comma_position > -1 else -1
+                if previous_comma_position > -1:
+                    comma_position = str(value).find(',', previous_comma_position)
 
             additional_fields_values = dict()
             for additional_field_name in additional_fields:
+                if previous_comma_position == -1 and comma_position == -1:
+                    additional_fields_values[additional_field_name] = ''
+                    continue
                 particular_field_value = str(value)[previous_comma_position:] if comma_position == -1 else str(
                     value)[previous_comma_position:comma_position]
                 additional_fields_values[additional_field_name] = particular_field_value
 
-                previous_comma_position = comma_position + 1
-                comma_position = str(value).find(',', previous_comma_position)
+                previous_comma_position = comma_position + 1 if comma_position > -1 else -1
+                if previous_comma_position > -1:
+                    comma_position = str(value).find(',', previous_comma_position)
 
             # check full key
             if len(compound_key_values) == len(compound_key):

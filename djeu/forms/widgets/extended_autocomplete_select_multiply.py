@@ -38,7 +38,7 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
             for through_obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % self.field.through._meta.pk.attname: selected_choices}):
                 option_value = through_obj.pk
                 option_label = ''
-                
+
                 selected = (
                     str(option_value) in value and
                     (has_selected is False or self.allow_multiple_selected)
@@ -52,7 +52,7 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
                     'text': self._label(getattr(through_obj, attr)),
                 } for attr in [*self.field.key_data_components, *self.field.additional_fields]]
                 subgroup.append(self.create_option(
-                    name, option_value, option_label, selected_choices, index, attrs={'data' : dumps(data)}))
+                    name, ','.join([str(getattr(through_obj, attr).pk) for attr in self.field.key_data_components]), option_label, selected_choices, index, attrs={'data': dumps(data)}))
         else:
             remote_model_opts = self.field.remote_field.model._meta
             to_field_name = getattr(
@@ -60,7 +60,8 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
             to_field_name = remote_model_opts.get_field(to_field_name).attname
 
             choices = (
-                (getattr(obj, to_field_name), self.choices.field.label_from_instance(obj))
+                (getattr(obj, to_field_name),
+                 self.choices.field.label_from_instance(obj))
                 for obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % to_field_name: selected_choices})
             )
 
@@ -77,7 +78,8 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         return groups
 
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
-        result = super(ExtendedAutocompleteSelectMultiple, self).create_option(name, value, label, selected, index, subindex, attrs)
+        result = super(ExtendedAutocompleteSelectMultiple, self).create_option(
+            name, value, label, selected, index, subindex, attrs)
         result['attrs'] = {**result['attrs'], **attrs}
         return result
 

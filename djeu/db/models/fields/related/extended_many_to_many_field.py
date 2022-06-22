@@ -13,7 +13,8 @@ class ExtendedManyToManyField(ManyToManyField):
                          symmetrical, through, through_fields, db_constraint, db_table,
                          swappable, **kwargs)
         self.through = through
-        self.key_data_components = key_data_components if key_data_components else tuple([attname for attname in through_fields if attname != self.remote_field.name]) if through_fields else []
+        self.key_data_components = key_data_components if key_data_components else tuple(
+            [attname for attname in through_fields if attname != self.remote_field.name]) if through_fields else []
         self.additional_fields = additional_fields
 
     def _limit_choices_to(self):
@@ -47,3 +48,16 @@ class ExtendedManyToManyField(ManyToManyField):
 
     def get_prep_value(self, value):
         return super(ExtendedManyToManyField, self).get_prep_value(value)
+
+    def add(self, obj):
+        return super(ExtendedManyToManyField, self).add(obj)
+
+    def __str__(self):
+        if self.through:
+            # self.through.objects
+            return ', '.join(self.all())
+
+        return super(ExtendedManyToManyField, self).__str__()
+
+    def __repr__(self):
+        self.__str__()
