@@ -1,3 +1,4 @@
+from django.db.models import Model
 from django.db.models.fields.related import ManyToManyField, RelatedField
 from djeu.forms.widgets import ExtendedModelMultipleChoiceField
 
@@ -9,7 +10,7 @@ class ExtendedManyToManyField(ManyToManyField):
                  through_fields=None, db_constraint=True, db_table=None,
                  swappable=True, key_data_components=None, additional_fields=None,
                  **kwargs):
-        super().__init__(to, related_name, related_query_name, limit_choices_to or self._limit_choices_to,
+        super().__init__(to, related_name, related_query_name, limit_choices_to,
                          symmetrical, through, through_fields, db_constraint, db_table,
                          swappable, **kwargs)
         self.through = through
@@ -17,8 +18,12 @@ class ExtendedManyToManyField(ManyToManyField):
             [attname for attname in through_fields if attname != self.remote_field.name]) if through_fields else []
         self.additional_fields = additional_fields
 
-    def _limit_choices_to(self):
-        return None
+    # def _limit_choices_to(self):
+    #     if hasattr(super(ExtendedManyToManyField, self), '_limit_choices_to') and super(ExtendedManyToManyField, self)._limit_choices_to:
+    #         return super(ExtendedManyToManyField, self)._limit_choices_to()
+    #     if self.through:
+    #         return self.through.objects.all()
+    #     return self.remote_field.model.objects.all()
 
     def value_from_object(self, obj):
         if self.through:

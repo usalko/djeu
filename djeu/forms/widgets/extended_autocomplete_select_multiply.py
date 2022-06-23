@@ -80,7 +80,8 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
         result = super(ExtendedAutocompleteSelectMultiple, self).create_option(
             name, value, label, selected, index, subindex, attrs)
-        result['attrs'] = {**result['attrs'], **attrs}
+        if attrs:
+            result['attrs'] = {**result['attrs'], **attrs}
         return result
 
     def get_context(self, name, value, attrs):
@@ -92,7 +93,7 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         # => relative: relationship
         # => kind: relationship
         extended_many_to_many_field = self.field
-        relation_model_name = extended_many_to_many_field.through._meta.model_name
+        relation_model_name = extended_many_to_many_field.through._meta.model_name if extended_many_to_many_field.through else extended_many_to_many_field._related_name
         owner_model_name = extended_many_to_many_field.model._meta.model_name
 
         data_components = [{field: relation_model_name}

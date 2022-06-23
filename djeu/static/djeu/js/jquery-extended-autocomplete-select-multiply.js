@@ -1343,6 +1343,7 @@
                             }
 
                             if (container.selection.isLastDataComponent()) {
+                                container.selection.setDataComponent(data);
                                 self.trigger('results:append', {
                                     'data': {
                                         'results': [{}]
@@ -1833,7 +1834,7 @@
                     if (data.data) {
                         return data.data.map((e) => `<span class="extended-autocomplete-select-multiply-selection__span">${e.text}</span>`).join('');
                     }
-                    return JSON.parse(data.text).map((s) => `<span class="extended-autocomplete-select-multiply-selection__span">${s}</span>`).join('');
+                    return [data.text].map((s) => `<span class="extended-autocomplete-select-multiply-selection__span">${s}</span>`).join('');
                 };
 
                 MultipleSelection.prototype.selectionContainer = function () {
@@ -2368,6 +2369,35 @@
 
                 Search.prototype.isLastDataComponent = function () {
                     return this.container.options.options.components.length === (this._dataComponent.index + 1);
+                };
+
+                Search.prototype.setDataComponent = function (decorated, data) {
+
+                    var dataComponentIndex = this._dataComponent.index;
+                    var dataComponents = this.container.options.options.components;
+                    if (dataComponents.length <= dataComponentIndex || dataComponentIndex < 0) {
+                        throw `Invalid index ${dataComponentIndex} for request data-component. The data-components count is ${dataComponents.length}.`;
+                    }
+
+                    var dataVector = this._dataVector();
+                    if (data) {
+                        dataVector[dataComponentIndex] = data;
+                    } else {
+                        var term = this.$search.val();
+                        dataVector[dataComponentIndex] = {
+                            id: term,
+                            text: term,
+                        };
+                    }
+
+                    // Rerendering
+                    var componentText = data ? data.text : this.$search.val();
+                    if (dataComponentIndex == 1) {
+                        this.$searchContainer.prepend(`<span class="extended-autocomplete-select-multiply-selection__span_input">${componentText}</span>`);
+                    } else {
+                        $(`<span class="extended-autocomplete-select-multiply-selection__span_input">${componentText}</span>`).insertAfter(this.$searchContainer.find('span').last());
+                    }
+                    this.$search.val('');
                 };
 
                 Search.prototype._dataVector = function () {
@@ -6004,6 +6034,7 @@
                             } else if (key === KEYS.ENTER) {
 
                                 if (self.selection.isLastDataComponent()) {
+                                    self.selection.setDataComponent(self.results.selectedData());
                                     self.trigger('results:append', {
                                         'data': {
                                             'results': [{}]
