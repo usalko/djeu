@@ -1,7 +1,9 @@
-from typing import Optional
 from re import split as regexp_split
-from django.forms.models import ModelMultipleChoiceField
+from typing import Optional
+
 from django.db import models
+from django.db.models import Manager
+from django.forms.models import ModelMultipleChoiceField
 
 
 class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
@@ -22,8 +24,7 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
         return value
 
     def _default_procedure_to_missed_key(self, django_model, particular_value) -> Optional[int]:
-        missed_key_key = f'{django_model._meta.model_name}.{particular_value}'.lower(
-        )
+        missed_key_key = f'{django_model._meta.model_name}.{particular_value}'.lower()
         if missed_key_key in self.missed_keys_cache:
             return self.missed_keys_cache[missed_key_key]
 
@@ -53,13 +54,14 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
             previous_comma_position = 0
             comma_position = str(value).find(',')
             for particular_field_name in compound_key:
-                particular_field_value = str(value)[previous_comma_position:comma_position] if comma_position > -1 else str(value)[previous_comma_position]
+                particular_field_value = str(value)[
+                    previous_comma_position:comma_position] if comma_position > -1 else str(value)[previous_comma_position:]
                 pk_value = int(
                     particular_field_value) if particular_field_value.isdigit() else None
                 if not pk_value and missed_key_procedure:
                     # For ForeignKey
                     django_model = through._meta.get_field(
-                        particular_field_name).related_model
+                        particular_field_name).related_model if isinstance(through, Manager) else through
                     pk_value = missed_key_procedure(
                         django_model, particular_field_value)
                 if not pk_value:
@@ -68,7 +70,8 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
 
                 previous_comma_position = comma_position + 1 if comma_position > -1 else -1
                 if previous_comma_position > -1:
-                    comma_position = str(value).find(',', previous_comma_position)
+                    comma_position = str(value).find(
+                        ',', previous_comma_position)
 
             additional_fields_values = dict()
             for additional_field_name in additional_fields:
@@ -81,11 +84,13 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
 
                 previous_comma_position = comma_position + 1 if comma_position > -1 else -1
                 if previous_comma_position > -1:
-                    comma_position = str(value).find(',', previous_comma_position)
+                    comma_position = str(value).find(
+                        ',', previous_comma_position)
 
             # check full key
             if len(compound_key_values) == len(compound_key):
-                stored_values = {**compound_key_values, **additional_fields_values}
+                stored_values = {**compound_key_values,
+                                 **additional_fields_values}
                 result_count += 1
                 if result_count == 1:
                     result = stored_values
@@ -100,34 +105,64 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
 
         return result, result_count
 
+    def _request_explicit_values(self, entity_class, key_fields, additional_fields, value):
+        compound_values, compound_values_count = \
+            self._compound_key_values(
+                entity_class, key_fields, additional_fields, value, self._default_procedure_to_missed_key)
+        # create relations
+        if compound_values_count == 1:
+            result = list(entity_class.objects.filter(
+                **{k: v for k, v in compound_values.items()}))
+            return result if result else [entity_class(**{f'{k}_id' if k in key_fields else k: v for k, v in compound_values.items()})]
+        elif compound_values_count > 1:
+            result = list(entity_class.objects.filter(
+                **{'%s__in' % k: v for k, v in compound_values.items()}))
+            result_index = {
+                tuple([getattr(x, attname) for attname in key_fields]): x for x in result}
+            # merge
+            for i in range(0, compound_values_count):
+                compound_key_value = tuple(
+                    [v[i] for k, v in compound_values.items()])
+                if not compound_key_value in result_index:
+                    result.append(entity_class(
+                        **{**{f'{key_fields[i]}_id': compound_key_value[i] for i in range(0, len(key_fields))}}))
+            return result
+        else:
+            return self.queryset.none()
+
+    def _request_implicit_values(self, entity_class, value):
+        key_fields = ('id', )
+        compound_values, compound_values_count = \
+            self._compound_key_values(
+                entity_class, key_fields, (), value, self._default_procedure_to_missed_key)
+        # create relations
+        if compound_values_count == 1:
+            result = list(entity_class.objects.filter(
+                **{k: v for k, v in compound_values.items()}))
+            return result if result else [entity_class(**{f'{k}' if k in key_fields else k: v for k, v in compound_values.items()})]
+        elif compound_values_count > 1:
+            result = list(entity_class.objects.filter(
+                **{'%s__in' % k: v for k, v in compound_values.items()}))
+            result_index = {
+                tuple([getattr(x, attname) for attname in key_fields]): x for x in result}
+            # merge
+            for i in range(0, compound_values_count):
+                compound_key_value = tuple(
+                    [v[i] for k, v in compound_values.items()])
+                if not compound_key_value in result_index:
+                    result.append(entity_class(
+                        **{**{f'{key_fields[i]}': compound_key_value[i] for i in range(0, len(key_fields))}}))
+            return result
+        else:
+            return self.queryset.none()
+
     def clean(self, value):
         if self.widget and self.widget.field and self.widget.field.through:
             # Search by field. Eager approach
             through = self.widget.field.through
             compound_key = self.widget.field.key_data_components
             additional_fields = self.widget.field.additional_fields
-            compound_values, compound_values_count = \
-                self._compound_key_values(
-                    through, compound_key, additional_fields, value, self._default_procedure_to_missed_key)
-            # create relations
-            if compound_values_count == 1:
-                result = list(through.objects.filter(
-                    **{k: v for k, v in compound_values.items()}))
-                return result if result else [through(**{f'{k}_id' if k in compound_key else k: v for k, v in compound_values.items()})]
-            elif compound_values_count > 1:
-                result = list(through.objects.filter(
-                    **{'%s__in' % k: v for k, v in compound_values.items()}))
-                result_index = {
-                    tuple([getattr(x, attname) for attname in compound_key]): x for x in result}
-                # merge
-                for i in range(0, compound_values_count):
-                    compound_key_value = tuple(
-                        [v[i] for k, v in compound_values.items()])
-                    if not compound_key_value in result_index:
-                        result.append(through(
-                            **{**{f'{compound_key[i]}_id': compound_key_value[i] for i in range(0, len(compound_key))}}))
-                return result
-            else:
-                return self.queryset.none()
 
-        return super(ExtendedModelMultipleChoiceField, self).clean(value)
+            return self._request_explicit_values(through, compound_key, additional_fields, value)
+
+        return self._request_implicit_values(self.widget.field.remote_field.model, value)
