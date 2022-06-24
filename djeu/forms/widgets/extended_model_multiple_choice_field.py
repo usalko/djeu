@@ -24,7 +24,8 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
         return value
 
     def _default_procedure_to_missed_key(self, django_model, particular_value) -> Optional[int]:
-        missed_key_key = f'{django_model._meta.model_name}.{particular_value}'.lower()
+        missed_key_key = f'{django_model._meta.model_name}.{particular_value}'.lower(
+        )
         if missed_key_key in self.missed_keys_cache:
             return self.missed_keys_cache[missed_key_key]
 
@@ -110,23 +111,29 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
             self._compound_key_values(
                 entity_class, key_fields, additional_fields, value, self._default_procedure_to_missed_key)
         # create relations
-        if compound_values_count == 1:
+        if compound_values_count > 0:
             result = list(entity_class.objects.filter(
-                **{k: v for k, v in compound_values.items()}))
-            return result if result else [entity_class(**{f'{k}_id' if k in key_fields else k: v for k, v in compound_values.items()})]
-        elif compound_values_count > 1:
-            result = list(entity_class.objects.filter(
-                **{'%s__in' % k: v for k, v in compound_values.items()}))
+                **{k: v for k, v in compound_values.items()})) if compound_values == 1 else \
+                list(entity_class.objects.filter(
+                    **{'%s__in' % k: v for k, v in compound_values.items()}))
             result_index = {
-                tuple([getattr(x, attname) for attname in key_fields]): x for x in result}
+                tuple([getattr(x, attname).pk for attname in key_fields]): x for x in result}
             # merge
             for i in range(0, compound_values_count):
                 compound_key_value = tuple(
-                    [v[i] for k, v in compound_values.items()])
+                    [v[i] for k, v in compound_values.items() if k in key_fields])
                 if not compound_key_value in result_index:
-                    result.append(entity_class(
-                        **{**{f'{key_fields[i]}_id': compound_key_value[i] for i in range(0, len(key_fields))}}))
-            return result
+                    entity_instance = entity_class(
+                        **{**{f'{key_fields[j]}_id': compound_key_value[j] for j in range(0, len(key_fields))},
+                        **{f'{additional_fields[j]}': compound_values[additional_fields[j]][i] for j in range(0, len(additional_fields))}})
+                    result_index[compound_key_value] = entity_instance
+                else:
+                    for j in range(0, len(additional_fields)):
+                        setattr(result_index[compound_key_value],
+                            additional_fields[j],
+                            compound_values[additional_fields[j]][i])
+
+            return result_index.values()
         else:
             return self.queryset.none()
 
