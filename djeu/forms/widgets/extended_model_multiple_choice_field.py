@@ -62,7 +62,7 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
                 if not pk_value and missed_key_procedure:
                     # For ForeignKey
                     django_model = through._meta.get_field(
-                        particular_field_name).related_model if isinstance(through, Manager) else through
+                        particular_field_name).related_model if self.widget.field.through else through
                     pk_value = missed_key_procedure(
                         django_model, particular_field_value)
                 if not pk_value:
