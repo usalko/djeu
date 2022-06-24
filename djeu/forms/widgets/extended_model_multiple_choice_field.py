@@ -113,15 +113,15 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
         # create relations
         if compound_values_count > 0:
             result = list(entity_class.objects.filter(
-                **{k: v for k, v in compound_values.items()})) if compound_values == 1 else \
+                **{k: v for k, v in compound_values.items()})) if compound_values_count == 1 else \
                 list(entity_class.objects.filter(
-                    **{'%s__in' % k: v for k, v in compound_values.items()}))
+                    **{'%s__in' % k: v  for k, v in compound_values.items()}))
             result_index = {
                 tuple([getattr(x, attname).pk for attname in key_fields]): x for x in result}
             # merge
             for i in range(0, compound_values_count):
                 compound_key_value = tuple(
-                    [v[i] for k, v in compound_values.items() if k in key_fields])
+                    [v[i] if compound_values_count > 1 else v for k, v in compound_values.items() if k in key_fields])
                 if not compound_key_value in result_index:
                     entity_instance = entity_class(
                         **{**{f'{key_fields[j]}_id': compound_key_value[j] for j in range(0, len(key_fields))},
