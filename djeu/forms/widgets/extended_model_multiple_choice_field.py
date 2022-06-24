@@ -125,13 +125,13 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
                 if not compound_key_value in result_index:
                     entity_instance = entity_class(
                         **{**{f'{key_fields[j]}_id': compound_key_value[j] for j in range(0, len(key_fields))},
-                        **{f'{additional_fields[j]}': compound_values[additional_fields[j]][i] for j in range(0, len(additional_fields))}})
+                        **{additional_fields[j]: compound_values[additional_fields[j]][i] if compound_values_count > 1 else compound_values[additional_fields[j]] for j in range(0, len(additional_fields))}})
                     result_index[compound_key_value] = entity_instance
                 else:
                     for j in range(0, len(additional_fields)):
                         setattr(result_index[compound_key_value],
                             additional_fields[j],
-                            compound_values[additional_fields[j]][i])
+                            compound_values[additional_fields[j]][i] if compound_values_count > 1 else compound_values[additional_fields[j]])
 
             return result_index.values()
         else:
