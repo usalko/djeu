@@ -5,9 +5,6 @@ from django.conf import settings
 from django.contrib.admin import widgets
 from json import dumps
 
-from .extended_model_choice_field import \
-    ExtendedModelChoiceField
-
 
 class ExtendedAutocompleteSelect(widgets.AutocompleteSelect):
 
@@ -18,7 +15,7 @@ class ExtendedAutocompleteSelect(widgets.AutocompleteSelect):
     def __init__(self, *args, **kwargs):
         self.additional_data_components = kwargs.pop(
             'additional_data_components', None)
-        super().__init__(*args, **kwargs)
+        super(ExtendedAutocompleteSelect, self).__init__(*args, **kwargs)
         self.allow_multiple_selected = False
 
     def _label(self, obj) -> str:
@@ -35,47 +32,28 @@ class ExtendedAutocompleteSelect(widgets.AutocompleteSelect):
         }
         if not self.is_required and not self.allow_multiple_selected:
             default[1].append(self.create_option(name, '', '', False, 0))
-        if self.field.through:
-            for through_obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % self.field.through._meta.pk.attname: selected_choices}):
-                option_value = through_obj.pk
-                option_label = ''
+        remote_model_opts = self.field.remote_field.model._meta
+        to_field_name = getattr(
+            self.field.remote_field, 'field_name', remote_model_opts.pk.attname)
+        to_field_name = remote_model_opts.get_field(to_field_name).attname
 
-                selected = (
-                    str(option_value) in value and
-                    (has_selected is False or self.allow_multiple_selected)
-                )
-                has_selected |= selected
-                index = len(default[1])
-                subgroup = default[1]
+        choices = (
+            (getattr(obj, to_field_name),
+                self.choices.field.label_from_instance(obj))
+            for obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % to_field_name: selected_choices})
+        )
 
-                data = [{
-                    'id': getattr(through_obj, attr).pk if attr in self.field.key_data_components else str(getattr(through_obj, attr)),
-                    'text': self._label(getattr(through_obj, attr)),
-                } for attr in [*self.field.key_data_components, *self.field.additional_fields]]
-                subgroup.append(self.create_option(
-                    name, ','.join([str(getattr(through_obj, attr).pk) for attr in self.field.key_data_components]), option_label, selected_choices, index, attrs={'data': dumps(data)}))
-        else:
-            remote_model_opts = self.field.remote_field.model._meta
-            to_field_name = getattr(
-                self.field.remote_field, 'field_name', remote_model_opts.pk.attname)
-            to_field_name = remote_model_opts.get_field(to_field_name).attname
-
-            choices = (
-                (getattr(obj, to_field_name),
-                 self.choices.field.label_from_instance(obj))
-                for obj in self.choices.queryset.using(self.db).filter(**{'%s__in' % to_field_name: selected_choices})
+        for option_value, option_label in choices:
+            selected = (
+                str(option_value) in value and
+                (has_selected is False or self.allow_multiple_selected)
             )
+            has_selected |= selected
+            index = len(default[1])
+            subgroup = default[1]
+            subgroup.append(self.create_option(
+                name, option_value, option_label, selected_choices, index))
 
-            for option_value, option_label in choices:
-                selected = (
-                    str(option_value) in value and
-                    (has_selected is False or self.allow_multiple_selected)
-                )
-                has_selected |= selected
-                index = len(default[1])
-                subgroup = default[1]
-                subgroup.append(self.create_option(
-                    name, option_value, option_label, selected_choices, index))
         return groups
 
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
@@ -93,12 +71,12 @@ class ExtendedAutocompleteSelect(widgets.AutocompleteSelect):
         # through_fields = (document, relative, kind)
         # => relative: relationship
         # => kind: relationship
-        extended_many_to_many_field = self.field
-        relation_model_name = extended_many_to_many_field.through._meta.model_name if extended_many_to_many_field.through else extended_many_to_many_field._related_name
-        owner_model_name = extended_many_to_many_field.model._meta.model_name
+        exteded_foreign_key_field = self.field
+        relation_model_name = exteded_foreign_key_field.model._meta.model_name
+        # owner_model_name = exteded_foreign_key_field.model._meta.model_name
 
         data_components = [{field: relation_model_name}
-                           for field in extended_many_to_many_field.key_data_components]
+                           for field in exteded_foreign_key_field.key_data_components]
         if self.additional_data_components:
             for additional_data_component in self.additional_data_components:
                 if additional_data_component in data_components:
@@ -112,10 +90,10 @@ class ExtendedAutocompleteSelect(widgets.AutocompleteSelect):
         }})
         # remove garbage
         widget_attrs = result['widget']['attrs']
-        if 'data-model-name' in widget_attrs:
-            del widget_attrs['data-model-name']
-        if 'data-field-name' in widget_attrs:
-            del widget_attrs['data-field-name']
+        # if 'data-model-name' in widget_attrs:
+        #     del widget_attrs['data-model-name']
+        # if 'data-field-name' in widget_attrs:
+        #     del widget_attrs['data-field-name']
         return result
 
     @property

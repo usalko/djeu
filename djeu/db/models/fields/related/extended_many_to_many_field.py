@@ -38,6 +38,7 @@ class ExtendedManyToManyField(ManyToManyField):
         ) if self.through else self.remote_field.model._default_manager.using(using)
 
         defaults = {
+            'django_field': self,
             'form_class': ExtendedModelMultipleChoiceField,
             'queryset': queryset,
             **kwargs,

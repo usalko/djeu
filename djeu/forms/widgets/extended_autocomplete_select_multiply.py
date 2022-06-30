@@ -5,9 +5,6 @@ from django.conf import settings
 from django.contrib.admin import widgets
 from json import dumps
 
-from .extended_model_multiple_choice_field import \
-    ExtendedModelMultipleChoiceField
-
 
 class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
 

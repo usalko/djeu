@@ -3,13 +3,25 @@ from typing import Optional
 
 from django.db import models
 from django.db.models import Manager
+from django.contrib import admin
 from django.forms.models import ModelChoiceField
+
+from .extended_autocomplete_select import ExtendedAutocompleteSelect
 
 
 class ExtendedModelChoiceField(ModelChoiceField):
 
+    widget = ExtendedAutocompleteSelect
+
     def __init__(self, queryset, **kwargs):
-        super().__init__(queryset, **kwargs)
+        if 'widget' in kwargs:
+            widget = kwargs.pop('widget')
+            kwargs.pop('django_field')
+        else:
+            widget = self.widget(kwargs.pop('django_field'), admin.site)
+        super().__init__(queryset,
+                         widget=widget,
+                         **kwargs)
         self.missed_keys_cache = dict()
 
     def label_from_instance(self, obj):
@@ -115,7 +127,7 @@ class ExtendedModelChoiceField(ModelChoiceField):
             result = list(entity_class.objects.filter(
                 **{k: v for k, v in compound_values.items()})) if compound_values_count == 1 else \
                 list(entity_class.objects.filter(
-                    **{'%s__in' % k: v  for k, v in compound_values.items()}))
+                    **{'%s__in' % k: v for k, v in compound_values.items()}))
             result_index = {
                 tuple([getattr(x, attname).pk for attname in key_fields]): x for x in result}
             # merge
@@ -125,13 +137,13 @@ class ExtendedModelChoiceField(ModelChoiceField):
                 if not compound_key_value in result_index:
                     entity_instance = entity_class(
                         **{**{f'{key_fields[j]}_id': compound_key_value[j] for j in range(0, len(key_fields))},
-                        **{additional_fields[j]: compound_values[additional_fields[j]][i] if compound_values_count > 1 else compound_values[additional_fields[j]] for j in range(0, len(additional_fields))}})
+                           **{additional_fields[j]: compound_values[additional_fields[j]][i] if compound_values_count > 1 else compound_values[additional_fields[j]] for j in range(0, len(additional_fields))}})
                     result_index[compound_key_value] = entity_instance
                 else:
                     for j in range(0, len(additional_fields)):
                         setattr(result_index[compound_key_value],
-                            additional_fields[j],
-                            compound_values[additional_fields[j]][i] if compound_values_count > 1 else compound_values[additional_fields[j]])
+                                additional_fields[j],
+                                compound_values[additional_fields[j]][i] if compound_values_count > 1 else compound_values[additional_fields[j]])
 
             return result_index.values()
         else:

@@ -1216,12 +1216,12 @@
                         // if ($highlighted.attr('aria-selected') == 'true') {
                         //     self.trigger('close', {});
                         // } else {
-                            self.trigger('select', {
-                                data: {
-                                    id: data.map((e) => e.id),
-                                    data: data,
-                                }
-                            });
+                        self.trigger('select', {
+                            data: {
+                                id: data.map((e) => e.id),
+                                data: data,
+                            }
+                        });
                         // }
                     });
 
@@ -1650,9 +1650,48 @@
             function ($, BaseSelection, Utils, KEYS) {
                 function SingleSelection() {
                     SingleSelection.__super__.constructor.apply(this, arguments);
+
+                    var initialIndex = 0;
+                    this._dataComponent = {
+                        index: initialIndex,
+                        model: Object.values(this.options.options.components[initialIndex])[0],
+                        field: Object.keys(this.options.options.components[initialIndex])[0],
+                    }
                 }
 
                 Utils.Extend(SingleSelection, BaseSelection);
+
+                SingleSelection.prototype.isLastDataComponent = function () {
+                    return true;
+                };
+
+                SingleSelection.prototype.setDataComponent = function (decorated, data) {
+                    var dataComponentIndex = this._dataComponent.index;
+                    var dataComponents = this.container.options.options.components;
+                    if (dataComponents.length <= dataComponentIndex || dataComponentIndex < 0) {
+                        throw `Invalid index ${dataComponentIndex} for request data-component. The data-components count is ${dataComponents.length}.`;
+                    }
+
+                    var dataVector = this.dataVector();
+                    if (data) {
+                        dataVector[dataComponentIndex] = data;
+                    } else {
+                        var term = this.$search.val();
+                        dataVector[dataComponentIndex] = {
+                            id: term,
+                            text: term,
+                        };
+                    }
+                };
+
+                SingleSelection.prototype.dataVector = function () {
+                    var result = Utils.GetData(this.$selection[0], 'data');
+                    if (result === null || result === undefined) {
+                        result = [];
+                        Utils.StoreData(this.$selection[0], 'data', result);
+                    }
+                    return result;
+                };
 
                 SingleSelection.prototype.render = function () {
                     var $selection = SingleSelection.__super__.render.call(this);
@@ -1893,6 +1932,7 @@
             function (Utils) {
                 function Placeholder(decorated, $element, options) {
                     this.placeholder = this.normalizePlaceholder(options.get('placeholder'));
+
 
                     decorated.call(this, $element, options);
                 }
@@ -2156,9 +2196,9 @@
 
                         var key = evt.which;
 
-                        if (key === KEYS.BACKSPACE
-                            && self.$search.val() === ''
-                            && self.container.selection.isFirstDataComponent()) {
+                        if (key === KEYS.BACKSPACE &&
+                            self.$search.val() === '' &&
+                            self.container.selection.isFirstDataComponent()) {
                             var $previousChoice = self.$searchContainer
                                 .prev('.extended-autocomplete-select-multiply-selection__choice');
 
@@ -2169,8 +2209,8 @@
 
                                 evt.preventDefault();
                             }
-                        } else if (key === KEYS.BACKSPACE
-                            && self.$search.val() === '') {
+                        } else if (key === KEYS.BACKSPACE &&
+                            self.$search.val() === '') {
                             self.container.selection.removeLastDataComponent();
                         }
                     });
@@ -3663,7 +3703,7 @@
                             disabled: $option.prop('disabled'),
                             selected: $option.prop('selected'),
                             title: $option.prop('title'),
-                            data: $option.attr('data') ? JSON.parse($option.attr('data')): null,
+                            data: $option.attr('data') ? JSON.parse($option.attr('data')) : null,
                         };
                     } else if ($option.is('optgroup')) {
                         data = {
@@ -4376,7 +4416,16 @@
                 '../utils'
             ],
             function ($, Utils) {
-                function Search() {}
+                function Search(decorated, $element, options) {
+                    var initialIndex = 0;
+                    this._dataComponent = {
+                        index: initialIndex,
+                        model: Object.values(options.options.components[initialIndex])[0],
+                        field: Object.keys(options.options.components[initialIndex])[0],
+                    }
+
+                    decorated.call(this, $element, options);
+                }
 
                 Search.prototype.render = function (decorated) {
                     var $rendered = decorated.call(this);
@@ -6069,16 +6118,6 @@
                                 evt.preventDefault();
                             }
                         }
-
-                        // TODO: if components count > 1 and component_index < components count - 1
-                        // Update component_selector
-                        // Switch component index only
-                        var $input = self.$selection.find('input');
-                        var componentsCount = ($input.val().match(/([^\u2022]+)\u2022/g) || []).length;
-                        if (key === 0x2022) {
-                            componentsCount += 1;
-                        }
-                        $input.attr('component_selector', componentsCount);
                     });
                 };
 
