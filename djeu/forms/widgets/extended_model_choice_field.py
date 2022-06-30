@@ -73,8 +73,7 @@ class ExtendedModelChoiceField(ModelChoiceField):
                     particular_field_value) if particular_field_value.isdigit() else None
                 if not pk_value and missed_key_procedure:
                     # For ForeignKey
-                    django_model = through._meta.get_field(
-                        particular_field_name).related_model if self.widget.field.through else through
+                    django_model = through
                     pk_value = missed_key_procedure(
                         django_model, particular_field_value)
                 if not pk_value:
@@ -176,12 +175,15 @@ class ExtendedModelChoiceField(ModelChoiceField):
             return self.queryset.none()
 
     def clean(self, value):
-        if self.widget and self.widget.field and self.widget.field.through:
-            # Search by field. Eager approach
-            through = self.widget.field.through
-            compound_key = self.widget.field.key_data_components
-            additional_fields = self.widget.field.additional_fields
+        # if self.widget and self.widget.field and self.widget.field.through:
+        #     # Search by field. Eager approach
+        #     through = self.widget.field.through
+        #     compound_key = self.widget.field.key_data_components
+        #     additional_fields = self.widget.field.additional_fields
 
-            return self._request_explicit_values(through, compound_key, additional_fields, value)
+        #     return self._request_explicit_values(through, compound_key, additional_fields, value)
 
-        return self._request_implicit_values(self.widget.field.remote_field.model, value)
+        result = self._request_implicit_values(self.widget.field.remote_field.model, [value])
+        if result:
+            return result[0]
+        return None
