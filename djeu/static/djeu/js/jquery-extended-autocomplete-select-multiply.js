@@ -1665,7 +1665,11 @@
                     return true;
                 };
 
-                SingleSelection.prototype.setDataComponent = function (decorated, data) {
+                SingleSelection.prototype.isFirstDataComponent = function () {
+                    return true;
+                };
+
+                SingleSelection.prototype.setDataComponent = function (data) {
                     var dataComponentIndex = this._dataComponent.index;
                     var dataComponents = this.container.options.options.components;
                     if (dataComponents.length <= dataComponentIndex || dataComponentIndex < 0) {
@@ -1676,7 +1680,8 @@
                     if (data) {
                         dataVector[dataComponentIndex] = data;
                     } else {
-                        var term = this.$search.val();
+                        var $input = this.container.$dropdown.find('input');
+                        var term = $input.val();
                         dataVector[dataComponentIndex] = {
                             id: term,
                             text: term,
@@ -1691,6 +1696,10 @@
                         Utils.StoreData(this.$selection[0], 'data', result);
                     }
                     return result;
+                };
+
+                SingleSelection.prototype.reset = function () {
+                    console.log('OK');
                 };
 
                 SingleSelection.prototype.render = function () {
@@ -1751,16 +1760,17 @@
                     var $rendered = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered');
                     $rendered.empty();
                     $rendered.removeAttr('title'); // clear tooltip on empty
-                    //TODO: SingleSelection.prototype.clear
-                    var $input = this.$selection.find('input');
-                    $input.attr('component_selector', 0);
                 };
 
                 SingleSelection.prototype.display = function (data, container) {
-                    var template = this.options.get('templateSelection');
-                    var escapeMarkup = this.options.get('escapeMarkup');
+                    // var template = this.options.get('templateSelection');
+                    // var escapeMarkup = this.options.get('escapeMarkup');
 
-                    return escapeMarkup(template(data, container));
+                    // return escapeMarkup(template(data, container));
+                    if (data.data) {
+                        return data.data.map((e) => `<span class="extended-autocomplete-select-multiply-selection__span">${e.text}</span>`).join('');
+                    }
+                    return [data.text].map((s) => `<span class="extended-autocomplete-select-multiply-selection__span">${s}</span>`).join('');
                 };
 
                 SingleSelection.prototype.selectionContainer = function () {
