@@ -4,14 +4,14 @@ from typing import Optional
 from django.db import models
 from django.db.models import Manager
 from django.contrib import admin
-from django.forms.models import ModelMultipleChoiceField
+from django.forms.models import ModelChoiceField
 
-from .extended_autocomplete_select_multiply import ExtendedAutocompleteSelectMultiple
+from .widgets.extended_autocomplete_select import ExtendedAutocompleteSelect
 
 
-class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
+class ExtendedModelChoiceField(ModelChoiceField):
 
-    widget = ExtendedAutocompleteSelectMultiple
+    widget = ExtendedAutocompleteSelect
 
     def __init__(self, queryset, **kwargs):
         if 'widget' in kwargs:
@@ -73,8 +73,7 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
                     particular_field_value) if particular_field_value.isdigit() else None
                 if not pk_value and missed_key_procedure:
                     # For ForeignKey
-                    django_model = through._meta.get_field(
-                        particular_field_name).related_model if self.widget.field.through else through
+                    django_model = through
                     pk_value = missed_key_procedure(
                         django_model, particular_field_value)
                 if not pk_value:
@@ -175,13 +174,25 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
         else:
             return self.queryset.none()
 
+    def _remote_model(self):
+        if hasattr(self.widget, 'widget') and self.widget.widget.__class__.__name__ == 'ExtendedAutocompleteSelect':
+            return self.widget.widget.field.remote_field.model
+        if self.widget.__class__.__name__ == 'ExtendedAutocompleteSelect':
+            return self.widget.field.remote_field.model
+        raise BaseException('The widget ExtendedAutocompleteSelect was not found')
+
     def clean(self, value):
-        if self.widget and self.widget.field and self.widget.field.through:
-            # Search by field. Eager approach
-            through = self.widget.field.through
-            compound_key = self.widget.field.key_data_components
-            additional_fields = self.widget.field.additional_fields
+        # if self.widget and self.widget.field and self.widget.field.through:
+        #     # Search by field. Eager approach
+        #     through = self.widget.field.through
+        #     compound_key = self.widget.field.key_data_components
+        #     additional_fields = self.widget.field.additional_fields
 
-            return self._request_explicit_values(through, compound_key, additional_fields, value)
+        #     return self._request_explicit_values(through, compound_key, additional_fields, value)
 
-        return self._request_implicit_values(self.widget.field.remote_field.model, value)
+        if not value:
+            return None
+        result = self._request_implicit_values(self._remote_model(), [value])
+        if result:
+            return result[0]
+        return None

@@ -17,9 +17,9 @@ class PartialDatePickerInput(DatePickerInput):
         return context
 
     @staticmethod
-    def prepare_value(value) -> str:
+    def prepare_value(value, default_value='-') -> str:
         if not value:
-            return '-'
+            return default_value
         if isinstance(value, date):
             value = value.isoformat()
 

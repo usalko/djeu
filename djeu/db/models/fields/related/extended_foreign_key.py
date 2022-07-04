@@ -1,5 +1,5 @@
 from django.db.models.fields.related import ForeignKey, RelatedField
-from djeu.forms.widgets import ExtendedModelChoiceField
+from djeu.forms import ExtendedModelChoiceField
 
 
 class ExtendedForeignKey(ForeignKey):

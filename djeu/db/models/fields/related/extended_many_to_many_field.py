@@ -1,6 +1,6 @@
 from django.db.models import Model
 from django.db.models.fields.related import ManyToManyField, RelatedField
-from djeu.forms.widgets import ExtendedModelMultipleChoiceField
+from djeu.forms import ExtendedModelMultipleChoiceField
 
 
 class ExtendedManyToManyField(ManyToManyField):
