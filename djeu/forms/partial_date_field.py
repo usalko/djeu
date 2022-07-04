@@ -25,10 +25,10 @@ class PartialDateField(forms.DateField):
         if '_' in value: # Only %d.%m.%Y format supported
             if format != '%d.%m.%Y':
                 raise BaseException(f'The date format \'{format}\' is not supported. Please, try to implement it.')
-            date = value.split('.')
-            day = date[0] if len(date) > 0 else '__'
-            month = date[1] if len(date) > 1 else '__'
-            year = date[2] if len(date) > 2 else '____'
+            iso_value = value.split('.')
+            day = iso_value[0] if len(iso_value) > 0 else '__'
+            month = iso_value[1] if len(iso_value) > 1 else '__'
+            year = iso_value[2] if len(iso_value) > 2 else '____'
             return f'{year}-{month}-{day}'
         else:
             return datetime.strptime(value, format).date().isoformat()

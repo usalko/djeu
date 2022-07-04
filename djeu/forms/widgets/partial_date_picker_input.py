@@ -23,10 +23,10 @@ class PartialDatePickerInput(DatePickerInput):
         if isinstance(value, date):
             value = value.isoformat()
 
-        date = value.split('-')
-        year = date[0] if len(date) > 0 else '____'
-        month = date[1] if len(date) > 1 else '__'
-        day = date[2] if len(date) > 2 else '__'
+        iso_value = value.split('-')
+        year = iso_value[0] if len(iso_value) > 0 else '____'
+        month = iso_value[1] if len(iso_value) > 1 else '__'
+        day = iso_value[2] if len(iso_value) > 2 else '__'
         return f'{day}.{month}.{year}'
 
     @staticmethod
