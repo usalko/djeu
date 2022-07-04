@@ -1,3 +1,4 @@
+from datetime import date
 from django import forms
 from django.conf import settings
 from django.shortcuts import render
@@ -19,6 +20,9 @@ class PartialDatePickerInput(DatePickerInput):
     def prepare_value(value) -> str:
         if not value:
             return '-'
+        if isinstance(value, date):
+            value = value.isoformat()
+
         date = value.split('-')
         year = date[0] if len(date) > 0 else '____'
         month = date[1] if len(date) > 1 else '__'
