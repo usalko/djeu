@@ -17,6 +17,8 @@ class PartialDatePickerInput(DatePickerInput):
 
     @staticmethod
     def prepare_value(value) -> str:
+        if not value:
+            return '-'
         date = value.split('-')
         year = date[0] if len(date) > 0 else '____'
         month = date[1] if len(date) > 1 else '__'
@@ -26,8 +28,6 @@ class PartialDatePickerInput(DatePickerInput):
     def render(self, name, value, attrs=None, renderer=None):
         """Render the widget as an HTML string."""
         if hasattr(self, 'read_only') and self.read_only:
-            if not value:
-                return '-'
             return self.prepare_value(value)
         return super(PartialDatePickerInput, self).render(name, value, attrs=attrs, renderer=renderer)
 
