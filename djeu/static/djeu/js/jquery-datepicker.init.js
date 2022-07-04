@@ -12,7 +12,7 @@
         $( '.datepicker' ).datepicker({
             changeMonth: true,
             changeYear: true,
-            yearRange: '1850:1997',
+            yearRange: '1850:2050',
             dateFormat: 'dd.mm.yy',
             regional: 'ru-RU',
         });

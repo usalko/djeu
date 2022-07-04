@@ -6,3 +6,4 @@ from .extended_model_multiple_choice_field import *
 from .extended_autocomplete_select import *
 from .extended_model_choice_field import *
 from .pdf_viewer_input import *
+from .partial_date_picker_input import *

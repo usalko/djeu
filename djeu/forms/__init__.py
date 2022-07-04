@@ -21,3 +21,4 @@ from django.core.exceptions import ImproperlyConfigured
 #    raise ImproperlyConfigured('django-crispy-contact-form application requires bleach package')
 
 from .julian_date_field import *
+from .partial_date_field import *

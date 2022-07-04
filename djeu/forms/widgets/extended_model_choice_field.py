@@ -183,6 +183,8 @@ class ExtendedModelChoiceField(ModelChoiceField):
 
         #     return self._request_explicit_values(through, compound_key, additional_fields, value)
 
+        if not value:
+            return None
         result = self._request_implicit_values(self.widget.field.remote_field.model, [value])
         if result:
             return result[0]
