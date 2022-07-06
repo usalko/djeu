@@ -1797,11 +1797,11 @@
 
                     var self = this;
                     var refreshData = function(data) {
-                        if (!data.text) {
-                            return;
-                        }
                         if (!data.hasOwnProperty('json')) {
-                            data.json = JSON.parse(data.text);
+                                if (!data.text) {
+                                    return;
+                                }
+                                data.json = JSON.parse(data.text);
                             data.text = data.json[self._representationIndex];
                         } else {
                             data.text = data.json[self._representationIndex];
