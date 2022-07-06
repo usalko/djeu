@@ -1,0 +1,291 @@
+select.admin-autocomplete {
+    width: 20em;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container {
+    min-height: 30px;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--single,
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--multiple {
+    min-height: 30px;
+    padding: 0;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--focus .nationality-autocomplete-select-multiply-selection,
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--open .nationality-autocomplete-select-multiply-selection {
+    border-color: var(--body-quiet-color);
+    min-height: 30px;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--focus .nationality-autocomplete-select-multiply-selection.nationality-autocomplete-select-multiply-selection--single,
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--open .nationality-autocomplete-select-multiply-selection.nationality-autocomplete-select-multiply-selection--single {
+    padding: 0;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--focus .nationality-autocomplete-select-multiply-selection.nationality-autocomplete-select-multiply-selection--multiple,
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--open .nationality-autocomplete-select-multiply-selection.nationality-autocomplete-select-multiply-selection--multiple {
+    padding: 0;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--single {
+    background-color: var(--body-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0px;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--single .nationality-autocomplete-select-multiply-selection__rendered {
+    color: var(--body-fg);
+    line-height: 30px;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--single .nationality-autocomplete-select-multiply-selection__clear {
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--single .nationality-autocomplete-select-multiply-selection__placeholder {
+    color: var(--body-quiet-color);
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--single .nationality-autocomplete-select-multiply-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 20px;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--single .nationality-autocomplete-select-multiply-selection__arrow b {
+    border-color: #888 transparent transparent transparent;
+    border-style: solid;
+    border-width: 5px 4px 0 4px;
+    height: 0;
+    left: 50%;
+    margin-left: -4px;
+    margin-top: -2px;
+    position: absolute;
+    top: 50%;
+    width: 0;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete[dir="rtl"] .nationality-autocomplete-select-multiply-selection--single .nationality-autocomplete-select-multiply-selection__clear {
+    float: left;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete[dir="rtl"] .nationality-autocomplete-select-multiply-selection--single .nationality-autocomplete-select-multiply-selection__arrow {
+    left: 1px;
+    right: auto;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--disabled .nationality-autocomplete-select-multiply-selection--single {
+    background-color: var(--darkened-bg);
+    cursor: default;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--disabled .nationality-autocomplete-select-multiply-selection--single .nationality-autocomplete-select-multiply-selection__clear {
+    display: none;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--open .nationality-autocomplete-select-multiply-selection--single .nationality-autocomplete-select-multiply-selection__arrow b {
+    border-color: transparent transparent #888 transparent;
+    border-width: 0 4px 5px 4px;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--multiple {
+    background-color: var(--body-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0px;
+    cursor: text;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-selection__rendered {
+    box-sizing: border-box;
+    list-style: none;
+    margin: 0;
+    padding: 0 10px 5px 5px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-selection__rendered li {
+    list-style: none;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-selection__placeholder {
+    color: var(--body-quiet-color);
+    margin-top: 5px;
+    float: left;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-selection__clear {
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+    margin: 5px;
+    position: absolute;
+    right: 0;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-selection__choice {
+    background-color: var(--darkened-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0px;
+    cursor: default;
+    float: left;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-selection__choice__remove {
+    color: var(--body-quiet-color);
+    cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 2px;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-selection__choice__remove:hover {
+    color: var(--body-fg);
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete[dir="rtl"] .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-selection__choice, .nationality-autocomplete-select-multiply-container--admin-autocomplete[dir="rtl"] .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-selection__placeholder, .nationality-autocomplete-select-multiply-container--admin-autocomplete[dir="rtl"] .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-search--inline {
+    float: right;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete[dir="rtl"] .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-selection__choice {
+    margin-left: 5px;
+    margin-right: auto;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete[dir="rtl"] .nationality-autocomplete-select-multiply-selection--multiple .nationality-autocomplete-select-multiply-selection__choice__remove {
+    margin-left: 2px;
+    margin-right: auto;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--focus .nationality-autocomplete-select-multiply-selection--multiple {
+    border: solid var(--body-quiet-color) 1px;
+    outline: 0;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--disabled .nationality-autocomplete-select-multiply-selection--multiple {
+    background-color: var(--darkened-bg);
+    cursor: default;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--disabled .nationality-autocomplete-select-multiply-selection__choice__remove {
+    display: none;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--open.nationality-autocomplete-select-multiply-container--above .nationality-autocomplete-select-multiply-selection--single, .nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--open.nationality-autocomplete-select-multiply-container--above .nationality-autocomplete-select-multiply-selection--multiple {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--open.nationality-autocomplete-select-multiply-container--below .nationality-autocomplete-select-multiply-selection--single, .nationality-autocomplete-select-multiply-container--admin-autocomplete.nationality-autocomplete-select-multiply-container--open.nationality-autocomplete-select-multiply-container--below .nationality-autocomplete-select-multiply-selection--multiple {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-search--dropdown {
+    background: var(--darkened-bg);
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-search--dropdown .nationality-autocomplete-select-multiply-search__field {
+    background: var(--body-bg);
+    color: var(--body-fg);
+    border: 1px solid var(--border-color);
+    border-radius: 0px;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-search--inline .nationality-autocomplete-select-multiply-search__field {
+    background: transparent;
+    color: var(--body-fg);
+    border: none;
+    outline: 0;
+    box-shadow: none;
+    -webkit-appearance: textfield;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results>.nationality-autocomplete-select-multiply-results__options {
+    max-height: 200px;
+    overflow-y: auto;
+    color: var(--body-fg);
+    background: var(--body-bg);
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__option[role=group] {
+    padding: 0;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__option[aria-disabled=true] {
+    color: var(--body-quiet-color);
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__option[aria-selected=true] {
+    background-color: rgba(0,0,0,0.11);
+    color: rgba(0,0,0,1);
+    margin-top: 1px;
+    margin-right: 1px;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option {
+    padding-left: 1em;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__group {
+    padding-left: 0;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option {
+    margin-left: -1em;
+    padding-left: 2em;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option {
+    margin-left: -2em;
+    padding-left: 3em;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option {
+    margin-left: -3em;
+    padding-left: 4em;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option {
+    margin-left: -4em;
+    padding-left: 5em;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option .nationality-autocomplete-select-multiply-results__option {
+    margin-left: -5em;
+    padding-left: 6em;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__option--highlighted[aria-selected] {
+    background-color: rgba(0,0,0,0.11);
+    color: rgba(0,0,0,1);
+    margin-top: 1px;
+    margin-right: 1px;
+}
+
+.nationality-autocomplete-select-multiply-container--admin-autocomplete .nationality-autocomplete-select-multiply-results__group {
+    cursor: default;
+    display: block;
+    padding: 6px;
+}
+
+.nationality-autocomplete-select-multiply-selection__span {
+    padding: 2px;
+    border-left: dashed 1px rgba(0,0,0,0.11);
+    margin: 2px 3px 0px 3px;
+}
+
+.nationality-autocomplete-select-multiply-selection__span_input {
+    padding: 2px;
+    border-left: dashed 1px rgba(0,0,0,0.11);
+    margin: 2px 3px 0px 3px;
+}

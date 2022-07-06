@@ -24,3 +24,4 @@ from .julian_date_field import *
 from .partial_date_field import *
 from .extended_model_choice_field import *
 from .extended_model_multiple_choice_field import *
+from .nationality_model_choice_field import *
