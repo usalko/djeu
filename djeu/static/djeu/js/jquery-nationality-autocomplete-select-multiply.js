@@ -1845,7 +1845,7 @@
                     }
 
                     if (selection.hasOwnProperty('data') && selection.data) {
-                        this.setDataComponent(selection.data);
+                        this.setDataComponent(selection.data[0]);
 
                     } else {
                         this.setDataComponent(selection);
