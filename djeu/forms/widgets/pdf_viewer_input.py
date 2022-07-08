@@ -9,6 +9,10 @@ class PdfViewerInput(forms.FileInput):
     template_name = 'djeu/forms/widgets/pdf-viewer-input.html'
     #template_name = 'django/forms/widgets/clearable_file_input.html'
 
+    def __init__(self, attrs=None, use_admin_site_jquery=True, **kwargs):
+        super().__init__(attrs, **kwargs)
+        self.use_admin_site_jquery = use_admin_site_jquery
+
     def format_value(self, value):
         """File input never renders a value."""
         if self.is_initial(value):
@@ -36,17 +40,32 @@ class PdfViewerInput(forms.FileInput):
     @property
     def media(self):
         extra = '' if settings.DEBUG else '.min'
-        return forms.Media(
-            js=(
-                'admin/js/vendor/jquery/jquery%s.js' % extra,
-                'djeu/js/jquery-pdf-viewer.js',
-                'djeu/js/jquery-pdf-viewer.init.js',
-            ) + (
-                'admin/js/jquery.init.js',
-            ),
-            css={
-                'screen': (
-                    'djeu/css/jquery-pdf-viewer.default.css',
+        if self.use_admin_site_jquery:
+            return forms.Media(
+                js=(
+                    'admin/js/vendor/jquery/jquery%s.js' % extra,
+                    'djeu/js/jquery-pdf-viewer.js',
+                    'djeu/js/jquery-pdf-viewer.init.js',
+                )
+                + (
+                    'admin/js/jquery.init.js',
+                )
+                ,
+                css={
+                    'screen': (
+                        'djeu/css/jquery-pdf-viewer.default.css',
+                    ),
+                },
+            )
+        else:
+            return forms.Media(
+                js=(
+                    'djeu/js/jquery-pdf-viewer.js',
+                    'djeu/js/jquery-pdf-viewer.init.js',
                 ),
-            },
-        )
+                css={
+                    'screen': (
+                        'djeu/css/jquery-pdf-viewer.default.css',
+                    ),
+                },
+            )
