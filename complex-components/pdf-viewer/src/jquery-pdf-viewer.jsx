@@ -118,22 +118,37 @@ if (typeof jQuery !== 'undefined') {
 
             function renderPreview() {
 
-                var instance = this;
-
-                $preview.html("");
+                if ($preview[0].hasOwnProperty('_reactRootContainer')) {
+                    // FIXME: Add listenersnot for window level but element level only
+                    window.dispatchEvent(new CustomEvent(
+                        'setPDFwrapperUrl', {
+                        detail: {
+                            url: null,
+                        }
+                    }))
+                }
 
                 // Loop through the FileList and render image files as thumbnails.
                 $(files).each(function () {
                     if (!this.type.match('application/pdf')) {
                         return;
                     }
-                    var fileUrl = files[0].src;
-                    // this.settings.highlights
-                    // var $thumbnail = ;
-                    ReactDOM.render(
-                        <PDFwrapper url={fileUrl} />,
-                        $preview[0]
-                    );
+                    var fileUrl = files[0].src
+
+                    if ($preview[0].hasOwnProperty('_reactRootContainer')) {
+                        // FIXME: Add listenersnot for window level but element level only
+                        window.dispatchEvent(new CustomEvent(
+                            'setPDFwrapperUrl', {
+                            detail: {
+                                url: fileUrl,
+                            }
+                        }))
+                    } else {
+                        ReactDOM.render(
+                            <PDFwrapper url={fileUrl} />,
+                            $preview[0]
+                        );
+                    }
 
                     //$preview.append($thumbnail);
 

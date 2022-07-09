@@ -7,10 +7,11 @@ import {
   Popup,
   AreaHighlight,
 } from "react-pdf-highlighter";
-import { Component, ReactNode } from "react";
+import { Component, ReactNode, useEffect } from "react";
 import { Spinner } from "./Spinner";
 import { testHighlights as _testHighlights } from "./test-highlights";
 import { Sidebar } from "./Sidebar";
+import { url } from "inspector";
 
 const testHighlights: Record<string, Array<IHighlight>> = _testHighlights;
 
@@ -44,6 +45,9 @@ const HighlightPopup = ({
 
 class PDFwrapper extends Component<{}, State> {
 
+  // FIXME: Add listenersnot for window level but element level only
+  listener: any
+
   constructor(props: any) {
     super(props)
     this.state = {
@@ -76,11 +80,26 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   componentDidMount() {
+    // FIXME: Add listenersnot for window level but element level only
     window.addEventListener(
       "hashchange",
       this.scrollToHighlightFromHash,
       false
     )
+
+    // FIXME: Add listenersnot for window level but element level only
+    if (!this.listener) {
+      this.listener = window.addEventListener('setPDFwrapperUrl',
+        (e: Event) => {
+          if (e instanceof CustomEvent) {
+            console.log(e)
+            if (e?.detail?.url) {
+              this.toggleDocument(e?.detail?.url)
+            }
+          }
+        })
+    }
+
   }
 
   getHighlightById(id: string) {
@@ -120,6 +139,10 @@ class PDFwrapper extends Component<{}, State> {
           : h
       }),
     });
+  }
+
+  componentDidUpdate(prevProps: any, prevState: State): void {
+    console.log(prevState)
   }
 
   render() {

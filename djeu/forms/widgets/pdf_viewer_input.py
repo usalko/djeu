@@ -45,6 +45,7 @@ class PdfViewerInput(forms.FileInput):
                 js=(
                     'admin/js/vendor/jquery/jquery%s.js' % extra,
                     'djeu/js/jquery-pdf-viewer.js',
+                    'djeu/js/jquery-pdf-viewer.js.map',
                     'djeu/js/jquery-pdf-viewer.init.js',
                 )
                 + (
@@ -61,6 +62,7 @@ class PdfViewerInput(forms.FileInput):
             return forms.Media(
                 js=(
                     'djeu/js/jquery-pdf-viewer.js',
+                    'djeu/js/jquery-pdf-viewer.js.map',
                     'djeu/js/jquery-pdf-viewer.init.js',
                 ),
                 css={

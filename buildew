@@ -162,7 +162,7 @@ function npm_build {
 
 function build {
     react_build jquery-pdf-viewer complex-components/pdf-viewer djeu/static/djeu
-    npm_build jquery-calendars complex-components/jquery-calendars djeu/static/djeu
+    # npm_build jquery-calendars complex-components/jquery-calendars djeu/static/djeu
 }
 
 if [ "x$COMMAND" == "xbuild" ]; then
