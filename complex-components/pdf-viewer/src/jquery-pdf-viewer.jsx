@@ -121,7 +121,7 @@ if (typeof jQuery !== 'undefined') {
                 if ($preview[0].hasOwnProperty('_reactRootContainer')) {
                     // FIXME: Add listenersnot for window level but element level only
                     window.dispatchEvent(new CustomEvent(
-                        'setPDFwrapperUrl', {
+                        'jquery-pdf-viewer:setPDFwrapperUrl', {
                         detail: {
                             url: null,
                         }
@@ -138,7 +138,7 @@ if (typeof jQuery !== 'undefined') {
                     if ($preview[0].hasOwnProperty('_reactRootContainer')) {
                         // FIXME: Add listenersnot for window level but element level only
                         window.dispatchEvent(new CustomEvent(
-                            'setPDFwrapperUrl', {
+                            'jquery-pdf-viewer:setPDFwrapperUrl', {
                             detail: {
                                 url: fileUrl,
                             }

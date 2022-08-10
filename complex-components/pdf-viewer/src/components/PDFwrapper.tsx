@@ -85,7 +85,7 @@ class PDFwrapper extends Component<{}, State> {
 
     // FIXME: Add listenersnot for window level but element level only
     if (!this.listener) {
-      this.listener = window.addEventListener('setPDFwrapperUrl',
+      this.listener = window.addEventListener('jquery-pdf-viewer:setPDFwrapperUrl',
         (e: Event) => {
           if (e instanceof CustomEvent) {
             console.log(e)
@@ -107,7 +107,11 @@ class PDFwrapper extends Component<{}, State> {
   addHighlight(highlight: NewHighlight) {
     const { highlights } = this.state
 
-    console.log("Saving highlight", highlight)
+    // console.log("Saving highlight", highlight)
+
+    window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlight', {
+      detail: highlight
+    }))
 
     this.setState({
       highlights: [{ ...highlight, id: getNextId() }, ...highlights],
@@ -138,7 +142,7 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   componentDidUpdate(prevProps: any, prevState: State): void {
-    console.log(prevState)
+    // console.log(prevState)
   }
 
   render() {

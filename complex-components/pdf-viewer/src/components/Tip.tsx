@@ -36,7 +36,18 @@ export class Tip extends Component<Props, State> {
 
     return (
       <div className="Tip">
-        {compact ? (
+        <div
+          className="Tip__compact"
+          onClick={(event) => {
+            event.preventDefault();
+            onOpen();
+            this.setState({ compact: false });
+            onConfirm({ text, emoji });
+          }}
+        >
+          Добавить цитату
+        </div>
+        {/* {compact ? (
           <div
             className="Tip__compact"
             onClick={() => {
@@ -89,7 +100,7 @@ export class Tip extends Component<Props, State> {
               <input type="submit" value="Save" />
             </div>
           </form>
-        )}
+        )} */}
       </div>
     );
   }
