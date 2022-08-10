@@ -172,7 +172,8 @@ if (typeof jQuery !== 'undefined') {
             function layout() {
                 $element.css({
                     position: 'absolute',
-                    visibility: 'hidden'
+                    visibility: 'hidden',
+                    display: 'none',
                 });
                 if (typeof options.resize == "function") {
                     options.resize.call(this);

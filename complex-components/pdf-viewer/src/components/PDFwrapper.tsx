@@ -1,12 +1,11 @@
 import { IHighlight, NewHighlight, PDFurl } from "../types/data";
 import {
-  PdfLoader,
-  PdfHighlighter,
-  Tip,
-  Highlight,
-  Popup,
-  AreaHighlight,
-} from "react-pdf-highlighter";
+  PdfLoader } from './PdfLoader';
+  import {PdfHighlighter} from 
+  Tip;
+  Highlight;
+  Popup;
+  AreaHighlight;
 import { Component, ReactNode, useEffect } from "react";
 import { Spinner } from "./Spinner";
 import { testHighlights as _testHighlights } from "./test-highlights";
@@ -150,10 +149,10 @@ class PDFwrapper extends Component<{}, State> {
 
     return (
       <div className="App" style={{ display: "flex", height: "100vh" }}>
-        <Sidebar
+        {/* <Sidebar
           highlights={highlights}
           resetHighlights={this.resetHighlights}
-        />
+        /> */}
         <div
           style={{
             height: "100vh",
