@@ -1,5 +1,8 @@
-import React from "react";
-import type { IHighlight } from "react-pdf-highlighter";
+import type {
+  IHighlight
+} from "../types";
+
+
 
 interface Props {
   highlights: Array<IHighlight>;

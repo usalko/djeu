@@ -1,11 +1,9 @@
-import React, { PointerEventHandler, PureComponent } from "react";
-import ReactDom from "react-dom";
 import debounce from "lodash.debounce";
+import { PointerEventHandler, PureComponent } from "react";
+import ReactDom from "react-dom";
 
 import {
-  EventBus,
-  PDFViewer,
-  PDFLinkService,
+  EventBus, PDFLinkService, PDFViewer
 } from "pdfjs-dist/legacy/web/pdf_viewer";
 
 import "pdfjs-dist/web/pdf_viewer.css";
@@ -13,33 +11,24 @@ import "../style/pdf_viewer.css";
 
 import "../style/PdfHighlighter.css";
 
+import getAreaAsPng from "../lib/get-area-as-png";
 import getBoundingRect from "../lib/get-bounding-rect";
 import getClientRects from "../lib/get-client-rects";
-import getAreaAsPng from "../lib/get-area-as-png";
 
 import {
-  asElement,
-  getPagesFromRange,
-  getPageFromElement,
-  getWindow,
-  findOrCreateContainerLayer,
-  isHTMLElement,
+  asElement, findOrCreateContainerLayer, getPageFromElement, getPagesFromRange, getWindow, isHTMLElement
 } from "../lib/pdfjs-dom";
 
-import TipContainer from "./TipContainer";
 import MouseSelection from "./MouseSelection";
+import TipContainer from "./TipContainer";
 
 import { scaledToViewport, viewportToScaled } from "../lib/coordinates";
 
-import type {
-  Position,
-  ScaledPosition,
-  IHighlight,
-  Scaled,
-  LTWH,
-  LTWHP,
-} from "../types";
 import type { PDFDocumentProxy } from "pdfjs-dist";
+import type {
+  IHighlight, LTWH,
+  LTWHP, Position, Scaled, ScaledPosition
+} from "../types";
 
 type T_ViewportHighlight<T_HT> = { position: Position } & T_HT;
 
@@ -229,7 +218,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
     const groupedHighlights = {} as Record<number, any[]>;
 
-    for (const pageNumber of pageNumbers) {
+    for (const pageNumber of Array.from(pageNumbers)) {
       groupedHighlights[pageNumber] = groupedHighlights[pageNumber] || [];
       for (const highlight of allHighlights) {
         const pageSpecificHighlight = {

@@ -1,16 +1,13 @@
-import { IHighlight, NewHighlight, PDFurl } from "../types/data";
-import {
-  PdfLoader } from './PdfLoader';
-  import {PdfHighlighter} from 
-  Tip;
-  Highlight;
-  Popup;
-  AreaHighlight;
-import { Component, ReactNode, useEffect } from "react";
+import { Component } from "react";
+import { IHighlight, NewHighlight } from "../types/data";
+import { AreaHighlight } from './AreaHighlight';
+import { Highlight } from './Highlight';
+import { PdfHighlighter } from './PdfHighlighter';
+import { PdfLoader } from './PdfLoader';
+import { Popup } from './Popup';
 import { Spinner } from "./Spinner";
 import { testHighlights as _testHighlights } from "./test-highlights";
-import { Sidebar } from "./Sidebar";
-import { url } from "inspector";
+import { Tip } from './Tip';
 
 const testHighlights: Record<string, Array<IHighlight>> = _testHighlights;
 

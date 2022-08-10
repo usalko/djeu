@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 
 import { Rnd } from "react-rnd";
 import { getPageFromElement } from "../lib/pdfjs-dom";
