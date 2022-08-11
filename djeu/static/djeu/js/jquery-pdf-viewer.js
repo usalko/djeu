@@ -7,55 +7,28 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* export default binding */ __WEBPACK_DEFAULT_EXPORT__; }
+/* harmony export */   "clsx": function() { return /* binding */ clsx; }
 /* harmony export */ });
-function toVal(mix) {
-  var k,
-      y,
-      str = '';
-
-  if (typeof mix === 'string' || typeof mix === 'number') {
-    str += mix;
-  } else if (typeof mix === 'object') {
-    if (Array.isArray(mix)) {
-      for (k = 0; k < mix.length; k++) {
-        if (mix[k]) {
-          if (y = toVal(mix[k])) {
-            str && (str += ' ');
-            str += y;
-          }
-        }
-      }
-    } else {
-      for (k in mix) {
-        if (mix[k]) {
-          str && (str += ' ');
-          str += k;
-        }
-      }
-    }
+function r(e) {
+  var t,
+      f,
+      n = "";
+  if ("string" == typeof e || "number" == typeof e) n += e;else if ("object" == typeof e) if (Array.isArray(e)) for (t = 0; t < e.length; t++) {
+    e[t] && (f = r(e[t])) && (n && (n += " "), n += f);
+  } else for (t in e) {
+    e[t] && (n && (n += " "), n += t);
   }
-
-  return str;
+  return n;
 }
 
-/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__() {
-  var i = 0,
-      tmp,
-      x,
-      str = '';
-
-  while (i < arguments.length) {
-    if (tmp = arguments[i++]) {
-      if (x = toVal(tmp)) {
-        str && (str += ' ');
-        str += x;
-      }
-    }
+function clsx() {
+  for (var e, t, f = 0, n = ""; f < arguments.length;) {
+    (e = arguments[f++]) && (t = r(e)) && (n && (n += " "), n += t);
   }
 
-  return str;
+  return n;
 }
+/* harmony default export */ __webpack_exports__["default"] = (clsx);
 
 /***/ }),
 
@@ -54933,7 +54906,6 @@ function dontSetMe(props
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-var __webpack_unused_export__;
 /** @license React v16.14.0
  * react-jsx-runtime.production.min.js
  *
@@ -54947,12 +54919,12 @@ var __webpack_unused_export__;
 var f = __webpack_require__(791),
     g = 60103;
 
-__webpack_unused_export__ = 60107;
+exports.Fragment = 60107;
 
 if ("function" === typeof Symbol && Symbol.for) {
   var h = Symbol.for;
   g = h("react.element");
-  __webpack_unused_export__ = h("react.fragment");
+  exports.Fragment = h("react.fragment");
 }
 
 var m = f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,
@@ -56195,1821 +56167,8 @@ function _createSuper(Derived) {
     return _possibleConstructorReturn(this, result);
   };
 }
-;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/createForOfIteratorHelper.js
-
-function _createForOfIteratorHelper(o, allowArrayLike) {
-  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
-
-  if (!it) {
-    if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-      if (it) o = it;
-      var i = 0;
-
-      var F = function F() {};
-
-      return {
-        s: F,
-        n: function n() {
-          if (i >= o.length) return {
-            done: true
-          };
-          return {
-            done: false,
-            value: o[i++]
-          };
-        },
-        e: function e(_e) {
-          throw _e;
-        },
-        f: F
-      };
-    }
-
-    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-
-  var normalCompletion = true,
-      didErr = false,
-      err;
-  return {
-    s: function s() {
-      it = it.call(o);
-    },
-    n: function n() {
-      var step = it.next();
-      normalCompletion = step.done;
-      return step;
-    },
-    e: function e(_e2) {
-      didErr = true;
-      err = _e2;
-    },
-    f: function f() {
-      try {
-        if (!normalCompletion && it["return"] != null) it["return"]();
-      } finally {
-        if (didErr) throw err;
-      }
-    }
-  };
-}
 // EXTERNAL MODULE: ./node_modules/react/index.js
 var react = __webpack_require__(791);
-// EXTERNAL MODULE: ./node_modules/react-dom/index.js
-var react_dom = __webpack_require__(164);
-// EXTERNAL MODULE: ./node_modules/lodash.debounce/index.js
-var lodash_debounce = __webpack_require__(95);
-var lodash_debounce_default = /*#__PURE__*/__webpack_require__.n(lodash_debounce);
-// EXTERNAL MODULE: ./node_modules/pdfjs-dist/legacy/web/pdf_viewer.js
-var pdf_viewer = __webpack_require__(615);
-;// CONCATENATED MODULE: ./node_modules/pdfjs-dist/web/pdf_viewer.css
-// extracted by mini-css-extract-plugin
-/* harmony default export */ var web_pdf_viewer = ({});
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/style/pdf_viewer.css
-// extracted by mini-css-extract-plugin
-/* harmony default export */ var style_pdf_viewer = ({});
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/style/PdfHighlighter.css
-// extracted by mini-css-extract-plugin
-/* harmony default export */ var PdfHighlighter = ({});
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/lib/get-bounding-rect.js
-var getBoundingRect = function getBoundingRect(clientRects) {
-  var rects = Array.from(clientRects).map(function (rect) {
-    var left = rect.left,
-        top = rect.top,
-        width = rect.width,
-        height = rect.height,
-        pageNumber = rect.pageNumber;
-    var X0 = left;
-    var X1 = left + width;
-    var Y0 = top;
-    var Y1 = top + height;
-    return {
-      X0: X0,
-      X1: X1,
-      Y0: Y0,
-      Y1: Y1,
-      pageNumber: pageNumber
-    };
-  });
-  var firstPageNumber = Number.MAX_SAFE_INTEGER;
-  rects.forEach(function (rect) {
-    var _a;
-
-    firstPageNumber = Math.min(firstPageNumber, (_a = rect.pageNumber) !== null && _a !== void 0 ? _a : firstPageNumber);
-  });
-  var rectsWithSizeOnFirstPage = rects.filter(function (rect) {
-    return (rect.X0 > 0 || rect.X1 > 0 || rect.Y0 > 0 || rect.Y1 > 0) && rect.pageNumber === firstPageNumber;
-  });
-  var optimal = rectsWithSizeOnFirstPage.reduce(function (res, rect) {
-    return {
-      X0: Math.min(res.X0, rect.X0),
-      X1: Math.max(res.X1, rect.X1),
-      Y0: Math.min(res.Y0, rect.Y0),
-      Y1: Math.max(res.Y1, rect.Y1),
-      pageNumber: firstPageNumber
-    };
-  }, rectsWithSizeOnFirstPage[0]);
-  var X0 = optimal.X0,
-      X1 = optimal.X1,
-      Y0 = optimal.Y0,
-      Y1 = optimal.Y1,
-      pageNumber = optimal.pageNumber;
-  return {
-    left: X0,
-    top: Y0,
-    width: X1 - X0,
-    height: Y1 - Y0,
-    pageNumber: pageNumber
-  };
-};
-
-/* harmony default export */ var get_bounding_rect = (getBoundingRect);
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/lib/optimize-client-rects.js
-var sort = function sort(rects) {
-  return rects.sort(function (A, B) {
-    var top = (A.pageNumber || 0) * A.top - (B.pageNumber || 0) * B.top;
-
-    if (top === 0) {
-      return A.left - B.left;
-    }
-
-    return top;
-  });
-};
-
-var overlaps = function overlaps(A, B) {
-  return A.pageNumber === B.pageNumber && A.left <= B.left && B.left <= A.left + A.width;
-};
-
-var sameLine = function sameLine(A, B) {
-  var yMargin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5;
-  return A.pageNumber === B.pageNumber && Math.abs(A.top - B.top) < yMargin && Math.abs(A.height - B.height) < yMargin;
-};
-
-var inside = function inside(A, B) {
-  return A.pageNumber === B.pageNumber && A.top > B.top && A.left > B.left && A.top + A.height < B.top + B.height && A.left + A.width < B.left + B.width;
-};
-
-var nextTo = function nextTo(A, B) {
-  var xMargin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
-  var Aright = A.left + A.width;
-  var Bright = B.left + B.width;
-  return A.pageNumber === B.pageNumber && A.left <= B.left && Aright <= Bright && B.left - Aright <= xMargin;
-};
-
-var extendWidth = function extendWidth(A, B) {
-  // extend width of A to cover B
-  A.width = Math.max(B.width - A.left + B.left, A.width);
-};
-
-var optimizeClientRects = function optimizeClientRects(clientRects) {
-  var rects = sort(clientRects);
-  var toRemove = new Set();
-  var firstPass = rects.filter(function (rect) {
-    return rects.every(function (otherRect) {
-      return !inside(rect, otherRect);
-    });
-  });
-  var passCount = 0;
-
-  while (passCount <= 2) {
-    firstPass.forEach(function (A) {
-      firstPass.forEach(function (B) {
-        if (A === B || toRemove.has(A) || toRemove.has(B)) {
-          return;
-        }
-
-        if (!sameLine(A, B)) {
-          return;
-        }
-
-        if (overlaps(A, B)) {
-          extendWidth(A, B);
-          A.height = Math.max(A.height, B.height);
-          toRemove.add(B);
-        }
-
-        if (nextTo(A, B)) {
-          extendWidth(A, B);
-          toRemove.add(B);
-        }
-      });
-    });
-    passCount += 1;
-  }
-
-  return firstPass.filter(function (rect) {
-    return !toRemove.has(rect);
-  });
-};
-
-/* harmony default export */ var optimize_client_rects = (optimizeClientRects);
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/lib/get-client-rects.js
-
-
-
-var isClientRectInsidePageRect = function isClientRectInsidePageRect(clientRect, pageRect) {
-  if (clientRect.top < pageRect.top) {
-    return false;
-  }
-
-  if (clientRect.bottom > pageRect.bottom) {
-    return false;
-  }
-
-  if (clientRect.right > pageRect.right) {
-    return false;
-  }
-
-  if (clientRect.left < pageRect.left) {
-    return false;
-  }
-
-  return true;
-};
-
-var getClientRects = function getClientRects(range, pages) {
-  var shouldOptimize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-  var clientRects = Array.from(range.getClientRects());
-  var rects = [];
-
-  for (var _i = 0, _clientRects = clientRects; _i < _clientRects.length; _i++) {
-    var clientRect = _clientRects[_i];
-
-    var _iterator = _createForOfIteratorHelper(pages),
-        _step;
-
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var page = _step.value;
-        var pageRect = page.node.getBoundingClientRect();
-
-        if (isClientRectInsidePageRect(clientRect, pageRect) && clientRect.top >= 0 && clientRect.bottom >= 0 && clientRect.width > 0 && clientRect.height > 0 && clientRect.width < pageRect.width && clientRect.height < pageRect.height) {
-          var highlightedRect = {
-            top: clientRect.top + page.node.scrollTop - pageRect.top,
-            left: clientRect.left + page.node.scrollLeft - pageRect.left,
-            width: clientRect.width,
-            height: clientRect.height,
-            pageNumber: page.number
-          };
-          rects.push(highlightedRect);
-        }
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
-  }
-
-  return shouldOptimize ? optimize_client_rects(rects) : rects;
-};
-
-/* harmony default export */ var get_client_rects = (getClientRects);
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/lib/pdfjs-dom.js
-var getDocument = function getDocument(elm) {
-  return (elm || {}).ownerDocument || document;
-};
-var getWindow = function getWindow(elm) {
-  return (getDocument(elm) || {}).defaultView || window;
-};
-var isHTMLElement = function isHTMLElement(elm) {
-  return elm instanceof HTMLElement || elm instanceof getWindow(elm).HTMLElement;
-};
-var isHTMLCanvasElement = function isHTMLCanvasElement(elm) {
-  return elm instanceof HTMLCanvasElement || elm instanceof getWindow(elm).HTMLCanvasElement;
-};
-var asElement = function asElement(x) {
-  return x;
-};
-var getPageFromElement = function getPageFromElement(target) {
-  var node = asElement(target.closest(".page"));
-
-  if (!node || !isHTMLElement(node)) {
-    return null;
-  }
-
-  var number = Number(asElement(node).dataset.pageNumber);
-  return {
-    node: node,
-    number: number
-  };
-};
-var getPagesFromRange = function getPagesFromRange(range) {
-  var startParentElement = range.startContainer.parentElement;
-  var endParentElement = range.endContainer.parentElement;
-
-  if (!isHTMLElement(startParentElement) || !isHTMLElement(endParentElement)) {
-    return [];
-  }
-
-  var startPage = getPageFromElement(asElement(startParentElement));
-  var endPage = getPageFromElement(asElement(endParentElement));
-
-  if (!(startPage === null || startPage === void 0 ? void 0 : startPage.number) || !(endPage === null || endPage === void 0 ? void 0 : endPage.number)) {
-    return [];
-  }
-
-  if (startPage.number === endPage.number) {
-    return [startPage];
-  }
-
-  if (startPage.number === endPage.number - 1) {
-    return [startPage, endPage];
-  }
-
-  var pages = [];
-  var currentPageNumber = startPage.number;
-  var document = startPage.node.ownerDocument;
-
-  while (currentPageNumber <= endPage.number) {
-    var currentPage = getPageFromElement(document.querySelector("[data-page-number='".concat(currentPageNumber, "'")));
-
-    if (currentPage) {
-      pages.push(currentPage);
-    }
-  }
-
-  return pages;
-};
-var findOrCreateContainerLayer = function findOrCreateContainerLayer(container, className) {
-  var doc = getDocument(container);
-  var layer = container.querySelector(".".concat(className));
-
-  if (!layer) {
-    layer = doc.createElement("div");
-    layer.className = className;
-    container.appendChild(layer);
-  }
-
-  return layer;
-};
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/lib/get-area-as-png.js
-
-
-var getAreaAsPNG = function getAreaAsPNG(canvas, position) {
-  var left = position.left,
-      top = position.top,
-      width = position.width,
-      height = position.height;
-  var doc = canvas ? canvas.ownerDocument : null; // @TODO: cache this?
-
-  var newCanvas = doc && doc.createElement("canvas");
-
-  if (!newCanvas || !isHTMLCanvasElement(newCanvas)) {
-    return "";
-  }
-
-  newCanvas.width = width;
-  newCanvas.height = height;
-  var newCanvasContext = newCanvas.getContext("2d");
-
-  if (!newCanvasContext || !canvas) {
-    return "";
-  }
-
-  var dpr = window.devicePixelRatio;
-  newCanvasContext.drawImage(canvas, left * dpr, top * dpr, width * dpr, height * dpr, 0, 0, width, height);
-  return newCanvas.toDataURL("image/png");
-};
-
-/* harmony default export */ var get_area_as_png = (getAreaAsPNG);
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/components/TipContainer.js
-
-
-
-
-
-
-var clamp = function clamp(value, left, right) {
-  return Math.min(Math.max(value, left), right);
-};
-
-var TipContainer = /*#__PURE__*/function (_Component) {
-  _inherits(TipContainer, _Component);
-
-  var _super = _createSuper(TipContainer);
-
-  function TipContainer() {
-    var _this;
-
-    _classCallCheck(this, TipContainer);
-
-    _this = _super.apply(this, arguments);
-    _this.state = {
-      height: 0,
-      width: 0
-    };
-    _this.node = null;
-
-    _this.updatePosition = function () {
-      if (!_this.node) {
-        return;
-      }
-
-      var _this$node = _this.node,
-          offsetHeight = _this$node.offsetHeight,
-          offsetWidth = _this$node.offsetWidth;
-
-      _this.setState({
-        height: offsetHeight,
-        width: offsetWidth
-      });
-    };
-
-    return _this;
-  }
-
-  _createClass(TipContainer, [{
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(nextProps) {
-      if (this.props.children !== nextProps.children) {
-        this.updatePosition();
-      }
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      setTimeout(this.updatePosition, 0);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var _this$props = this.props,
-          children = _this$props.children,
-          style = _this$props.style,
-          scrollTop = _this$props.scrollTop,
-          pageBoundingRect = _this$props.pageBoundingRect;
-      var _this$state = this.state,
-          height = _this$state.height,
-          width = _this$state.width;
-      var isStyleCalculationInProgress = width === 0 && height === 0;
-      var shouldMove = style.top - height - 5 < scrollTop;
-      var top = shouldMove ? style.bottom + 5 : style.top - height - 5;
-      var left = clamp(style.left - width / 2, 0, pageBoundingRect.width - width);
-      var childrenWithProps = react.Children.map(children, function (child) {
-        return (// @ts-ignore
-          react.cloneElement(child, {
-            onUpdate: function onUpdate() {
-              _this2.setState({
-                width: 0,
-                height: 0
-              }, function () {
-                setTimeout(_this2.updatePosition, 0);
-              });
-            },
-            popup: {
-              position: shouldMove ? "below" : "above"
-            }
-          })
-        );
-      });
-      return react.createElement("div", {
-        className: "PdfHighlighter__tip-container",
-        style: {
-          visibility: isStyleCalculationInProgress ? "hidden" : "visible",
-          top: top,
-          left: left
-        },
-        ref: function ref(node) {
-          _this2.node = node;
-        }
-      }, childrenWithProps);
-    }
-  }]);
-
-  return TipContainer;
-}(react.Component);
-
-/* harmony default export */ var components_TipContainer = (TipContainer);
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/style/MouseSelection.css
-// extracted by mini-css-extract-plugin
-/* harmony default export */ var MouseSelection = ({});
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/components/MouseSelection.js
-
-
-
-
-
-
-
-
-var MouseSelection_MouseSelection = /*#__PURE__*/function (_Component) {
-  _inherits(MouseSelection, _Component);
-
-  var _super = _createSuper(MouseSelection);
-
-  function MouseSelection() {
-    var _this;
-
-    _classCallCheck(this, MouseSelection);
-
-    _this = _super.apply(this, arguments);
-    _this.state = {
-      locked: false,
-      start: null,
-      end: null
-    };
-
-    _this.reset = function () {
-      var onDragEnd = _this.props.onDragEnd;
-      onDragEnd();
-
-      _this.setState({
-        start: null,
-        end: null,
-        locked: false
-      });
-    };
-
-    return _this;
-  }
-
-  _createClass(MouseSelection, [{
-    key: "getBoundingRect",
-    value: function getBoundingRect(start, end) {
-      return {
-        left: Math.min(end.x, start.x),
-        top: Math.min(end.y, start.y),
-        width: Math.abs(end.x - start.x),
-        height: Math.abs(end.y - start.y)
-      };
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      var onChange = this.props.onChange;
-      var _this$state = this.state,
-          start = _this$state.start,
-          end = _this$state.end;
-      var isVisible = Boolean(start && end);
-      onChange(isVisible);
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      if (!this.root) {
-        return;
-      }
-
-      var that = this;
-      var _this$props = this.props,
-          onSelection = _this$props.onSelection,
-          onDragStart = _this$props.onDragStart,
-          onDragEnd = _this$props.onDragEnd,
-          shouldStart = _this$props.shouldStart;
-      var container = asElement(this.root.parentElement);
-
-      if (!isHTMLElement(container)) {
-        return;
-      }
-
-      var containerBoundingRect = null;
-
-      var containerCoords = function containerCoords(pageX, pageY) {
-        if (!containerBoundingRect) {
-          containerBoundingRect = container.getBoundingClientRect();
-        }
-
-        return {
-          x: pageX - containerBoundingRect.left + container.scrollLeft,
-          y: pageY - containerBoundingRect.top + container.scrollTop - window.scrollY
-        };
-      };
-
-      container.addEventListener("mousemove", function (event) {
-        var _this2$state = _this2.state,
-            start = _this2$state.start,
-            locked = _this2$state.locked;
-
-        if (!start || locked) {
-          return;
-        }
-
-        that.setState(Object.assign(Object.assign({}, _this2.state), {
-          end: containerCoords(event.pageX, event.pageY)
-        }));
-      });
-      container.addEventListener("mousedown", function (event) {
-        if (!shouldStart(event)) {
-          _this2.reset();
-
-          return;
-        }
-
-        var startTarget = asElement(event.target);
-
-        if (!isHTMLElement(startTarget)) {
-          return;
-        }
-
-        onDragStart();
-
-        _this2.setState({
-          start: containerCoords(event.pageX, event.pageY),
-          end: null,
-          locked: false
-        });
-
-        var onMouseUp = function onMouseUp(event) {
-          var _a; // emulate listen once
-
-
-          (_a = event.currentTarget) === null || _a === void 0 ? void 0 : _a.removeEventListener("mouseup", onMouseUp);
-          var start = _this2.state.start;
-
-          if (!start) {
-            return;
-          }
-
-          var end = containerCoords(event.pageX, event.pageY);
-          var boundingRect = that.getBoundingRect(start, end);
-
-          if (!isHTMLElement(event.target) || !container.contains(asElement(event.target)) || !that.shouldRender(boundingRect)) {
-            that.reset();
-            return;
-          }
-
-          that.setState({
-            end: end,
-            locked: true
-          }, function () {
-            var _that$state = that.state,
-                start = _that$state.start,
-                end = _that$state.end;
-
-            if (!start || !end) {
-              return;
-            }
-
-            if (isHTMLElement(event.target)) {
-              onSelection(startTarget, boundingRect, that.reset);
-              onDragEnd();
-            }
-          });
-        };
-
-        var doc = container.ownerDocument;
-
-        if (doc.body) {
-          doc.body.addEventListener("mouseup", onMouseUp);
-        }
-      });
-    }
-  }, {
-    key: "shouldRender",
-    value: function shouldRender(boundingRect) {
-      return boundingRect.width >= 1 && boundingRect.height >= 1;
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this3 = this;
-
-      var _this$state2 = this.state,
-          start = _this$state2.start,
-          end = _this$state2.end;
-      return react.createElement("div", {
-        className: "MouseSelection-container",
-        ref: function ref(node) {
-          if (!node) {
-            return;
-          }
-
-          _this3.root = node;
-        }
-      }, start && end ? react.createElement("div", {
-        className: "MouseSelection",
-        style: this.getBoundingRect(start, end)
-      }) : null);
-    }
-  }]);
-
-  return MouseSelection;
-}(react.Component);
-
-/* harmony default export */ var components_MouseSelection = (MouseSelection_MouseSelection);
-;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js
-function _iterableToArrayLimit(arr, i) {
-  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-
-  if (_i == null) return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-
-  var _s, _e;
-
-  try {
-    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/slicedToArray.js
-
-
-
-
-function _slicedToArray(arr, i) {
-  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-}
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/lib/coordinates.js
-
-// "viewport" rectangle is { top, left, width, height }
-var viewportToScaled = function viewportToScaled(rect, _ref) {
-  var width = _ref.width,
-      height = _ref.height;
-  return {
-    x1: rect.left,
-    y1: rect.top,
-    x2: rect.left + rect.width,
-    y2: rect.top + rect.height,
-    width: width,
-    height: height,
-    pageNumber: rect.pageNumber
-  };
-};
-
-var pdfToViewport = function pdfToViewport(pdf, viewport) {
-  var _viewport$convertToVi = viewport.convertToViewportRectangle([pdf.x1, pdf.y1, pdf.x2, pdf.y2]),
-      _viewport$convertToVi2 = _slicedToArray(_viewport$convertToVi, 4),
-      x1 = _viewport$convertToVi2[0],
-      y1 = _viewport$convertToVi2[1],
-      x2 = _viewport$convertToVi2[2],
-      y2 = _viewport$convertToVi2[3];
-
-  return {
-    left: x1,
-    top: y1,
-    width: x2 - x1,
-    height: y1 - y2,
-    pageNumber: pdf.pageNumber
-  };
-};
-
-var scaledToViewport = function scaledToViewport(scaled, viewport) {
-  var usePdfCoordinates = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-  var width = viewport.width,
-      height = viewport.height;
-
-  if (usePdfCoordinates) {
-    return pdfToViewport(scaled, viewport);
-  }
-
-  if (scaled.x1 === undefined) {
-    throw new Error("You are using old position format, please update");
-  }
-
-  var x1 = width * scaled.x1 / scaled.width;
-  var y1 = height * scaled.y1 / scaled.height;
-  var x2 = width * scaled.x2 / scaled.width;
-  var y2 = height * scaled.y2 / scaled.height;
-  return {
-    left: x1,
-    top: y1,
-    width: x2 - x1,
-    height: y2 - y1,
-    pageNumber: scaled.pageNumber
-  };
-};
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/components/PdfHighlighter.js
-
-
-
-
-
-
-
-
-var __rest = undefined && undefined.__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  }
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var EMPTY_ID = "empty-id";
-var PdfHighlighter_PdfHighlighter = /*#__PURE__*/function (_PureComponent) {
-  _inherits(PdfHighlighter, _PureComponent);
-
-  var _super = _createSuper(PdfHighlighter);
-
-  function PdfHighlighter(props) {
-    var _this;
-
-    _classCallCheck(this, PdfHighlighter);
-
-    _this = _super.call(this, props);
-    _this.state = {
-      ghostHighlight: null,
-      isCollapsed: true,
-      range: null,
-      scrolledToHighlightId: EMPTY_ID,
-      isAreaSelectionInProgress: false,
-      tip: null,
-      tipPosition: null,
-      tipChildren: null
-    };
-    _this.eventBus = new pdf_viewer.EventBus();
-    _this.linkService = new pdf_viewer.PDFLinkService({
-      eventBus: _this.eventBus,
-      externalLinkTarget: 2
-    });
-    _this.resizeObserver = null;
-    _this.containerNode = null;
-
-    _this.unsubscribe = function () {};
-
-    _this.attachRef = function (ref) {
-      var _a;
-
-      var _assertThisInitialize = _assertThisInitialized(_this),
-          eventBus = _assertThisInitialize.eventBus,
-          observer = _assertThisInitialize.resizeObserver;
-
-      _this.containerNode = ref;
-
-      _this.unsubscribe();
-
-      if (ref) {
-        var doc = ref.ownerDocument;
-        eventBus.on("textlayerrendered", _this.onTextLayerRendered);
-        eventBus.on("pagesinit", _this.onDocumentReady);
-        doc.addEventListener("selectionchange", _this.onSelectionChange);
-        doc.addEventListener("keydown", _this.handleKeyDown);
-        (_a = doc.defaultView) === null || _a === void 0 ? void 0 : _a.addEventListener("resize", _this.debouncedScaleValue);
-        if (observer) observer.observe(ref);
-
-        _this.unsubscribe = function () {
-          var _a;
-
-          eventBus.off("pagesinit", _this.onDocumentReady);
-          eventBus.off("textlayerrendered", _this.onTextLayerRendered);
-          doc.removeEventListener("selectionchange", _this.onSelectionChange);
-          doc.removeEventListener("keydown", _this.handleKeyDown);
-          (_a = doc.defaultView) === null || _a === void 0 ? void 0 : _a.removeEventListener("resize", _this.debouncedScaleValue);
-          if (observer) observer.disconnect();
-        };
-      }
-    };
-
-    _this.hideTipAndSelection = function () {
-      _this.setState({
-        tipPosition: null,
-        tipChildren: null
-      });
-
-      _this.setState({
-        ghostHighlight: null,
-        tip: null
-      }, function () {
-        return _this.renderHighlights();
-      });
-    };
-
-    _this.renderTip = function () {
-      var _this$state = _this.state,
-          tipPosition = _this$state.tipPosition,
-          tipChildren = _this$state.tipChildren;
-      if (!tipPosition) return null;
-      var boundingRect = tipPosition.boundingRect,
-          pageNumber = tipPosition.pageNumber;
-      var page = {
-        node: _this.viewer.getPageView((boundingRect.pageNumber || pageNumber) - 1).div,
-        pageNumber: boundingRect.pageNumber || pageNumber
-      };
-      var pageBoundingClientRect = page.node.getBoundingClientRect();
-      var pageBoundingRect = {
-        bottom: pageBoundingClientRect.bottom,
-        height: pageBoundingClientRect.height,
-        left: pageBoundingClientRect.left,
-        right: pageBoundingClientRect.right,
-        top: pageBoundingClientRect.top,
-        width: pageBoundingClientRect.width,
-        x: pageBoundingClientRect.x,
-        y: pageBoundingClientRect.y,
-        pageNumber: page.pageNumber
-      };
-      return react.createElement(components_TipContainer, {
-        scrollTop: _this.viewer.container.scrollTop,
-        pageBoundingRect: pageBoundingRect,
-        style: {
-          left: page.node.offsetLeft + boundingRect.left + boundingRect.width / 2,
-          top: boundingRect.top + page.node.offsetTop,
-          bottom: boundingRect.top + page.node.offsetTop + boundingRect.height
-        }
-      }, tipChildren);
-    };
-
-    _this.onTextLayerRendered = function () {
-      _this.renderHighlights();
-    };
-
-    _this.scrollTo = function (highlight) {
-      var _highlight$position = highlight.position,
-          pageNumber = _highlight$position.pageNumber,
-          boundingRect = _highlight$position.boundingRect,
-          usePdfCoordinates = _highlight$position.usePdfCoordinates;
-
-      _this.viewer.container.removeEventListener("scroll", _this.onScroll);
-
-      var pageViewport = _this.viewer.getPageView(pageNumber - 1).viewport;
-
-      var scrollMargin = 10;
-
-      _this.viewer.scrollPageIntoView({
-        pageNumber: pageNumber,
-        destArray: [null, {
-          name: "XYZ"
-        }].concat(_toConsumableArray(pageViewport.convertToPdfPoint(0, scaledToViewport(boundingRect, pageViewport, usePdfCoordinates).top - scrollMargin)), [0])
-      });
-
-      _this.setState({
-        scrolledToHighlightId: highlight.id
-      }, function () {
-        return _this.renderHighlights();
-      }); // wait for scrolling to finish
-
-
-      setTimeout(function () {
-        _this.viewer.container.addEventListener("scroll", _this.onScroll);
-      }, 100);
-    };
-
-    _this.onDocumentReady = function () {
-      var scrollRef = _this.props.scrollRef;
-
-      _this.handleScaleValue();
-
-      scrollRef(_this.scrollTo);
-    };
-
-    _this.onSelectionChange = function () {
-      var container = _this.containerNode;
-      var selection = getWindow(container).getSelection();
-
-      if (!selection) {
-        return;
-      }
-
-      var range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
-
-      if (selection.isCollapsed) {
-        _this.setState({
-          isCollapsed: true
-        });
-
-        return;
-      }
-
-      if (!range || !container || !container.contains(range.commonAncestorContainer)) {
-        return;
-      }
-
-      _this.setState({
-        isCollapsed: false,
-        range: range
-      });
-
-      _this.debouncedAfterSelection();
-    };
-
-    _this.onScroll = function () {
-      var onScrollChange = _this.props.onScrollChange;
-      onScrollChange();
-
-      _this.setState({
-        scrolledToHighlightId: EMPTY_ID
-      }, function () {
-        return _this.renderHighlights();
-      });
-
-      _this.viewer.container.removeEventListener("scroll", _this.onScroll);
-    };
-
-    _this.onMouseDown = function (event) {
-      if (!isHTMLElement(event.target)) {
-        return;
-      }
-
-      if (asElement(event.target).closest(".PdfHighlighter__tip-container")) {
-        return;
-      }
-
-      _this.hideTipAndSelection();
-    };
-
-    _this.handleKeyDown = function (event) {
-      if (event.code === "Escape") {
-        _this.hideTipAndSelection();
-      }
-    };
-
-    _this.afterSelection = function () {
-      var onSelectionFinished = _this.props.onSelectionFinished;
-      var _this$state2 = _this.state,
-          isCollapsed = _this$state2.isCollapsed,
-          range = _this$state2.range;
-
-      if (!range || isCollapsed) {
-        return;
-      }
-
-      var pages = getPagesFromRange(range);
-
-      if (!pages || pages.length === 0) {
-        return;
-      }
-
-      var rects = get_client_rects(range, pages);
-
-      if (rects.length === 0) {
-        return;
-      }
-
-      var boundingRect = get_bounding_rect(rects);
-      var viewportPosition = {
-        boundingRect: boundingRect,
-        rects: rects,
-        pageNumber: pages[0].number
-      };
-      var content = {
-        text: range.toString()
-      };
-
-      var scaledPosition = _this.viewportPositionToScaled(viewportPosition);
-
-      _this.setTip(viewportPosition, onSelectionFinished(scaledPosition, content, function () {
-        return _this.hideTipAndSelection();
-      }, function () {
-        return _this.setState({
-          ghostHighlight: {
-            position: scaledPosition
-          }
-        }, function () {
-          return _this.renderHighlights();
-        });
-      }));
-    };
-
-    _this.debouncedAfterSelection = lodash_debounce_default()(_this.afterSelection, 500);
-
-    _this.handleScaleValue = function () {
-      if (_this.viewer) {
-        _this.viewer.currentScaleValue = _this.props.pdfScaleValue; //"page-width";
-      }
-    };
-
-    _this.debouncedScaleValue = lodash_debounce_default()(_this.handleScaleValue, 500);
-
-    if (typeof ResizeObserver !== "undefined") {
-      _this.resizeObserver = new ResizeObserver(_this.debouncedScaleValue);
-    }
-
-    return _this;
-  }
-
-  _createClass(PdfHighlighter, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.init();
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(prevProps) {
-      if (prevProps.pdfDocument !== this.props.pdfDocument) {
-        this.init();
-        return;
-      }
-
-      if (prevProps.highlights !== this.props.highlights) {
-        this.renderHighlights(this.props);
-      }
-    }
-  }, {
-    key: "init",
-    value: function init() {
-      var pdfDocument = this.props.pdfDocument;
-      this.viewer = this.viewer || new pdf_viewer.PDFViewer({
-        container: this.containerNode,
-        eventBus: this.eventBus,
-        // enhanceTextSelection: true, // deprecated. https://github.com/mozilla/pdf.js/issues/9943#issuecomment-409369485
-        textLayerMode: 2,
-        removePageBorders: true,
-        linkService: this.linkService,
-        renderer: "canvas",
-        l10n: null
-      });
-      this.linkService.setDocument(pdfDocument);
-      this.linkService.setViewer(this.viewer);
-      this.viewer.setDocument(pdfDocument); // debug
-
-      window.PdfViewer = this;
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      this.unsubscribe();
-    }
-  }, {
-    key: "findOrCreateHighlightLayer",
-    value: function findOrCreateHighlightLayer(page) {
-      var _ref = this.viewer.getPageView(page - 1) || {},
-          textLayer = _ref.textLayer;
-
-      if (!textLayer) {
-        return null;
-      }
-
-      return findOrCreateContainerLayer(textLayer.textLayerDiv, "PdfHighlighter__highlight-layer");
-    }
-  }, {
-    key: "groupHighlightsByPage",
-    value: function groupHighlightsByPage(highlights) {
-      var ghostHighlight = this.state.ghostHighlight;
-      var allHighlights = [].concat(_toConsumableArray(highlights), [ghostHighlight]).filter(Boolean);
-      var pageNumbers = new Set();
-
-      var _iterator = _createForOfIteratorHelper(allHighlights),
-          _step;
-
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var highlight = _step.value;
-          pageNumbers.add(highlight.position.pageNumber);
-
-          var _iterator3 = _createForOfIteratorHelper(highlight.position.rects),
-              _step3;
-
-          try {
-            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-              var rect = _step3.value;
-
-              if (rect.pageNumber) {
-                pageNumbers.add(rect.pageNumber);
-              }
-            }
-          } catch (err) {
-            _iterator3.e(err);
-          } finally {
-            _iterator3.f();
-          }
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-
-      var groupedHighlights = {};
-
-      var _iterator2 = _createForOfIteratorHelper(pageNumbers),
-          _step2;
-
-      try {
-        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var pageNumber = _step2.value;
-          groupedHighlights[pageNumber] = groupedHighlights[pageNumber] || [];
-
-          var _iterator4 = _createForOfIteratorHelper(allHighlights),
-              _step4;
-
-          try {
-            for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-              var _highlight = _step4.value;
-              var pageSpecificHighlight = Object.assign(Object.assign({}, _highlight), {
-                position: {
-                  pageNumber: pageNumber,
-                  boundingRect: _highlight.position.boundingRect,
-                  rects: [],
-                  usePdfCoordinates: _highlight.position.usePdfCoordinates
-                }
-              });
-              var anyRectsOnPage = false;
-
-              var _iterator5 = _createForOfIteratorHelper(_highlight.position.rects),
-                  _step5;
-
-              try {
-                for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-                  var _rect = _step5.value;
-
-                  if (pageNumber === (_rect.pageNumber || _highlight.position.pageNumber)) {
-                    pageSpecificHighlight.position.rects.push(_rect);
-                    anyRectsOnPage = true;
-                  }
-                }
-              } catch (err) {
-                _iterator5.e(err);
-              } finally {
-                _iterator5.f();
-              }
-
-              if (anyRectsOnPage || pageNumber === _highlight.position.pageNumber) {
-                groupedHighlights[pageNumber].push(pageSpecificHighlight);
-              }
-            }
-          } catch (err) {
-            _iterator4.e(err);
-          } finally {
-            _iterator4.f();
-          }
-        }
-      } catch (err) {
-        _iterator2.e(err);
-      } finally {
-        _iterator2.f();
-      }
-
-      return groupedHighlights;
-    }
-  }, {
-    key: "showTip",
-    value: function showTip(highlight, content) {
-      var _this$state3 = this.state,
-          isCollapsed = _this$state3.isCollapsed,
-          ghostHighlight = _this$state3.ghostHighlight,
-          isAreaSelectionInProgress = _this$state3.isAreaSelectionInProgress;
-      var highlightInProgress = !isCollapsed || ghostHighlight;
-
-      if (highlightInProgress || isAreaSelectionInProgress) {
-        return;
-      }
-
-      this.setTip(highlight.position, content);
-    }
-  }, {
-    key: "scaledPositionToViewport",
-    value: function scaledPositionToViewport(_ref2) {
-      var pageNumber = _ref2.pageNumber,
-          boundingRect = _ref2.boundingRect,
-          rects = _ref2.rects,
-          usePdfCoordinates = _ref2.usePdfCoordinates;
-      var viewport = this.viewer.getPageView(pageNumber - 1).viewport;
-      return {
-        boundingRect: scaledToViewport(boundingRect, viewport, usePdfCoordinates),
-        rects: (rects || []).map(function (rect) {
-          return scaledToViewport(rect, viewport, usePdfCoordinates);
-        }),
-        pageNumber: pageNumber
-      };
-    }
-  }, {
-    key: "viewportPositionToScaled",
-    value: function viewportPositionToScaled(_ref3) {
-      var pageNumber = _ref3.pageNumber,
-          boundingRect = _ref3.boundingRect,
-          rects = _ref3.rects;
-      var viewport = this.viewer.getPageView(pageNumber - 1).viewport;
-      return {
-        boundingRect: viewportToScaled(boundingRect, viewport),
-        rects: (rects || []).map(function (rect) {
-          return viewportToScaled(rect, viewport);
-        }),
-        pageNumber: pageNumber
-      };
-    }
-  }, {
-    key: "screenshot",
-    value: function screenshot(position, pageNumber) {
-      var canvas = this.viewer.getPageView(pageNumber - 1).canvas;
-      return get_area_as_png(canvas, position);
-    }
-  }, {
-    key: "renderHighlights",
-    value: function renderHighlights(nextProps) {
-      var _this2 = this;
-
-      var _ref4 = nextProps || this.props,
-          highlightTransform = _ref4.highlightTransform,
-          highlights = _ref4.highlights;
-
-      var pdfDocument = this.props.pdfDocument;
-      var _this$state4 = this.state,
-          tip = _this$state4.tip,
-          scrolledToHighlightId = _this$state4.scrolledToHighlightId;
-      var highlightsByPage = this.groupHighlightsByPage(highlights);
-
-      var _loop = function _loop(pageNumber) {
-        var highlightLayer = _this2.findOrCreateHighlightLayer(pageNumber);
-
-        if (highlightLayer) {
-          react_dom.render(react.createElement("div", null, (highlightsByPage[String(pageNumber)] || []).map(function (_a, index) {
-            var position = _a.position,
-                id = _a.id,
-                highlight = __rest(_a, ["position", "id"]); // @ts-ignore
-
-
-            var viewportHighlight = Object.assign({
-              id: id,
-              position: _this2.scaledPositionToViewport(position)
-            }, highlight);
-
-            if (tip && tip.highlight.id === String(id)) {
-              _this2.showTip(tip.highlight, tip.callback(viewportHighlight));
-            }
-
-            var isScrolledTo = Boolean(scrolledToHighlightId === id);
-            return highlightTransform(viewportHighlight, index, function (highlight, callback) {
-              _this2.setState({
-                tip: {
-                  highlight: highlight,
-                  callback: callback
-                }
-              });
-
-              _this2.showTip(highlight, callback(highlight));
-            }, _this2.hideTipAndSelection, function (rect) {
-              var viewport = _this2.viewer.getPageView((rect.pageNumber || pageNumber) - 1).viewport;
-
-              return viewportToScaled(rect, viewport);
-            }, function (boundingRect) {
-              return _this2.screenshot(boundingRect, pageNumber);
-            }, isScrolledTo);
-          })), highlightLayer);
-        }
-      };
-
-      for (var pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber++) {
-        _loop(pageNumber);
-      }
-    }
-  }, {
-    key: "setTip",
-    value: function setTip(position, inner) {
-      this.setState({
-        tipPosition: position,
-        tipChildren: inner
-      });
-    }
-  }, {
-    key: "toggleTextSelection",
-    value: function toggleTextSelection(flag) {
-      this.viewer.viewer.classList.toggle("PdfHighlighter--disable-selection", flag);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this3 = this;
-
-      var _this$props = this.props,
-          onSelectionFinished = _this$props.onSelectionFinished,
-          enableAreaSelection = _this$props.enableAreaSelection;
-      return react.createElement("div", {
-        onPointerDown: this.onMouseDown
-      }, react.createElement("div", {
-        ref: this.attachRef,
-        className: "PdfHighlighter",
-        onContextMenu: function onContextMenu(e) {
-          return e.preventDefault();
-        }
-      }, react.createElement("div", {
-        className: "pdfViewer"
-      }), this.renderTip(), typeof enableAreaSelection === "function" ? react.createElement(components_MouseSelection, {
-        onDragStart: function onDragStart() {
-          return _this3.toggleTextSelection(true);
-        },
-        onDragEnd: function onDragEnd() {
-          return _this3.toggleTextSelection(false);
-        },
-        onChange: function onChange(isVisible) {
-          return _this3.setState({
-            isAreaSelectionInProgress: isVisible
-          });
-        },
-        shouldStart: function shouldStart(event) {
-          return enableAreaSelection(event) && isHTMLElement(event.target) && Boolean(asElement(event.target).closest(".page"));
-        },
-        onSelection: function onSelection(startTarget, boundingRect, resetSelection) {
-          var page = getPageFromElement(startTarget);
-
-          if (!page) {
-            return;
-          }
-
-          var pageBoundingRect = Object.assign(Object.assign({}, boundingRect), {
-            top: boundingRect.top - page.node.offsetTop,
-            left: boundingRect.left - page.node.offsetLeft,
-            pageNumber: page.number
-          });
-          var viewportPosition = {
-            boundingRect: pageBoundingRect,
-            rects: [],
-            pageNumber: page.number
-          };
-
-          var scaledPosition = _this3.viewportPositionToScaled(viewportPosition);
-
-          var image = _this3.screenshot(pageBoundingRect, pageBoundingRect.pageNumber);
-
-          _this3.setTip(viewportPosition, onSelectionFinished(scaledPosition, {
-            image: image
-          }, function () {
-            return _this3.hideTipAndSelection();
-          }, function () {
-            return _this3.setState({
-              ghostHighlight: {
-                position: scaledPosition,
-                content: {
-                  image: image
-                }
-              }
-            }, function () {
-              resetSelection();
-
-              _this3.renderHighlights();
-            });
-          }));
-        }
-      }) : null));
-    }
-  }]);
-
-  return PdfHighlighter;
-}(react.PureComponent);
-PdfHighlighter_PdfHighlighter.defaultProps = {
-  pdfScaleValue: "auto"
-};
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/style/Tip.css
-// extracted by mini-css-extract-plugin
-/* harmony default export */ var Tip = ({});
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/components/Tip.js
-
-
-
-
-
-
-var Tip_Tip = /*#__PURE__*/function (_Component) {
-  _inherits(Tip, _Component);
-
-  var _super = _createSuper(Tip);
-
-  function Tip() {
-    var _this;
-
-    _classCallCheck(this, Tip);
-
-    _this = _super.apply(this, arguments);
-    _this.state = {
-      compact: true,
-      text: "",
-      emoji: ""
-    };
-    return _this;
-  } // for TipContainer
-
-
-  _createClass(Tip, [{
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(nextProps, nextState) {
-      var onUpdate = this.props.onUpdate;
-
-      if (onUpdate && this.state.compact !== nextState.compact) {
-        onUpdate();
-      }
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var _this$props = this.props,
-          onConfirm = _this$props.onConfirm,
-          onOpen = _this$props.onOpen;
-      var _this$state = this.state,
-          compact = _this$state.compact,
-          text = _this$state.text,
-          emoji = _this$state.emoji;
-      return react.createElement("div", {
-        className: "Tip"
-      }, compact ? react.createElement("div", {
-        className: "Tip__compact",
-        onClick: function onClick() {
-          onOpen();
-
-          _this2.setState({
-            compact: false
-          });
-        }
-      }, "Add highlight") : react.createElement("form", {
-        className: "Tip__card",
-        onSubmit: function onSubmit(event) {
-          event.preventDefault();
-          onConfirm({
-            text: text,
-            emoji: emoji
-          });
-        }
-      }, react.createElement("div", null, react.createElement("textarea", {
-        placeholder: "Your comment",
-        autoFocus: true,
-        value: text,
-        onChange: function onChange(event) {
-          return _this2.setState({
-            text: event.target.value
-          });
-        },
-        ref: function ref(node) {
-          if (node) {
-            node.focus();
-          }
-        }
-      }), react.createElement("div", null, ["💩", "😱", "😍", "🔥", "😳", "⚠️"].map(function (_emoji) {
-        return react.createElement("label", {
-          key: _emoji
-        }, react.createElement("input", {
-          checked: emoji === _emoji,
-          type: "radio",
-          name: "emoji",
-          value: _emoji,
-          onChange: function onChange(event) {
-            return _this2.setState({
-              emoji: event.target.value
-            });
-          }
-        }), _emoji);
-      }))), react.createElement("div", null, react.createElement("input", {
-        type: "submit",
-        value: "Save"
-      }))));
-    }
-  }]);
-
-  return Tip;
-}(react.Component);
-/* harmony default export */ var components_Tip = ((/* unused pure expression or super */ null && (Tip_Tip)));
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/style/Highlight.css
-// extracted by mini-css-extract-plugin
-/* harmony default export */ var Highlight = ({});
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/components/Highlight.js
-
-
-
-
-
-
-var Highlight_Highlight = /*#__PURE__*/function (_Component) {
-  _inherits(Highlight, _Component);
-
-  var _super = _createSuper(Highlight);
-
-  function Highlight() {
-    _classCallCheck(this, Highlight);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(Highlight, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          position = _this$props.position,
-          onClick = _this$props.onClick,
-          onMouseOver = _this$props.onMouseOver,
-          onMouseOut = _this$props.onMouseOut,
-          comment = _this$props.comment,
-          isScrolledTo = _this$props.isScrolledTo;
-      var rects = position.rects,
-          boundingRect = position.boundingRect;
-      return react.createElement("div", {
-        className: "Highlight ".concat(isScrolledTo ? "Highlight--scrolledTo" : "")
-      }, comment ? react.createElement("div", {
-        className: "Highlight__emoji",
-        style: {
-          left: 20,
-          top: boundingRect.top
-        }
-      }, comment.emoji) : null, react.createElement("div", {
-        className: "Highlight__parts"
-      }, rects.map(function (rect, index) {
-        return react.createElement("div", {
-          onMouseOver: onMouseOver,
-          onMouseOut: onMouseOut,
-          onClick: onClick,
-          key: index,
-          style: rect,
-          className: "Highlight__part"
-        });
-      })));
-    }
-  }]);
-
-  return Highlight;
-}(react.Component);
-/* harmony default export */ var components_Highlight = ((/* unused pure expression or super */ null && (Highlight_Highlight)));
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/components/MouseMonitor.js
-
-
-
-
-
-var MouseMonitor_rest = undefined && undefined.__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  }
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
-
-
-var MouseMonitor = /*#__PURE__*/function (_Component) {
-  _inherits(MouseMonitor, _Component);
-
-  var _super = _createSuper(MouseMonitor);
-
-  function MouseMonitor() {
-    var _this;
-
-    _classCallCheck(this, MouseMonitor);
-
-    _this = _super.apply(this, arguments);
-    _this.container = null;
-
-    _this.unsubscribe = function () {};
-
-    _this.onMouseMove = function (event) {
-      if (!_this.container) {
-        return;
-      }
-
-      var _this$props = _this.props,
-          onMoveAway = _this$props.onMoveAway,
-          paddingX = _this$props.paddingX,
-          paddingY = _this$props.paddingY;
-      var clientX = event.clientX,
-          clientY = event.clientY; // TODO: see if possible to optimize
-
-      var _this$container$getBo = _this.container.getBoundingClientRect(),
-          left = _this$container$getBo.left,
-          top = _this$container$getBo.top,
-          width = _this$container$getBo.width,
-          height = _this$container$getBo.height;
-
-      var inBoundsX = clientX > left - paddingX && clientX < left + width + paddingX;
-      var inBoundsY = clientY > top - paddingY && clientY < top + height + paddingY;
-      var isNear = inBoundsX && inBoundsY;
-
-      if (!isNear) {
-        onMoveAway();
-      }
-    };
-
-    _this.attachRef = function (ref) {
-      _this.container = ref;
-
-      _this.unsubscribe();
-
-      if (ref) {
-        var doc = ref.ownerDocument;
-        doc.addEventListener("mousemove", _this.onMouseMove);
-
-        _this.unsubscribe = function () {
-          doc.removeEventListener("mousemove", _this.onMouseMove);
-        };
-      }
-    };
-
-    return _this;
-  }
-
-  _createClass(MouseMonitor, [{
-    key: "render",
-    value: function render() {
-      // eslint-disable-next-line
-      var _a = this.props,
-          onMoveAway = _a.onMoveAway,
-          paddingX = _a.paddingX,
-          paddingY = _a.paddingY,
-          children = _a.children,
-          restProps = MouseMonitor_rest(_a, ["onMoveAway", "paddingX", "paddingY", "children"]);
-
-      return react.createElement("div", {
-        ref: this.attachRef
-      }, react.cloneElement(children, restProps));
-    }
-  }]);
-
-  return MouseMonitor;
-}(react.Component);
-
-/* harmony default export */ var components_MouseMonitor = (MouseMonitor);
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/components/Popup.js
-
-
-
-
-
-
-var Popup = /*#__PURE__*/function (_Component) {
-  _inherits(Popup, _Component);
-
-  var _super = _createSuper(Popup);
-
-  function Popup() {
-    var _this;
-
-    _classCallCheck(this, Popup);
-
-    _this = _super.apply(this, arguments);
-    _this.state = {
-      mouseIn: false
-    };
-    return _this;
-  }
-
-  _createClass(Popup, [{
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var _this$props = this.props,
-          _onMouseOver = _this$props.onMouseOver,
-          popupContent = _this$props.popupContent,
-          onMouseOut = _this$props.onMouseOut;
-      return react.createElement("div", {
-        onMouseOver: function onMouseOver() {
-          _this2.setState({
-            mouseIn: true
-          });
-
-          _onMouseOver(react.createElement(components_MouseMonitor, {
-            onMoveAway: function onMoveAway() {
-              if (_this2.state.mouseIn) {
-                return;
-              }
-
-              onMouseOut();
-            },
-            paddingX: 60,
-            paddingY: 30,
-            children: popupContent
-          }));
-        },
-        onMouseOut: function onMouseOut() {
-          _this2.setState({
-            mouseIn: false
-          });
-        }
-      }, this.props.children);
-    }
-  }]);
-
-  return Popup;
-}(react.Component);
-/* harmony default export */ var components_Popup = ((/* unused pure expression or super */ null && (Popup)));
 // EXTERNAL MODULE: ./node_modules/react-draggable/build/cjs/cjs.js
 var cjs = __webpack_require__(962);
 var cjs_default = /*#__PURE__*/__webpack_require__.n(cjs);
@@ -58208,7 +56367,7 @@ var DEFAULT_SIZE = {
   width: 'auto',
   height: 'auto'
 };
-var lib_clamp = src_default()(function (n, min, max) {
+var clamp = src_default()(function (n, min, max) {
   return Math.max(Math.min(n, max), min);
 });
 var snap = src_default()(function (n, size) {
@@ -58725,11 +56884,11 @@ function (_super) {
       var lockedMaxWidth = Math.min(computedMaxWidth, extraMaxWidth);
       var lockedMinHeight = Math.max(computedMinHeight, extraMinHeight);
       var lockedMaxHeight = Math.min(computedMaxHeight, extraMaxHeight);
-      newWidth = lib_clamp(newWidth, lockedMinWidth, lockedMaxWidth);
-      newHeight = lib_clamp(newHeight, lockedMinHeight, lockedMaxHeight);
+      newWidth = clamp(newWidth, lockedMinWidth, lockedMaxWidth);
+      newHeight = clamp(newHeight, lockedMinHeight, lockedMaxHeight);
     } else {
-      newWidth = lib_clamp(newWidth, computedMinWidth, computedMaxWidth);
-      newHeight = lib_clamp(newHeight, computedMinHeight, computedMaxHeight);
+      newWidth = clamp(newWidth, computedMinWidth, computedMaxWidth);
+      newHeight = clamp(newHeight, computedMinHeight, computedMaxHeight);
     }
 
     return {
@@ -59164,7 +57323,7 @@ var _assign = function __assign() {
   return _assign.apply(this, arguments);
 };
 
-function lib_rest(s, e) {
+function __rest(s, e) {
   var t = {};
 
   for (var p in s) {
@@ -59703,7 +57862,7 @@ function (_super) {
         resizeHandleWrapperStyle = _a.resizeHandleWrapperStyle,
         scale = _a.scale,
         allowAnyClick = _a.allowAnyClick,
-        resizableProps = lib_rest(_a, ["disableDragging", "style", "dragHandleClassName", "position", "onMouseDown", "onMouseUp", "dragAxis", "dragGrid", "bounds", "enableUserSelectHack", "cancel", "children", "onResizeStart", "onResize", "onResizeStop", "onDragStart", "onDrag", "onDragStop", "resizeHandleStyles", "resizeHandleClasses", "resizeHandleComponent", "enableResizing", "resizeGrid", "resizeHandleWrapperClass", "resizeHandleWrapperStyle", "scale", "allowAnyClick"]);
+        resizableProps = __rest(_a, ["disableDragging", "style", "dragHandleClassName", "position", "onMouseDown", "onMouseUp", "dragAxis", "dragGrid", "bounds", "enableUserSelectHack", "cancel", "children", "onResizeStart", "onResize", "onResizeStop", "onDragStart", "onDrag", "onDragStop", "resizeHandleStyles", "resizeHandleClasses", "resizeHandleComponent", "enableResizing", "resizeGrid", "resizeHandleWrapperClass", "resizeHandleWrapperStyle", "scale", "allowAnyClick"]);
 
     var defaultValue = this.props.default ? _assign({}, this.props.default) : undefined; // Remove unknown props, see also https://reactjs.org/warnings/unknown-prop.html
 
@@ -59791,260 +57950,203 @@ function (_super) {
 }(react.PureComponent);
 
 
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/style/AreaHighlight.css
+;// CONCATENATED MODULE: ./src/lib/pdfjs-dom.ts
+var getDocument=function getDocument(elm){return(elm||{}).ownerDocument||document;};var getWindow=function getWindow(elm){return(getDocument(elm)||{}).defaultView||window;};var isHTMLElement=function isHTMLElement(elm){return elm instanceof HTMLElement||elm instanceof getWindow(elm).HTMLElement;};var isHTMLCanvasElement=function isHTMLCanvasElement(elm){return elm instanceof HTMLCanvasElement||elm instanceof getWindow(elm).HTMLCanvasElement;};var asElement=function asElement(x){return x;};var getPageFromElement=function getPageFromElement(target){var node=asElement(target.closest(".page"));if(!node||!isHTMLElement(node)){return null;}var number=Number(asElement(node).dataset.pageNumber);return{node:node,number:number};};var getPagesFromRange=function getPagesFromRange(range){var startParentElement=range.startContainer.parentElement;var endParentElement=range.endContainer.parentElement;if(!isHTMLElement(startParentElement)||!isHTMLElement(endParentElement)){return[];}var startPage=getPageFromElement(asElement(startParentElement));var endPage=getPageFromElement(asElement(endParentElement));if(!(startPage!==null&&startPage!==void 0&&startPage.number)||!(endPage!==null&&endPage!==void 0&&endPage.number)){return[];}if(startPage.number===endPage.number){return[startPage];}if(startPage.number===endPage.number-1){return[startPage,endPage];}var pages=[];var currentPageNumber=startPage.number;var document=startPage.node.ownerDocument;while(currentPageNumber<=endPage.number){var currentPage=getPageFromElement(document.querySelector("[data-page-number='".concat(currentPageNumber,"'")));if(currentPage){pages.push(currentPage);}}return pages;};var findOrCreateContainerLayer=function findOrCreateContainerLayer(container,className){var doc=getDocument(container);var layer=container.querySelector(".".concat(className));if(!layer){layer=doc.createElement("div");layer.className=className;container.appendChild(layer);}return layer;};
+;// CONCATENATED MODULE: ./src/style/AreaHighlight.css
 // extracted by mini-css-extract-plugin
 /* harmony default export */ var AreaHighlight = ({});
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/components/AreaHighlight.js
-
-
-
-
-
-var AreaHighlight_rest = undefined && undefined.__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  }
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
-
-
-
-
-var AreaHighlight_AreaHighlight = /*#__PURE__*/function (_Component) {
-  _inherits(AreaHighlight, _Component);
-
-  var _super = _createSuper(AreaHighlight);
-
-  function AreaHighlight() {
-    _classCallCheck(this, AreaHighlight);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(AreaHighlight, [{
-    key: "render",
-    value: function render() {
-      var _a = this.props,
-          highlight = _a.highlight,
-          onChange = _a.onChange,
-          isScrolledTo = _a.isScrolledTo,
-          otherProps = AreaHighlight_rest(_a, ["highlight", "onChange", "isScrolledTo"]);
-
-      return react.createElement("div", {
-        className: "AreaHighlight ".concat(isScrolledTo ? "AreaHighlight--scrolledTo" : "")
-      }, react.createElement(Rnd, Object.assign({
-        className: "AreaHighlight__part",
-        onDragStop: function onDragStop(_, data) {
-          var boundingRect = Object.assign(Object.assign({}, highlight.position.boundingRect), {
-            top: data.y,
-            left: data.x
-          });
-          onChange(boundingRect);
-        },
-        onResizeStop: function onResizeStop(_mouseEvent, _direction, ref, _delta, position) {
-          var _a;
-
-          var boundingRect = {
-            top: position.y,
-            left: position.x,
-            width: ref.offsetWidth,
-            height: ref.offsetHeight,
-            pageNumber: ((_a = getPageFromElement(ref)) === null || _a === void 0 ? void 0 : _a.number) || -1
-          };
-          onChange(boundingRect);
-        },
-        position: {
-          x: highlight.position.boundingRect.left,
-          y: highlight.position.boundingRect.top
-        },
-        size: {
-          width: highlight.position.boundingRect.width,
-          height: highlight.position.boundingRect.height
-        },
-        onClick: function onClick(event) {
-          event.stopPropagation();
-          event.preventDefault();
-        }
-      }, otherProps)));
-    }
-  }]);
-
-  return AreaHighlight;
-}(react.Component);
-/* harmony default export */ var components_AreaHighlight = ((/* unused pure expression or super */ null && (AreaHighlight_AreaHighlight)));
-// EXTERNAL MODULE: ./node_modules/pdfjs-dist/legacy/build/pdf.js
-var pdf = __webpack_require__(560);
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/components/PdfLoader.js
-
-
-
-
-
-
-var PdfLoader = /*#__PURE__*/function (_Component) {
-  _inherits(PdfLoader, _Component);
-
-  var _super = _createSuper(PdfLoader);
-
-  function PdfLoader() {
-    var _this;
-
-    _classCallCheck(this, PdfLoader);
-
-    _this = _super.apply(this, arguments);
-    _this.state = {
-      pdfDocument: null,
-      error: null
-    };
-    _this.documentRef = react.createRef();
-    return _this;
-  }
-
-  _createClass(PdfLoader, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.load();
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      var discardedDocument = this.state.pdfDocument;
-
-      if (discardedDocument) {
-        discardedDocument.destroy();
-      }
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(_ref) {
-      var url = _ref.url;
-
-      if (this.props.url !== url) {
-        this.load();
-      }
-    }
-  }, {
-    key: "componentDidCatch",
-    value: function componentDidCatch(error, info) {
-      var onError = this.props.onError;
-
-      if (onError) {
-        onError(error);
-      }
-
-      this.setState({
-        pdfDocument: null,
-        error: error
-      });
-    }
-  }, {
-    key: "load",
-    value: function load() {
-      var _this2 = this;
-
-      var _ref2 = this.documentRef.current || {},
-          _ref2$ownerDocument = _ref2.ownerDocument,
-          ownerDocument = _ref2$ownerDocument === void 0 ? document : _ref2$ownerDocument;
-
-      var _this$props = this.props,
-          url = _this$props.url,
-          cMapUrl = _this$props.cMapUrl,
-          cMapPacked = _this$props.cMapPacked,
-          workerSrc = _this$props.workerSrc;
-      var discardedDocument = this.state.pdfDocument;
-      this.setState({
-        pdfDocument: null,
-        error: null
-      });
-
-      if (typeof workerSrc === "string") {
-        pdf.GlobalWorkerOptions.workerSrc = workerSrc;
-      }
-
-      Promise.resolve().then(function () {
-        return discardedDocument && discardedDocument.destroy();
-      }).then(function () {
-        if (!url) {
-          return;
-        }
-
-        return (0,pdf.getDocument)(Object.assign(Object.assign({}, _this2.props), {
-          ownerDocument: ownerDocument,
-          cMapUrl: cMapUrl,
-          cMapPacked: cMapPacked
-        })).promise.then(function (pdfDocument) {
-          _this2.setState({
-            pdfDocument: pdfDocument
-          });
-        });
-      }).catch(function (e) {
-        return _this2.componentDidCatch(e);
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$props2 = this.props,
-          children = _this$props2.children,
-          beforeLoad = _this$props2.beforeLoad;
-      var _this$state = this.state,
-          pdfDocument = _this$state.pdfDocument,
-          error = _this$state.error;
-      return react.createElement(react.Fragment, null, react.createElement("span", {
-        ref: this.documentRef
-      }), error ? this.renderError() : !pdfDocument || !children ? beforeLoad : children(pdfDocument));
-    }
-  }, {
-    key: "renderError",
-    value: function renderError() {
-      var errorMessage = this.props.errorMessage;
-
-      if (errorMessage) {
-        return react.cloneElement(errorMessage, {
-          error: this.state.error
-        });
-      }
-
-      return null;
-    }
-  }]);
-
-  return PdfLoader;
-}(react.Component);
-PdfLoader.defaultProps = {
-  workerSrc: "https://unpkg.com/pdfjs-dist@2.11.338/build/pdf.worker.min.js"
-};
-/* harmony default export */ var components_PdfLoader = ((/* unused pure expression or super */ null && (PdfLoader)));
-;// CONCATENATED MODULE: ./node_modules/react-pdf-highlighter/dist/esm/index.js
-
-
-
-
-
-
-
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(184);
+;// CONCATENATED MODULE: ./src/components/AreaHighlight.tsx
+var _excluded=["highlight","onChange","isScrolledTo"];var AreaHighlight_AreaHighlight=/*#__PURE__*/function(_Component){_inherits(AreaHighlight,_Component);var _super=_createSuper(AreaHighlight);function AreaHighlight(){_classCallCheck(this,AreaHighlight);return _super.apply(this,arguments);}_createClass(AreaHighlight,[{key:"render",value:function render(){var _this$props=this.props,highlight=_this$props.highlight,onChange=_this$props.onChange,isScrolledTo=_this$props.isScrolledTo,otherProps=_objectWithoutProperties(_this$props,_excluded);return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"AreaHighlight ".concat(isScrolledTo?"AreaHighlight--scrolledTo":""),children:/*#__PURE__*/(0,jsx_runtime.jsx)(Rnd,_objectSpread2({className:"AreaHighlight__part",onDragStop:function onDragStop(_,data){var boundingRect=_objectSpread2(_objectSpread2({},highlight.position.boundingRect),{},{top:data.y,left:data.x});onChange(boundingRect);},onResizeStop:function onResizeStop(_mouseEvent,_direction,ref,_delta,position){var _getPageFromElement;var boundingRect={top:position.y,left:position.x,width:ref.offsetWidth,height:ref.offsetHeight,pageNumber:((_getPageFromElement=getPageFromElement(ref))===null||_getPageFromElement===void 0?void 0:_getPageFromElement.number)||-1};onChange(boundingRect);},position:{x:highlight.position.boundingRect.left,y:highlight.position.boundingRect.top},size:{width:highlight.position.boundingRect.width,height:highlight.position.boundingRect.height},onClick:function onClick(event){event.stopPropagation();event.preventDefault();}},otherProps))});}}]);return AreaHighlight;}(react.Component);/* harmony default export */ var components_AreaHighlight = ((/* unused pure expression or super */ null && (AreaHighlight_AreaHighlight)));
+;// CONCATENATED MODULE: ./src/style/Highlight.css
+// extracted by mini-css-extract-plugin
+/* harmony default export */ var Highlight = ({});
+;// CONCATENATED MODULE: ./src/components/Highlight.tsx
+var Highlight_Highlight=/*#__PURE__*/function(_Component){_inherits(Highlight,_Component);var _super=_createSuper(Highlight);function Highlight(){_classCallCheck(this,Highlight);return _super.apply(this,arguments);}_createClass(Highlight,[{key:"render",value:function render(){var _this$props=this.props,position=_this$props.position,onClick=_this$props.onClick,onMouseOver=_this$props.onMouseOver,onMouseOut=_this$props.onMouseOut,comment=_this$props.comment,isScrolledTo=_this$props.isScrolledTo;var rects=position.rects,boundingRect=position.boundingRect;return/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"Highlight ".concat(isScrolledTo?"Highlight--scrolledTo":""),children:[comment?/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"Highlight__emoji",style:{left:20,top:boundingRect.top},children:comment.emoji}):null,/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"Highlight__parts",children:rects.map(function(rect,index){return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{onMouseOver:onMouseOver,onMouseOut:onMouseOut,onClick:onClick,style:rect,className:"Highlight__part"},index);})})]});}}]);return Highlight;}(react.Component);/* harmony default export */ var components_Highlight = ((/* unused pure expression or super */ null && (Highlight_Highlight)));
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/createForOfIteratorHelper.js
+
+function _createForOfIteratorHelper(o, allowArrayLike) {
+  var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
+
+  if (!it) {
+    if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+      if (it) o = it;
+      var i = 0;
+
+      var F = function F() {};
+
+      return {
+        s: F,
+        n: function n() {
+          if (i >= o.length) return {
+            done: true
+          };
+          return {
+            done: false,
+            value: o[i++]
+          };
+        },
+        e: function e(_e) {
+          throw _e;
+        },
+        f: F
+      };
+    }
+
+    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  var normalCompletion = true,
+      didErr = false,
+      err;
+  return {
+    s: function s() {
+      it = it.call(o);
+    },
+    n: function n() {
+      var step = it.next();
+      normalCompletion = step.done;
+      return step;
+    },
+    e: function e(_e2) {
+      didErr = true;
+      err = _e2;
+    },
+    f: function f() {
+      try {
+        if (!normalCompletion && it["return"] != null) it["return"]();
+      } finally {
+        if (didErr) throw err;
+      }
+    }
+  };
+}
+// EXTERNAL MODULE: ./node_modules/lodash.debounce/index.js
+var lodash_debounce = __webpack_require__(95);
+var lodash_debounce_default = /*#__PURE__*/__webpack_require__.n(lodash_debounce);
+// EXTERNAL MODULE: ./node_modules/react-dom/index.js
+var react_dom = __webpack_require__(164);
+// EXTERNAL MODULE: ./node_modules/pdfjs-dist/legacy/web/pdf_viewer.js
+var pdf_viewer = __webpack_require__(615);
+;// CONCATENATED MODULE: ./node_modules/pdfjs-dist/web/pdf_viewer.css
+// extracted by mini-css-extract-plugin
+/* harmony default export */ var web_pdf_viewer = ({});
+;// CONCATENATED MODULE: ./src/style/pdf_viewer.css
+// extracted by mini-css-extract-plugin
+/* harmony default export */ var style_pdf_viewer = ({});
+;// CONCATENATED MODULE: ./src/style/PdfHighlighter.css
+// extracted by mini-css-extract-plugin
+/* harmony default export */ var PdfHighlighter = ({});
+;// CONCATENATED MODULE: ./src/lib/get-area-as-png.ts
+var getAreaAsPNG=function getAreaAsPNG(canvas,position){var left=position.left,top=position.top,width=position.width,height=position.height;var doc=canvas?canvas.ownerDocument:null;// @TODO: cache this?
+var newCanvas=doc&&doc.createElement("canvas");if(!newCanvas||!isHTMLCanvasElement(newCanvas)){return"";}newCanvas.width=width;newCanvas.height=height;var newCanvasContext=newCanvas.getContext("2d");if(!newCanvasContext||!canvas){return"";}var dpr=window.devicePixelRatio;newCanvasContext.drawImage(canvas,left*dpr,top*dpr,width*dpr,height*dpr,0,0,width,height);return newCanvas.toDataURL("image/png");};/* harmony default export */ var get_area_as_png = (getAreaAsPNG);
+;// CONCATENATED MODULE: ./src/lib/get-bounding-rect.ts
+var getBoundingRect=function getBoundingRect(clientRects){var rects=Array.from(clientRects).map(function(rect){var left=rect.left,top=rect.top,width=rect.width,height=rect.height,pageNumber=rect.pageNumber;var X0=left;var X1=left+width;var Y0=top;var Y1=top+height;return{X0:X0,X1:X1,Y0:Y0,Y1:Y1,pageNumber:pageNumber};});var firstPageNumber=Number.MAX_SAFE_INTEGER;rects.forEach(function(rect){var _rect$pageNumber;firstPageNumber=Math.min(firstPageNumber,(_rect$pageNumber=rect.pageNumber)!==null&&_rect$pageNumber!==void 0?_rect$pageNumber:firstPageNumber);});var rectsWithSizeOnFirstPage=rects.filter(function(rect){return(rect.X0>0||rect.X1>0||rect.Y0>0||rect.Y1>0)&&rect.pageNumber===firstPageNumber;});var optimal=rectsWithSizeOnFirstPage.reduce(function(res,rect){return{X0:Math.min(res.X0,rect.X0),X1:Math.max(res.X1,rect.X1),Y0:Math.min(res.Y0,rect.Y0),Y1:Math.max(res.Y1,rect.Y1),pageNumber:firstPageNumber};},rectsWithSizeOnFirstPage[0]);var X0=optimal.X0,X1=optimal.X1,Y0=optimal.Y0,Y1=optimal.Y1,pageNumber=optimal.pageNumber;return{left:X0,top:Y0,width:X1-X0,height:Y1-Y0,pageNumber:pageNumber};};/* harmony default export */ var get_bounding_rect = (getBoundingRect);
+;// CONCATENATED MODULE: ./src/lib/optimize-client-rects.ts
+var sort=function sort(rects){return rects.sort(function(A,B){var top=(A.pageNumber||0)*A.top-(B.pageNumber||0)*B.top;if(top===0){return A.left-B.left;}return top;});};var overlaps=function overlaps(A,B){return A.pageNumber===B.pageNumber&&A.left<=B.left&&B.left<=A.left+A.width;};var sameLine=function sameLine(A,B){var yMargin=arguments.length>2&&arguments[2]!==undefined?arguments[2]:5;return A.pageNumber===B.pageNumber&&Math.abs(A.top-B.top)<yMargin&&Math.abs(A.height-B.height)<yMargin;};var inside=function inside(A,B){return A.pageNumber===B.pageNumber&&A.top>B.top&&A.left>B.left&&A.top+A.height<B.top+B.height&&A.left+A.width<B.left+B.width;};var nextTo=function nextTo(A,B){var xMargin=arguments.length>2&&arguments[2]!==undefined?arguments[2]:10;var Aright=A.left+A.width;var Bright=B.left+B.width;return A.pageNumber===B.pageNumber&&A.left<=B.left&&Aright<=Bright&&B.left-Aright<=xMargin;};var extendWidth=function extendWidth(A,B){// extend width of A to cover B
+A.width=Math.max(B.width-A.left+B.left,A.width);};var optimizeClientRects=function optimizeClientRects(clientRects){var rects=sort(clientRects);var toRemove=new Set();var firstPass=rects.filter(function(rect){return rects.every(function(otherRect){return!inside(rect,otherRect);});});var passCount=0;while(passCount<=2){firstPass.forEach(function(A){firstPass.forEach(function(B){if(A===B||toRemove.has(A)||toRemove.has(B)){return;}if(!sameLine(A,B)){return;}if(overlaps(A,B)){extendWidth(A,B);A.height=Math.max(A.height,B.height);toRemove.add(B);}if(nextTo(A,B)){extendWidth(A,B);toRemove.add(B);}});});passCount+=1;}return firstPass.filter(function(rect){return!toRemove.has(rect);});};/* harmony default export */ var optimize_client_rects = (optimizeClientRects);
+;// CONCATENATED MODULE: ./src/lib/get-client-rects.ts
+var isClientRectInsidePageRect=function isClientRectInsidePageRect(clientRect,pageRect){if(clientRect.top<pageRect.top){return false;}if(clientRect.bottom>pageRect.bottom){return false;}if(clientRect.right>pageRect.right){return false;}if(clientRect.left<pageRect.left){return false;}return true;};var getClientRects=function getClientRects(range,pages){var shouldOptimize=arguments.length>2&&arguments[2]!==undefined?arguments[2]:true;var clientRects=Array.from(range.getClientRects());var rects=[];for(var _i=0,_clientRects=clientRects;_i<_clientRects.length;_i++){var clientRect=_clientRects[_i];var _iterator=_createForOfIteratorHelper(pages),_step;try{for(_iterator.s();!(_step=_iterator.n()).done;){var page=_step.value;var pageRect=page.node.getBoundingClientRect();if(isClientRectInsidePageRect(clientRect,pageRect)&&clientRect.top>=0&&clientRect.bottom>=0&&clientRect.width>0&&clientRect.height>0&&clientRect.width<pageRect.width&&clientRect.height<pageRect.height){var highlightedRect={top:clientRect.top+page.node.scrollTop-pageRect.top,left:clientRect.left+page.node.scrollLeft-pageRect.left,width:clientRect.width,height:clientRect.height,pageNumber:page.number};rects.push(highlightedRect);}}}catch(err){_iterator.e(err);}finally{_iterator.f();}}return shouldOptimize?optimize_client_rects(rects):rects;};/* harmony default export */ var get_client_rects = (getClientRects);
+;// CONCATENATED MODULE: ./src/style/MouseSelection.css
+// extracted by mini-css-extract-plugin
+/* harmony default export */ var MouseSelection = ({});
+;// CONCATENATED MODULE: ./src/components/MouseSelection.tsx
+var MouseSelection_MouseSelection=/*#__PURE__*/function(_Component){_inherits(MouseSelection,_Component);var _super=_createSuper(MouseSelection);function MouseSelection(){var _this;_classCallCheck(this,MouseSelection);for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_super.call.apply(_super,[this].concat(args));_this.state={locked:false,start:null,end:null};_this.root=void 0;_this.reset=function(){var onDragEnd=_this.props.onDragEnd;onDragEnd();_this.setState({start:null,end:null,locked:false});};return _this;}_createClass(MouseSelection,[{key:"getBoundingRect",value:function getBoundingRect(start,end){return{left:Math.min(end.x,start.x),top:Math.min(end.y,start.y),width:Math.abs(end.x-start.x),height:Math.abs(end.y-start.y)};}},{key:"componentDidUpdate",value:function componentDidUpdate(){var onChange=this.props.onChange;var _this$state=this.state,start=_this$state.start,end=_this$state.end;var isVisible=Boolean(start&&end);onChange(isVisible);}},{key:"componentDidMount",value:function componentDidMount(){var _this2=this;if(!this.root){return;}var that=this;var _this$props=this.props,onSelection=_this$props.onSelection,onDragStart=_this$props.onDragStart,onDragEnd=_this$props.onDragEnd,shouldStart=_this$props.shouldStart;var container=asElement(this.root.parentElement);if(!isHTMLElement(container)){return;}var containerBoundingRect=null;var containerCoords=function containerCoords(pageX,pageY){if(!containerBoundingRect){containerBoundingRect=container.getBoundingClientRect();}return{x:pageX-containerBoundingRect.left+container.scrollLeft,y:pageY-containerBoundingRect.top+container.scrollTop-window.scrollY};};container.addEventListener("mousemove",function(event){var _this2$state=_this2.state,start=_this2$state.start,locked=_this2$state.locked;if(!start||locked){return;}that.setState(_objectSpread2(_objectSpread2({},_this2.state),{},{end:containerCoords(event.pageX,event.pageY)}));});container.addEventListener("mousedown",function(event){if(!shouldStart(event)){_this2.reset();return;}var startTarget=asElement(event.target);if(!isHTMLElement(startTarget)){return;}onDragStart();_this2.setState({start:containerCoords(event.pageX,event.pageY),end:null,locked:false});var onMouseUp=function onMouseUp(event){var _event$currentTarget;// emulate listen once
+(_event$currentTarget=event.currentTarget)===null||_event$currentTarget===void 0?void 0:_event$currentTarget.removeEventListener("mouseup",onMouseUp);var start=_this2.state.start;if(!start){return;}var end=containerCoords(event.pageX,event.pageY);var boundingRect=that.getBoundingRect(start,end);if(!isHTMLElement(event.target)||!container.contains(asElement(event.target))||!that.shouldRender(boundingRect)){that.reset();return;}that.setState({end:end,locked:true},function(){var _that$state=that.state,start=_that$state.start,end=_that$state.end;if(!start||!end){return;}if(isHTMLElement(event.target)){onSelection(startTarget,boundingRect,that.reset);onDragEnd();}});};var doc=container.ownerDocument;if(doc.body){doc.body.addEventListener("mouseup",onMouseUp);}});}},{key:"shouldRender",value:function shouldRender(boundingRect){return boundingRect.width>=1&&boundingRect.height>=1;}},{key:"render",value:function render(){var _this3=this;var _this$state2=this.state,start=_this$state2.start,end=_this$state2.end;return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"MouseSelection-container",ref:function ref(node){if(!node){return;}_this3.root=node;},children:start&&end?/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"MouseSelection",style:this.getBoundingRect(start,end)}):null});}}]);return MouseSelection;}(react.Component);/* harmony default export */ var components_MouseSelection = (MouseSelection_MouseSelection);
+;// CONCATENATED MODULE: ./src/components/TipContainer.tsx
+var TipContainer_clamp=function clamp(value,left,right){return Math.min(Math.max(value,left),right);};var TipContainer=/*#__PURE__*/function(_Component){_inherits(TipContainer,_Component);var _super=_createSuper(TipContainer);function TipContainer(){var _this;_classCallCheck(this,TipContainer);for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_super.call.apply(_super,[this].concat(args));_this.state={height:0,width:0};_this.node=null;_this.updatePosition=function(){if(!_this.node){return;}var _this$node=_this.node,offsetHeight=_this$node.offsetHeight,offsetWidth=_this$node.offsetWidth;_this.setState({height:offsetHeight,width:offsetWidth});};return _this;}_createClass(TipContainer,[{key:"componentDidUpdate",value:function componentDidUpdate(nextProps){if(this.props.children!==nextProps.children){this.updatePosition();}}},{key:"componentDidMount",value:function componentDidMount(){setTimeout(this.updatePosition,0);}},{key:"render",value:function render(){var _this2=this;var _this$props=this.props,children=_this$props.children,style=_this$props.style,scrollTop=_this$props.scrollTop,pageBoundingRect=_this$props.pageBoundingRect;var _this$state=this.state,height=_this$state.height,width=_this$state.width;var isStyleCalculationInProgress=width===0&&height===0;var shouldMove=style.top-height-5<scrollTop;var top=shouldMove?style.bottom+5:style.top-height-5;var left=TipContainer_clamp(style.left-width/2,0,pageBoundingRect.width-width);var childrenWithProps=react.Children.map(children,function(child){return/*#__PURE__*/ (// @ts-ignore
+react.cloneElement(child,{onUpdate:function onUpdate(){_this2.setState({width:0,height:0},function(){setTimeout(_this2.updatePosition,0);});},popup:{position:shouldMove?"below":"above"}}));});return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"PdfHighlighter__tip-container",style:{visibility:isStyleCalculationInProgress?"hidden":"visible",top:top,left:left},ref:function ref(node){_this2.node=node;},children:childrenWithProps});}}]);return TipContainer;}(react.Component);/* harmony default export */ var components_TipContainer = (TipContainer);
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js
+function _iterableToArrayLimit(arr, i) {
+  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
+
+  if (_i == null) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+
+  var _s, _e;
+
+  try {
+    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/slicedToArray.js
+
+
+
+
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+}
+;// CONCATENATED MODULE: ./src/lib/coordinates.ts
+// "viewport" rectangle is { top, left, width, height }
+// "scaled" means that data structure stores (0, 1) coordinates.
+// for clarity reasons I decided not to store actual (0, 1) coordinates, but
+// provide width and height, so user can compute ratio himself if needed
+var viewportToScaled=function viewportToScaled(rect,_ref){var width=_ref.width,height=_ref.height;return{x1:rect.left,y1:rect.top,x2:rect.left+rect.width,y2:rect.top+rect.height,width:width,height:height,pageNumber:rect.pageNumber};};var pdfToViewport=function pdfToViewport(pdf,viewport){var _viewport$convertToVi=viewport.convertToViewportRectangle([pdf.x1,pdf.y1,pdf.x2,pdf.y2]),_viewport$convertToVi2=_slicedToArray(_viewport$convertToVi,4),x1=_viewport$convertToVi2[0],y1=_viewport$convertToVi2[1],x2=_viewport$convertToVi2[2],y2=_viewport$convertToVi2[3];return{left:x1,top:y1,width:x2-x1,height:y1-y2,pageNumber:pdf.pageNumber};};var scaledToViewport=function scaledToViewport(scaled,viewport){var usePdfCoordinates=arguments.length>2&&arguments[2]!==undefined?arguments[2]:false;var width=viewport.width,height=viewport.height;if(usePdfCoordinates){return pdfToViewport(scaled,viewport);}if(scaled.x1===undefined){throw new Error("You are using old position format, please update");}var x1=width*scaled.x1/scaled.width;var y1=height*scaled.y1/scaled.height;var x2=width*scaled.x2/scaled.width;var y2=height*scaled.y2/scaled.height;return{left:x1,top:y1,width:x2-x1,height:y2-y1,pageNumber:scaled.pageNumber};};
+;// CONCATENATED MODULE: ./src/components/PdfHighlighter.tsx
+var PdfHighlighter_excluded=["position","id"];var EMPTY_ID="empty-id";var PdfHighlighter_PdfHighlighter=/*#__PURE__*/function(_PureComponent){_inherits(PdfHighlighter,_PureComponent);var _super=_createSuper(PdfHighlighter);function PdfHighlighter(props){var _this;_classCallCheck(this,PdfHighlighter);_this=_super.call(this,props);_this.state={ghostHighlight:null,isCollapsed:true,range:null,scrolledToHighlightId:EMPTY_ID,isAreaSelectionInProgress:false,tip:null,tipPosition:null,tipChildren:null};_this.eventBus=new pdf_viewer.EventBus();_this.linkService=new pdf_viewer.PDFLinkService({eventBus:_this.eventBus,externalLinkTarget:2});_this.viewer=void 0;_this.resizeObserver=null;_this.containerNode=null;_this.unsubscribe=function(){};_this.attachRef=function(ref){var _assertThisInitialize=_assertThisInitialized(_this),eventBus=_assertThisInitialize.eventBus,observer=_assertThisInitialize.resizeObserver;_this.containerNode=ref;_this.unsubscribe();if(ref){var _doc$defaultView;var doc=ref.ownerDocument;eventBus.on("textlayerrendered",_this.onTextLayerRendered);eventBus.on("pagesinit",_this.onDocumentReady);doc.addEventListener("selectionchange",_this.onSelectionChange);doc.addEventListener("keydown",_this.handleKeyDown);(_doc$defaultView=doc.defaultView)===null||_doc$defaultView===void 0?void 0:_doc$defaultView.addEventListener("resize",_this.debouncedScaleValue);if(observer)observer.observe(ref);_this.unsubscribe=function(){var _doc$defaultView2;eventBus.off("pagesinit",_this.onDocumentReady);eventBus.off("textlayerrendered",_this.onTextLayerRendered);doc.removeEventListener("selectionchange",_this.onSelectionChange);doc.removeEventListener("keydown",_this.handleKeyDown);(_doc$defaultView2=doc.defaultView)===null||_doc$defaultView2===void 0?void 0:_doc$defaultView2.removeEventListener("resize",_this.debouncedScaleValue);if(observer)observer.disconnect();};}};_this.hideTipAndSelection=function(){_this.setState({tipPosition:null,tipChildren:null});_this.setState({ghostHighlight:null,tip:null},function(){return _this.renderHighlights();});};_this.renderTip=function(){var _this$state=_this.state,tipPosition=_this$state.tipPosition,tipChildren=_this$state.tipChildren;if(!tipPosition)return null;var boundingRect=tipPosition.boundingRect,pageNumber=tipPosition.pageNumber;var page={node:_this.viewer.getPageView((boundingRect.pageNumber||pageNumber)-1).div,pageNumber:boundingRect.pageNumber||pageNumber};var pageBoundingClientRect=page.node.getBoundingClientRect();var pageBoundingRect={bottom:pageBoundingClientRect.bottom,height:pageBoundingClientRect.height,left:pageBoundingClientRect.left,right:pageBoundingClientRect.right,top:pageBoundingClientRect.top,width:pageBoundingClientRect.width,x:pageBoundingClientRect.x,y:pageBoundingClientRect.y,pageNumber:page.pageNumber};return/*#__PURE__*/(0,jsx_runtime.jsx)(components_TipContainer,{scrollTop:_this.viewer.container.scrollTop,pageBoundingRect:pageBoundingRect,style:{left:page.node.offsetLeft+boundingRect.left+boundingRect.width/2,top:boundingRect.top+page.node.offsetTop,bottom:boundingRect.top+page.node.offsetTop+boundingRect.height},children:tipChildren});};_this.onTextLayerRendered=function(){_this.renderHighlights();};_this.scrollTo=function(highlight){var _highlight$position=highlight.position,pageNumber=_highlight$position.pageNumber,boundingRect=_highlight$position.boundingRect,usePdfCoordinates=_highlight$position.usePdfCoordinates;_this.viewer.container.removeEventListener("scroll",_this.onScroll);var pageViewport=_this.viewer.getPageView(pageNumber-1).viewport;var scrollMargin=10;_this.viewer.scrollPageIntoView({pageNumber:pageNumber,destArray:[null,{name:"XYZ"}].concat(_toConsumableArray(pageViewport.convertToPdfPoint(0,scaledToViewport(boundingRect,pageViewport,usePdfCoordinates).top-scrollMargin)),[0])});_this.setState({scrolledToHighlightId:highlight.id},function(){return _this.renderHighlights();});// wait for scrolling to finish
+setTimeout(function(){_this.viewer.container.addEventListener("scroll",_this.onScroll);},100);};_this.onDocumentReady=function(){var scrollRef=_this.props.scrollRef;_this.handleScaleValue();scrollRef(_this.scrollTo);};_this.onSelectionChange=function(){var container=_this.containerNode;var selection=getWindow(container).getSelection();if(!selection){return;}var range=selection.rangeCount>0?selection.getRangeAt(0):null;if(selection.isCollapsed){_this.setState({isCollapsed:true});return;}if(!range||!container||!container.contains(range.commonAncestorContainer)){return;}_this.setState({isCollapsed:false,range:range});_this.debouncedAfterSelection();};_this.onScroll=function(){var onScrollChange=_this.props.onScrollChange;onScrollChange();_this.setState({scrolledToHighlightId:EMPTY_ID},function(){return _this.renderHighlights();});_this.viewer.container.removeEventListener("scroll",_this.onScroll);};_this.onMouseDown=function(event){if(!isHTMLElement(event.target)){return;}if(asElement(event.target).closest(".PdfHighlighter__tip-container")){return;}_this.hideTipAndSelection();};_this.handleKeyDown=function(event){if(event.code==="Escape"){_this.hideTipAndSelection();}};_this.afterSelection=function(){var onSelectionFinished=_this.props.onSelectionFinished;var _this$state2=_this.state,isCollapsed=_this$state2.isCollapsed,range=_this$state2.range;if(!range||isCollapsed){return;}var pages=getPagesFromRange(range);if(!pages||pages.length===0){return;}var rects=get_client_rects(range,pages);if(rects.length===0){return;}var boundingRect=get_bounding_rect(rects);var viewportPosition={boundingRect:boundingRect,rects:rects,pageNumber:pages[0].number};var content={text:range.toString()};var scaledPosition=_this.viewportPositionToScaled(viewportPosition);_this.setTip(viewportPosition,onSelectionFinished(scaledPosition,content,function(){return _this.hideTipAndSelection();},function(){return _this.setState({ghostHighlight:{position:scaledPosition}},function(){return _this.renderHighlights();});}));};_this.debouncedAfterSelection=lodash_debounce_default()(_this.afterSelection,500);_this.handleScaleValue=function(){if(_this.viewer){_this.viewer.currentScaleValue=_this.props.pdfScaleValue;//"page-width";
+}};_this.debouncedScaleValue=lodash_debounce_default()(_this.handleScaleValue,500);if(typeof ResizeObserver!=="undefined"){_this.resizeObserver=new ResizeObserver(_this.debouncedScaleValue);}return _this;}_createClass(PdfHighlighter,[{key:"componentDidMount",value:function componentDidMount(){this.init();}},{key:"componentDidUpdate",value:function componentDidUpdate(prevProps){if(prevProps.pdfDocument!==this.props.pdfDocument){this.init();return;}if(prevProps.highlights!==this.props.highlights){this.renderHighlights(this.props);}}},{key:"init",value:function init(){var pdfDocument=this.props.pdfDocument;this.viewer=this.viewer||new pdf_viewer.PDFViewer({container:this.containerNode,eventBus:this.eventBus,// enhanceTextSelection: true, // deprecated. https://github.com/mozilla/pdf.js/issues/9943#issuecomment-409369485
+textLayerMode:2,removePageBorders:true,linkService:this.linkService,renderer:"canvas",l10n:null});this.linkService.setDocument(pdfDocument);this.linkService.setViewer(this.viewer);this.viewer.setDocument(pdfDocument);// debug
+window.PdfViewer=this;}},{key:"componentWillUnmount",value:function componentWillUnmount(){this.unsubscribe();}},{key:"findOrCreateHighlightLayer",value:function findOrCreateHighlightLayer(page){var _ref=this.viewer.getPageView(page-1)||{},textLayer=_ref.textLayer;if(!textLayer){return null;}return findOrCreateContainerLayer(textLayer.textLayerDiv,"PdfHighlighter__highlight-layer");}},{key:"groupHighlightsByPage",value:function groupHighlightsByPage(highlights){var ghostHighlight=this.state.ghostHighlight;var allHighlights=[].concat(_toConsumableArray(highlights),[ghostHighlight]).filter(Boolean);var pageNumbers=new Set();var _iterator=_createForOfIteratorHelper(allHighlights),_step;try{for(_iterator.s();!(_step=_iterator.n()).done;){var _highlight2=_step.value;pageNumbers.add(_highlight2.position.pageNumber);var _iterator4=_createForOfIteratorHelper(_highlight2.position.rects),_step4;try{for(_iterator4.s();!(_step4=_iterator4.n()).done;){var _rect2=_step4.value;if(_rect2.pageNumber){pageNumbers.add(_rect2.pageNumber);}}}catch(err){_iterator4.e(err);}finally{_iterator4.f();}}}catch(err){_iterator.e(err);}finally{_iterator.f();}var groupedHighlights={};for(var _i=0,_Array$from=Array.from(pageNumbers);_i<_Array$from.length;_i++){var _pageNumber=_Array$from[_i];groupedHighlights[_pageNumber]=groupedHighlights[_pageNumber]||[];var _iterator2=_createForOfIteratorHelper(allHighlights),_step2;try{for(_iterator2.s();!(_step2=_iterator2.n()).done;){var _highlight=_step2.value;var pageSpecificHighlight=_objectSpread2(_objectSpread2({},_highlight),{},{position:{pageNumber:_pageNumber,boundingRect:_highlight.position.boundingRect,rects:[],usePdfCoordinates:_highlight.position.usePdfCoordinates}});var anyRectsOnPage=false;var _iterator3=_createForOfIteratorHelper(_highlight.position.rects),_step3;try{for(_iterator3.s();!(_step3=_iterator3.n()).done;){var _rect=_step3.value;if(_pageNumber===(_rect.pageNumber||_highlight.position.pageNumber)){pageSpecificHighlight.position.rects.push(_rect);anyRectsOnPage=true;}}}catch(err){_iterator3.e(err);}finally{_iterator3.f();}if(anyRectsOnPage||_pageNumber===_highlight.position.pageNumber){groupedHighlights[_pageNumber].push(pageSpecificHighlight);}}}catch(err){_iterator2.e(err);}finally{_iterator2.f();}}return groupedHighlights;}},{key:"showTip",value:function showTip(highlight,content){var _this$state3=this.state,isCollapsed=_this$state3.isCollapsed,ghostHighlight=_this$state3.ghostHighlight,isAreaSelectionInProgress=_this$state3.isAreaSelectionInProgress;var highlightInProgress=!isCollapsed||ghostHighlight;if(highlightInProgress||isAreaSelectionInProgress){return;}this.setTip(highlight.position,content);}},{key:"scaledPositionToViewport",value:function scaledPositionToViewport(_ref2){var pageNumber=_ref2.pageNumber,boundingRect=_ref2.boundingRect,rects=_ref2.rects,usePdfCoordinates=_ref2.usePdfCoordinates;var viewport=this.viewer.getPageView(pageNumber-1).viewport;return{boundingRect:scaledToViewport(boundingRect,viewport,usePdfCoordinates),rects:(rects||[]).map(function(rect){return scaledToViewport(rect,viewport,usePdfCoordinates);}),pageNumber:pageNumber};}},{key:"viewportPositionToScaled",value:function viewportPositionToScaled(_ref3){var pageNumber=_ref3.pageNumber,boundingRect=_ref3.boundingRect,rects=_ref3.rects;var viewport=this.viewer.getPageView(pageNumber-1).viewport;return{boundingRect:viewportToScaled(boundingRect,viewport),rects:(rects||[]).map(function(rect){return viewportToScaled(rect,viewport);}),pageNumber:pageNumber};}},{key:"screenshot",value:function screenshot(position,pageNumber){var canvas=this.viewer.getPageView(pageNumber-1).canvas;return get_area_as_png(canvas,position);}},{key:"renderHighlights",value:function renderHighlights(nextProps){var _this2=this;var _ref4=nextProps||this.props,highlightTransform=_ref4.highlightTransform,highlights=_ref4.highlights;var pdfDocument=this.props.pdfDocument;var _this$state4=this.state,tip=_this$state4.tip,scrolledToHighlightId=_this$state4.scrolledToHighlightId;var highlightsByPage=this.groupHighlightsByPage(highlights);var _loop=function _loop(_pageNumber2){var highlightLayer=_this2.findOrCreateHighlightLayer(_pageNumber2);if(highlightLayer){react_dom.render(/*#__PURE__*/(0,jsx_runtime.jsx)("div",{children:(highlightsByPage[String(_pageNumber2)]||[]).map(function(_ref5,index){var position=_ref5.position,id=_ref5.id,highlight=_objectWithoutProperties(_ref5,PdfHighlighter_excluded);// @ts-ignore
+var viewportHighlight=_objectSpread2({id:id,position:_this2.scaledPositionToViewport(position)},highlight);if(tip&&tip.highlight.id===String(id)){_this2.showTip(tip.highlight,tip.callback(viewportHighlight));}var isScrolledTo=Boolean(scrolledToHighlightId===id);return highlightTransform(viewportHighlight,index,function(highlight,callback){_this2.setState({tip:{highlight:highlight,callback:callback}});_this2.showTip(highlight,callback(highlight));},_this2.hideTipAndSelection,function(rect){var viewport=_this2.viewer.getPageView((rect.pageNumber||_pageNumber2)-1).viewport;return viewportToScaled(rect,viewport);},function(boundingRect){return _this2.screenshot(boundingRect,_pageNumber2);},isScrolledTo);})}),highlightLayer);}};for(var _pageNumber2=1;_pageNumber2<=pdfDocument.numPages;_pageNumber2++){_loop(_pageNumber2);}}},{key:"setTip",value:function setTip(position,inner){this.setState({tipPosition:position,tipChildren:inner});}},{key:"toggleTextSelection",value:function toggleTextSelection(flag){this.viewer.viewer.classList.toggle("PdfHighlighter--disable-selection",flag);}},{key:"render",value:function render(){var _this3=this;var _this$props=this.props,onSelectionFinished=_this$props.onSelectionFinished,enableAreaSelection=_this$props.enableAreaSelection;return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{onPointerDown:this.onMouseDown,children:/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{ref:this.attachRef,className:"PdfHighlighter",onContextMenu:function onContextMenu(e){return e.preventDefault();},children:[/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"pdfViewer"}),this.renderTip(),typeof enableAreaSelection==="function"?/*#__PURE__*/(0,jsx_runtime.jsx)(components_MouseSelection,{onDragStart:function onDragStart(){return _this3.toggleTextSelection(true);},onDragEnd:function onDragEnd(){return _this3.toggleTextSelection(false);},onChange:function onChange(isVisible){return _this3.setState({isAreaSelectionInProgress:isVisible});},shouldStart:function shouldStart(event){return enableAreaSelection(event)&&isHTMLElement(event.target)&&Boolean(asElement(event.target).closest(".page"));},onSelection:function onSelection(startTarget,boundingRect,resetSelection){var page=getPageFromElement(startTarget);if(!page){return;}var pageBoundingRect=_objectSpread2(_objectSpread2({},boundingRect),{},{top:boundingRect.top-page.node.offsetTop,left:boundingRect.left-page.node.offsetLeft,pageNumber:page.number});var viewportPosition={boundingRect:pageBoundingRect,rects:[],pageNumber:page.number};var scaledPosition=_this3.viewportPositionToScaled(viewportPosition);var image=_this3.screenshot(pageBoundingRect,pageBoundingRect.pageNumber);_this3.setTip(viewportPosition,onSelectionFinished(scaledPosition,{image:image},function(){return _this3.hideTipAndSelection();},function(){return _this3.setState({ghostHighlight:{position:scaledPosition,content:{image:image}}},function(){resetSelection();_this3.renderHighlights();});}));}}):null]})});}}]);return PdfHighlighter;}(react.PureComponent);PdfHighlighter_PdfHighlighter.defaultProps={pdfScaleValue:"auto"};
+// EXTERNAL MODULE: ./node_modules/pdfjs-dist/legacy/build/pdf.js
+var pdf = __webpack_require__(560);
+;// CONCATENATED MODULE: ./src/components/PdfLoader.tsx
+var PdfLoader=/*#__PURE__*/function(_Component){_inherits(PdfLoader,_Component);var _super=_createSuper(PdfLoader);function PdfLoader(){var _this;_classCallCheck(this,PdfLoader);for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_super.call.apply(_super,[this].concat(args));_this.state={pdfDocument:null,error:null};_this.documentRef=/*#__PURE__*/react.createRef();return _this;}_createClass(PdfLoader,[{key:"componentDidMount",value:function componentDidMount(){this.load();}},{key:"componentWillUnmount",value:function componentWillUnmount(){var discardedDocument=this.state.pdfDocument;if(discardedDocument){discardedDocument.destroy();}}},{key:"componentDidUpdate",value:function componentDidUpdate(_ref){var url=_ref.url;if(this.props.url!==url){this.load();}}},{key:"componentDidCatch",value:function componentDidCatch(error,info){var onError=this.props.onError;if(onError){onError(error);}this.setState({pdfDocument:null,error:error});}},{key:"load",value:function load(){var _this2=this;var _ref2=this.documentRef.current||{},_ref2$ownerDocument=_ref2.ownerDocument,ownerDocument=_ref2$ownerDocument===void 0?document:_ref2$ownerDocument;var _this$props=this.props,url=_this$props.url,cMapUrl=_this$props.cMapUrl,cMapPacked=_this$props.cMapPacked,workerSrc=_this$props.workerSrc;var discardedDocument=this.state.pdfDocument;this.setState({pdfDocument:null,error:null});if(typeof workerSrc==="string"){pdf.GlobalWorkerOptions.workerSrc=workerSrc;}Promise.resolve().then(function(){return discardedDocument&&discardedDocument.destroy();}).then(function(){if(!url){return;}return (0,pdf.getDocument)(_objectSpread2(_objectSpread2({},_this2.props),{},{ownerDocument:ownerDocument,cMapUrl:cMapUrl,cMapPacked:cMapPacked})).promise.then(function(pdfDocument){_this2.setState({pdfDocument:pdfDocument});});}).catch(function(e){return _this2.componentDidCatch(e);});}},{key:"render",value:function render(){var _this$props2=this.props,children=_this$props2.children,beforeLoad=_this$props2.beforeLoad;var _this$state=this.state,pdfDocument=_this$state.pdfDocument,error=_this$state.error;return/*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment,{children:[/*#__PURE__*/(0,jsx_runtime.jsx)("span",{ref:this.documentRef}),error?this.renderError():!pdfDocument||!children?beforeLoad:children(pdfDocument)]});}},{key:"renderError",value:function renderError(){var errorMessage=this.props.errorMessage;if(errorMessage){return/*#__PURE__*/react.cloneElement(errorMessage,{error:this.state.error});}return null;}}]);return PdfLoader;}(react.Component);PdfLoader.defaultProps={workerSrc:"https://unpkg.com/pdfjs-dist@2.11.338/build/pdf.worker.min.js"};/* harmony default export */ var components_PdfLoader = ((/* unused pure expression or super */ null && (PdfLoader)));
+;// CONCATENATED MODULE: ./src/components/MouseMonitor.tsx
+var MouseMonitor_excluded=["onMoveAway","paddingX","paddingY","children"];var MouseMonitor=/*#__PURE__*/function(_Component){_inherits(MouseMonitor,_Component);var _super=_createSuper(MouseMonitor);function MouseMonitor(){var _this;_classCallCheck(this,MouseMonitor);for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_super.call.apply(_super,[this].concat(args));_this.container=null;_this.unsubscribe=function(){};_this.onMouseMove=function(event){if(!_this.container){return;}var _this$props=_this.props,onMoveAway=_this$props.onMoveAway,paddingX=_this$props.paddingX,paddingY=_this$props.paddingY;var clientX=event.clientX,clientY=event.clientY;// TODO: see if possible to optimize
+var _this$container$getBo=_this.container.getBoundingClientRect(),left=_this$container$getBo.left,top=_this$container$getBo.top,width=_this$container$getBo.width,height=_this$container$getBo.height;var inBoundsX=clientX>left-paddingX&&clientX<left+width+paddingX;var inBoundsY=clientY>top-paddingY&&clientY<top+height+paddingY;var isNear=inBoundsX&&inBoundsY;if(!isNear){onMoveAway();}};_this.attachRef=function(ref){_this.container=ref;_this.unsubscribe();if(ref){var doc=ref.ownerDocument;doc.addEventListener("mousemove",_this.onMouseMove);_this.unsubscribe=function(){doc.removeEventListener("mousemove",_this.onMouseMove);};}};return _this;}_createClass(MouseMonitor,[{key:"render",value:function render(){// eslint-disable-next-line
+var _this$props2=this.props,onMoveAway=_this$props2.onMoveAway,paddingX=_this$props2.paddingX,paddingY=_this$props2.paddingY,children=_this$props2.children,restProps=_objectWithoutProperties(_this$props2,MouseMonitor_excluded);return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{ref:this.attachRef,children:/*#__PURE__*/react.cloneElement(children,restProps)});}}]);return MouseMonitor;}(react.Component);/* harmony default export */ var components_MouseMonitor = (MouseMonitor);
+;// CONCATENATED MODULE: ./src/components/Popup.tsx
+var Popup=/*#__PURE__*/function(_Component){_inherits(Popup,_Component);var _super=_createSuper(Popup);function Popup(){var _this;_classCallCheck(this,Popup);for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_super.call.apply(_super,[this].concat(args));_this.state={mouseIn:false};return _this;}_createClass(Popup,[{key:"render",value:function render(){var _this2=this;var _this$props=this.props,_onMouseOver=_this$props.onMouseOver,popupContent=_this$props.popupContent,onMouseOut=_this$props.onMouseOut;return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{onMouseOver:function onMouseOver(){_this2.setState({mouseIn:true});_onMouseOver(/*#__PURE__*/(0,jsx_runtime.jsx)(components_MouseMonitor,{onMoveAway:function onMoveAway(){if(_this2.state.mouseIn){return;}onMouseOut();},paddingX:60,paddingY:30,children:popupContent}));},onMouseOut:function onMouseOut(){_this2.setState({mouseIn:false});},children:this.props.children});}}]);return Popup;}(react.Component);/* harmony default export */ var components_Popup = ((/* unused pure expression or super */ null && (Popup)));
 ;// CONCATENATED MODULE: ./src/components/Spinner.tsx
 function Spinner(){return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{style:{display:"flex",alignItems:"center",height:"100vh"},children:/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"sk-fading-circle",children:[/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle1 sk-circle"}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle2 sk-circle"}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle3 sk-circle"}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle4 sk-circle"}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle5 sk-circle"}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle6 sk-circle"}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle7 sk-circle"}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle8 sk-circle"}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle9 sk-circle"}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle10 sk-circle"}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle11 sk-circle"}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"sk-circle12 sk-circle"})]})});}
 ;// CONCATENATED MODULE: ./src/components/test-highlights.ts
 var testHighlights={"files/vedomosti_spb_1727.pdf":[{content:{text:"Type Checking..."},position:{boundingRect:{x1:138.66665649414062,y1:338,x2:438.6666564941406,y2:387,width:809.9999999999999,height:1200},rects:[{x1:138.66665649414062,y1:139.140625,x2:438.6666564941406,y2:180,width:809.9999999999999,height:1200}],pageNumber:11},comment:{text:"про Париж",emoji:"📎"},id:"8245652131754351"},{content:{text:"Type Checking..."},position:{boundingRect:{x1:455.73419189453125,y1:239.140625,x2:774.372314453125,y2:565.140625,width:809.9999999999999,height:1200},rects:[{x1:235.73419189453125,y1:139.140625,x2:574.372314453125,y2:180,width:991.6666666666666,height:1403.3333333333333}],pageNumber:1},comment:{text:"Заголовок",emoji:"📎"},id:"8245652131754351"}]};
+;// CONCATENATED MODULE: ./src/style/Tip.css
+// extracted by mini-css-extract-plugin
+/* harmony default export */ var Tip = ({});
+;// CONCATENATED MODULE: ./src/components/Tip.tsx
+var Tip_Tip=/*#__PURE__*/function(_Component){_inherits(Tip,_Component);var _super=_createSuper(Tip);function Tip(){var _this;_classCallCheck(this,Tip);for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_super.call.apply(_super,[this].concat(args));_this.state={compact:true,text:"",emoji:""};return _this;}_createClass(Tip,[{key:"componentDidUpdate",value:// for TipContainer
+function componentDidUpdate(nextProps,nextState){var onUpdate=this.props.onUpdate;if(onUpdate&&this.state.compact!==nextState.compact){onUpdate();}}},{key:"render",value:function render(){var _this2=this;var _this$props=this.props,onConfirm=_this$props.onConfirm,onOpen=_this$props.onOpen;var _this$state=this.state,compact=_this$state.compact,text=_this$state.text,emoji=_this$state.emoji;return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"Tip",children:/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"Tip__compact",onClick:function onClick(event){event.preventDefault();onOpen();_this2.setState({compact:false});onConfirm({text:text,emoji:emoji});},children:"\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0446\u0438\u0442\u0430\u0442\u0443"})});}}]);return Tip;}(react.Component);/* harmony default export */ var components_Tip = ((/* unused pure expression or super */ null && (Tip_Tip)));
 ;// CONCATENATED MODULE: ./src/components/PDFwrapper.tsx
-var _excluded=["id","position","content"];var PDFwrapper_testHighlights=testHighlights;var getNextId=function getNextId(){return String(Math.random()).slice(2);};var parseIdFromHash=function parseIdFromHash(){return document.location.hash.slice("#highlight-".length);};var resetHash=function resetHash(){document.location.hash="";};var HighlightPopup=function HighlightPopup(_ref){var comment=_ref.comment;return comment.text?/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"Highlight__popup",children:[comment.emoji," ",comment.text]}):null;};// const PRIMARY_PDF_URL = "files/vedomosti_spb_1727.pdf";
+var PDFwrapper_excluded=["id","position","content"];var PDFwrapper_testHighlights=testHighlights;var getNextId=function getNextId(){return String(Math.random()).slice(2);};var parseIdFromHash=function parseIdFromHash(){return document.location.hash.slice("#highlight-".length);};var resetHash=function resetHash(){document.location.hash="";};var HighlightPopup=function HighlightPopup(_ref){var comment=_ref.comment;return comment.text?/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"Highlight__popup",children:[comment.emoji," ",comment.text]}):null;};// const PRIMARY_PDF_URL = "files/vedomosti_spb_1727.pdf";
 // const SECONDARY_PDF_URL = "https://arxiv.org/pdf/1604.02480.pdf";
 // const initialUrl = SECONDARY_PDF_URL;
 // console.log(initialUrl);
 var PDFwrapper=/*#__PURE__*/function(_Component){_inherits(PDFwrapper,_Component);var _super=_createSuper(PDFwrapper);// FIXME: Add listenersnot for window level but element level only
 function PDFwrapper(props){var _this;_classCallCheck(this,PDFwrapper);_this=_super.call(this,props);_this.listener=void 0;_this.resetHighlights=function(){_this.setState({highlights:[]});};_this.toggleDocument=function(newUrl){_this.setState({url:newUrl,highlights:PDFwrapper_testHighlights[newUrl]?_toConsumableArray(PDFwrapper_testHighlights[newUrl]):[]});};_this.scrollViewerTo=function(highlight){};_this.scrollToHighlightFromHash=function(){var highlight=_this.getHighlightById(parseIdFromHash());if(highlight){_this.scrollViewerTo(highlight);}};_this.state={url:props.url,highlights:props.highlights||[]};return _this;}_createClass(PDFwrapper,[{key:"componentDidMount",value:function componentDidMount(){var _this2=this;// FIXME: Add listenersnot for window level but element level only
 window.addEventListener("hashchange",this.scrollToHighlightFromHash,false);// FIXME: Add listenersnot for window level but element level only
-if(!this.listener){this.listener=window.addEventListener('setPDFwrapperUrl',function(e){if(e instanceof CustomEvent){var _e$detail;console.log(e);if(e!==null&&e!==void 0&&(_e$detail=e.detail)!==null&&_e$detail!==void 0&&_e$detail.url){var _e$detail2;_this2.toggleDocument(e===null||e===void 0?void 0:(_e$detail2=e.detail)===null||_e$detail2===void 0?void 0:_e$detail2.url);}}});}}},{key:"getHighlightById",value:function getHighlightById(id){var highlights=this.state.highlights;return highlights.find(function(highlight){return highlight.id===id;});}},{key:"addHighlight",value:function addHighlight(highlight){var highlights=this.state.highlights;console.log("Saving highlight",highlight);this.setState({highlights:[_objectSpread2(_objectSpread2({},highlight),{},{id:getNextId()})].concat(_toConsumableArray(highlights))});}},{key:"updateHighlight",value:function updateHighlight(highlightId,position,content){console.log("Updating highlight",highlightId,position,content);this.setState({highlights:this.state.highlights.map(function(h){var id=h.id,originalPosition=h.position,originalContent=h.content,rest=_objectWithoutProperties(h,_excluded);return id===highlightId?_objectSpread2({id:id,position:_objectSpread2(_objectSpread2({},originalPosition),position),content:_objectSpread2(_objectSpread2({},originalContent),content)},rest):h;})});}},{key:"componentDidUpdate",value:function componentDidUpdate(prevProps,prevState){console.log(prevState);}},{key:"render",value:function render(){var _this3=this;var _this$state=this.state,url=_this$state.url,highlights=_this$state.highlights;return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"App",style:{display:"flex",height:"100vh"},children:/*#__PURE__*/(0,jsx_runtime.jsx)("div",{style:{height:"100vh",width:"100vw",position:"relative"},children:/*#__PURE__*/(0,jsx_runtime.jsx)(PdfLoader,{url:url,beforeLoad:/*#__PURE__*/(0,jsx_runtime.jsx)(Spinner,{}),children:function children(pdfDocument){return/*#__PURE__*/(0,jsx_runtime.jsx)(PdfHighlighter_PdfHighlighter,{pdfDocument:pdfDocument,enableAreaSelection:function enableAreaSelection(event){return event.altKey;},onScrollChange:resetHash// pdfScaleValue="page-width"
+if(!this.listener){this.listener=window.addEventListener('jquery-pdf-viewer:setPDFwrapperUrl',function(e){if(e instanceof CustomEvent){var _e$detail;console.log(e);if(e!==null&&e!==void 0&&(_e$detail=e.detail)!==null&&_e$detail!==void 0&&_e$detail.url){var _e$detail2;_this2.toggleDocument(e===null||e===void 0?void 0:(_e$detail2=e.detail)===null||_e$detail2===void 0?void 0:_e$detail2.url);}}});}}},{key:"getHighlightById",value:function getHighlightById(id){var highlights=this.state.highlights;return highlights.find(function(highlight){return highlight.id===id;});}},{key:"addHighlight",value:function addHighlight(highlight){var highlights=this.state.highlights;// console.log("Saving highlight", highlight)
+window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlight',{detail:{highlight:highlight}}));this.setState({highlights:[_objectSpread2(_objectSpread2({},highlight),{},{id:getNextId()})].concat(_toConsumableArray(highlights))});}},{key:"updateHighlight",value:function updateHighlight(highlightId,position,content){console.log("Updating highlight",highlightId,position,content);this.setState({highlights:this.state.highlights.map(function(h){var id=h.id,originalPosition=h.position,originalContent=h.content,rest=_objectWithoutProperties(h,PDFwrapper_excluded);return id===highlightId?_objectSpread2({id:id,position:_objectSpread2(_objectSpread2({},originalPosition),position),content:_objectSpread2(_objectSpread2({},originalContent),content)},rest):h;})});}},{key:"componentDidUpdate",value:function componentDidUpdate(prevProps,prevState){// console.log(prevState)
+}},{key:"render",value:function render(){var _this3=this;var _this$state=this.state,url=_this$state.url,highlights=_this$state.highlights;return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"App",style:{display:"flex",height:"100vh"},children:/*#__PURE__*/(0,jsx_runtime.jsx)("div",{style:{height:"100vh",width:"100vw",position:"relative"},children:/*#__PURE__*/(0,jsx_runtime.jsx)(PdfLoader,{url:url,beforeLoad:/*#__PURE__*/(0,jsx_runtime.jsx)(Spinner,{}),children:function children(pdfDocument){return/*#__PURE__*/(0,jsx_runtime.jsx)(PdfHighlighter_PdfHighlighter,{pdfDocument:pdfDocument,enableAreaSelection:function enableAreaSelection(event){return event.altKey;},onScrollChange:resetHash// pdfScaleValue="page-width"
 ,scrollRef:function scrollRef(scrollTo){_this3.scrollViewerTo=scrollTo;_this3.scrollToHighlightFromHash();},onSelectionFinished:function onSelectionFinished(position,content,hideTipAndSelection,transformSelection){return/*#__PURE__*/(0,jsx_runtime.jsx)(Tip_Tip,{onOpen:transformSelection,onConfirm:function onConfirm(comment){_this3.addHighlight({content:content,position:position,comment:comment});hideTipAndSelection();}});},highlightTransform:function highlightTransform(highlight,index,setTip,hideTip,viewportToScaled,screenshot,isScrolledTo){var isTextHighlight=!Boolean(highlight.content&&highlight.content.image);var component=isTextHighlight?/*#__PURE__*/(0,jsx_runtime.jsx)(Highlight_Highlight,{isScrolledTo:isScrolledTo,position:highlight.position,comment:highlight.comment}):/*#__PURE__*/(0,jsx_runtime.jsx)(AreaHighlight_AreaHighlight,{isScrolledTo:isScrolledTo,highlight:highlight,onChange:function onChange(boundingRect){_this3.updateHighlight(highlight.id,{boundingRect:viewportToScaled(boundingRect)},{image:screenshot(boundingRect)});}});return/*#__PURE__*/(0,jsx_runtime.jsx)(Popup,{popupContent:/*#__PURE__*/(0,jsx_runtime.jsx)(HighlightPopup,_objectSpread2({},highlight)),onMouseOver:function onMouseOver(popupContent){return setTip(highlight,function(highlight){return popupContent;});},onMouseOut:hideTip,children:component},index);},highlights:highlights});}})})});}}]);return PDFwrapper;}(react.Component);/* harmony default export */ var components_PDFwrapper = (PDFwrapper);
 ;// CONCATENATED MODULE: ./src/styles/index.css
 // extracted by mini-css-extract-plugin
@@ -60077,9 +58179,9 @@ isBootstrap()?'bootstrap':isJQueryUI()?'jquery-ui':'default'// option value
 }function changed(){// changed
 }function update(){// filenames
 var fileNames=$(files).map(function(){return this.name;}).get();$(input).prop('value',fileNames.join(", "));}function renderPreview(){if($preview[0].hasOwnProperty('_reactRootContainer')){// FIXME: Add listenersnot for window level but element level only
-window.dispatchEvent(new CustomEvent('setPDFwrapperUrl',{detail:{url:null}}));}// Loop through the FileList and render image files as thumbnails.
+window.dispatchEvent(new CustomEvent('jquery-pdf-viewer:setPDFwrapperUrl',{detail:{url:null}}));}// Loop through the FileList and render image files as thumbnails.
 $(files).each(function(){if(!this.type.match('application/pdf')){return;}var fileUrl=files[0].src;if($preview[0].hasOwnProperty('_reactRootContainer')){// FIXME: Add listenersnot for window level but element level only
-window.dispatchEvent(new CustomEvent('setPDFwrapperUrl',{detail:{url:fileUrl}}));}else{react_dom.render(/*#__PURE__*/(0,jsx_runtime.jsx)(components_PDFwrapper,{url:fileUrl}),$preview[0]);}//$preview.append($thumbnail);
+window.dispatchEvent(new CustomEvent('jquery-pdf-viewer:setPDFwrapperUrl',{detail:{url:fileUrl}}));}else{react_dom.render(/*#__PURE__*/(0,jsx_runtime.jsx)(components_PDFwrapper,{url:fileUrl}),$preview[0]);}//$preview.append($thumbnail);
 // var renderStyle = true;
 // if (typeof options.renderThumbnail == "function") {
 //     var retVal = options.renderThumbnail.call(instance, $thumbnail[0], this);
