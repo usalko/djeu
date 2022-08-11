@@ -110,7 +110,7 @@ class PDFwrapper extends Component<{}, State> {
     // console.log("Saving highlight", highlight)
 
     window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlight', {
-      detail: highlight
+      detail: { highlight: highlight }
     }))
 
     this.setState({
