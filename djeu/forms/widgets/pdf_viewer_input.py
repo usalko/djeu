@@ -76,27 +76,26 @@ class PdfViewerInput(forms.FileInput):
                     js=(
                         'admin/js/vendor/jquery/jquery.min.js' % extra,
                         'djeu/js/jquery-pdf-viewer.min.js',
-                        'djeu/js/jquery-pdf-viewer.init.min.js',
+                        'djeu/js/jquery-pdf-viewer.init.js',
                     )
                     + (
                         'admin/js/jquery.init.js',
                     ),
                     css={
                         'screen': (
-                            'djeu/css/jquery-pdf-viewer.default.css',
+                            'djeu/css/jquery-pdf-viewer.default.min.css',
                         ),
                     },
                 )
             else:
                 return forms.Media(
                     js=(
-                        'djeu/js/jquery-pdf-viewer.js',
-                        'djeu/js/jquery-pdf-viewer.js.map',
+                        'djeu/js/jquery-pdf-viewer.min.js',
                         'djeu/js/jquery-pdf-viewer.init.js',
                     ),
                     css={
                         'screen': (
-                            'djeu/css/jquery-pdf-viewer.default.css',
+                            'djeu/css/jquery-pdf-viewer.default.min.css',
                         ),
                     },
                 )
