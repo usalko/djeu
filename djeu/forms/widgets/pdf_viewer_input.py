@@ -39,35 +39,64 @@ class PdfViewerInput(forms.FileInput):
 
     @property
     def media(self):
-        extra = '' if settings.DEBUG else '.min'
-        if self.use_admin_site_jquery:
-            return forms.Media(
-                js=(
-                    'admin/js/vendor/jquery/jquery%s.js' % extra,
-                    'djeu/js/jquery-pdf-viewer.js',
-                    'djeu/js/jquery-pdf-viewer.js.map',
-                    'djeu/js/jquery-pdf-viewer.init.js',
-                )
-                + (
-                    'admin/js/jquery.init.js',
-                )
-                ,
-                css={
-                    'screen': (
-                        'djeu/css/jquery-pdf-viewer.default.css',
+        if settings.DEBUG:
+            if self.use_admin_site_jquery:
+                return forms.Media(
+                    js=(
+                        'admin/js/vendor/jquery/jquery%s.js' % extra,
+                        'djeu/js/jquery-pdf-viewer.js',
+                        'djeu/js/jquery-pdf-viewer.js.map',
+                        'djeu/js/jquery-pdf-viewer.init.js',
+                    )
+                    + (
+                        'admin/js/jquery.init.js',
                     ),
-                },
-            )
+                    css={
+                        'screen': (
+                            'djeu/css/jquery-pdf-viewer.default.css',
+                        ),
+                    },
+                )
+            else:
+                return forms.Media(
+                    js=(
+                        'djeu/js/jquery-pdf-viewer.js',
+                        'djeu/js/jquery-pdf-viewer.js.map',
+                        'djeu/js/jquery-pdf-viewer.init.js',
+                    ),
+                    css={
+                        'screen': (
+                            'djeu/css/jquery-pdf-viewer.default.css',
+                        ),
+                    },
+                )
         else:
-            return forms.Media(
-                js=(
-                    'djeu/js/jquery-pdf-viewer.js',
-                    'djeu/js/jquery-pdf-viewer.js.map',
-                    'djeu/js/jquery-pdf-viewer.init.js',
-                ),
-                css={
-                    'screen': (
-                        'djeu/css/jquery-pdf-viewer.default.css',
+            if self.use_admin_site_jquery:
+                return forms.Media(
+                    js=(
+                        'admin/js/vendor/jquery/jquery.min.js' % extra,
+                        'djeu/js/jquery-pdf-viewer.min.js',
+                        'djeu/js/jquery-pdf-viewer.init.min.js',
+                    )
+                    + (
+                        'admin/js/jquery.init.js',
                     ),
-                },
-            )
+                    css={
+                        'screen': (
+                            'djeu/css/jquery-pdf-viewer.default.css',
+                        ),
+                    },
+                )
+            else:
+                return forms.Media(
+                    js=(
+                        'djeu/js/jquery-pdf-viewer.js',
+                        'djeu/js/jquery-pdf-viewer.js.map',
+                        'djeu/js/jquery-pdf-viewer.init.js',
+                    ),
+                    css={
+                        'screen': (
+                            'djeu/css/jquery-pdf-viewer.default.css',
+                        ),
+                    },
+                )

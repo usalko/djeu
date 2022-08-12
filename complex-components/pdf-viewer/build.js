@@ -1,8 +1,15 @@
+// There is build.js file for rewire-react-app
+// See https://github.com/halfzebra/rewire-react-app
+
 // in ./build.js
+const os = require('os');
 const rewire = require('rewire');
 const path = require('path');
 const defaults = rewire('react-scripts/scripts/build.js');
 const config = defaults.__get__('config');
+
+MINIFY=process.argv.length > 2 && process.argv[2] == 'minify';
+console.log(`======================${os.EOL}Minify flag is ${MINIFY}${os.EOL}----------------------${os.EOL} Argv array is: ${process.argv}`);
 
 // const { ReactComponentToJQueryPlugin } = require('./component-to-jquery-plugin');
 // config.plugins.push(new ReactComponentToJQueryPlugin({
@@ -16,12 +23,12 @@ const config = defaults.__get__('config');
 config.ignoreWarnings = [/Failed to parse source map/]
 
 config.entry = './src/jquery-pdf-viewer.jsx';
-config.output.filename = 'jquery-pdf-viewer.js';
+config.output.filename = `jquery-pdf-viewer${MINIFY ? '.min': ''}.js`;
 config.output.path = path.join(__dirname, 'build');
 // config.output.libraryTarget = 'umd';
 // config.output.library = 'jquery-pdf-viewer'
 
-config.optimization.minimize = false;
+config.optimization.minimize = MINIFY;
 
 config.externals = {
     // 'react': 'React',
@@ -36,7 +43,7 @@ config.module.rules.push({
 });
 // CSS file-name
 config.plugins.filter((plugin) => plugin.constructor.name === 'MiniCssExtractPlugin').forEach((plugin) => {
-    plugin.options['filename'] = 'jquery-pdf-viewer.default.css';
+    plugin.options['filename'] = `jquery-pdf-viewer.default${MINIFY ? '.min': ''}.css`;
 })
 
 // const { FileListPlugin } = require('./file-list-plugin');

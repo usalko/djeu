@@ -135,30 +135,41 @@ function react_build {
     cd $CURRENT_DIRECTORY
 
     cp $2/build/$1.js $3/js/
-    cp $2/build/$1.js.LICENSE.txt $3/js/
+    # cp $2/build/$1.js.LICENSE.txt $3/js/
     cp $2/build/$1.js.map $3/js/
 
     cp $2/build/$1.default.css $3/css/
     cp $2/build/$1.default.css.map $3/css/
-}
 
-function npm_build {
-    echo "Build react component $1 from $2 to file $3"
-    CURRENT_DIRECTORY=$PWD
     cd $2
-    npm i phantomjs-prebuilt@2.1.14 --ignore-scripts
-    npm i
-    npm i grunt-cli
-    npx grunt-cli --force
+    npm run build minify
     cd $CURRENT_DIRECTORY
 
-    mkdir -p $3/js/$1
-    cp $2/dist/js/* $3/js/$1/
-    mkdir -p $3/css/$1
-    cp $2/dist/css/* $3/css/$1/
-    mkdir -p $3/img/$1
-    cp $2/dist/img/* $3/img/$1/
+    cp $2/build/$1.min.js $3/js/
+    # cp $2/build/$1.min.js.LICENSE.txt $3/js/
+    cp $2/build/$1.min.js.map $3/js/
+
+    cp $2/build/$1.default.min.css $3/css/
+    cp $2/build/$1.default.min.css.map $3/css/
 }
+
+# function npm_build {
+#     echo "Build react component $1 from $2 to file $3"
+#     CURRENT_DIRECTORY=$PWD
+#     cd $2
+#     npm i phantomjs-prebuilt@2.1.14 --ignore-scripts
+#     npm i
+#     npm i grunt-cli
+#     npx grunt-cli --force
+#     cd $CURRENT_DIRECTORY
+# 
+#     mkdir -p $3/js/$1
+#     cp $2/dist/js/* $3/js/$1/
+#     mkdir -p $3/css/$1
+#     cp $2/dist/css/* $3/css/$1/
+#     mkdir -p $3/img/$1
+#     cp $2/dist/img/* $3/img/$1/
+# }
 
 function build {
     react_build jquery-pdf-viewer complex-components/pdf-viewer djeu/static/djeu

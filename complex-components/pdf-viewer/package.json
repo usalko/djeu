@@ -26,6 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "node ./build.js",
+    "build minify": "node ./build.js --minify",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
