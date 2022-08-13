@@ -44,6 +44,7 @@ class PDFwrapper extends Component<{}, State> {
   // FIXME: Add listeners not for window level but element level only
   setUrlListener: any
   cancelLatestHighlightListener: any
+  selectHighlightListener: any
 
   constructor(props: any) {
     super(props)
@@ -115,6 +116,17 @@ class PDFwrapper extends Component<{}, State> {
         false
       )
     }
+    if (!this.selectHighlightListener) {
+      this.selectHighlightListener = window.addEventListener('pdf-viewer-integration:selectHighlight',
+        (e: Event) => {
+          console.debug(e)
+          if ('detail' in e && (e as CustomEvent).detail?.highlight) {
+            this.selectHighlight(JSON.parse((e as CustomEvent).detail.highlight))
+          }
+        },
+        false
+      )
+    }
 
   }
 
@@ -132,21 +144,30 @@ class PDFwrapper extends Component<{}, State> {
     const { highlights } = this.state
 
     // console.log("Saving highlight", highlight)
-    if ('id' in highlight) { // Check IHighlight type
+
+    const identifiedHightlight = { ...highlight, id: getNextId() }
+    window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlight', {
+      detail: { highlight: identifiedHightlight }
+    }))
+
+    this.setState({
+      highlights: [identifiedHightlight, ...highlights],
+    })
+
+  }
+
+  selectHighlight(highlight: IHighlight) {
+    const { highlights } = this.state
+    const index = highlights.findIndex((element) => element.id === highlight.id)
+
+    if (index == -1) {
       this.setState({
-        highlights: [highlight as IHighlight, ...highlights],
+        highlights: [highlight, ...highlights],
       })
     } else {
-      const identifiedHightlight = { ...highlight, id: getNextId() }
-      window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlight', {
-        detail: { highlight: identifiedHightlight }
-      }))
-
-      this.setState({
-        highlights: [identifiedHightlight, ...highlights],
-      })
+      highlights[index] = highlight
     }
-
+    this.scrollViewerTo(highlight)
   }
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
