@@ -917,9 +917,9 @@ html
 
 .Tip__compact {
   cursor: pointer;
-  background-color: #3d464d;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: white;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  color: #3d464d;
   padding: 5px 10px;
   border-radius: 3px;
 }
