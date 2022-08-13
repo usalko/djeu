@@ -104,18 +104,29 @@ class PDFwrapper extends Component<{}, State> {
     return highlights.find((highlight) => highlight.id === id)
   }
 
+  hasId(object: any): object is IHighlight {
+    return 'id' in object;
+  }
+
   addHighlight(highlight: NewHighlight) {
     const { highlights } = this.state
 
     // console.log("Saving highlight", highlight)
+    if ('id' in highlight) { // Check IHighlight type
+      this.setState({
+        highlights: [highlight as IHighlight, ...highlights],
+      })
+    } else {
+      const identifiedHightlight = { ...highlight, id: getNextId() }
+      window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlight', {
+        detail: { highlight: identifiedHightlight }
+      }))
 
-    window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlight', {
-      detail: { highlight: highlight }
-    }))
+      this.setState({
+        highlights: [identifiedHightlight, ...highlights],
+      })
+    }
 
-    this.setState({
-      highlights: [{ ...highlight, id: getNextId() }, ...highlights],
-    })
   }
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
