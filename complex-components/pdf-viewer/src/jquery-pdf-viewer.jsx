@@ -119,7 +119,7 @@ if (typeof jQuery !== 'undefined') {
             function renderPreview() {
 
                 if ($preview[0].hasOwnProperty('_reactRootContainer')) {
-                    // FIXME: Add listenersnot for window level but element level only
+                    // FIXME: Add listeners not for window level but element level only
                     window.dispatchEvent(new CustomEvent(
                         'jquery-pdf-viewer:setPDFwrapperUrl', {
                         detail: {
@@ -136,7 +136,7 @@ if (typeof jQuery !== 'undefined') {
                     var fileUrl = files[0].src
 
                     if ($preview[0].hasOwnProperty('_reactRootContainer')) {
-                        // FIXME: Add listenersnot for window level but element level only
+                        // FIXME: Add listeners not for window level but element level only
                         window.dispatchEvent(new CustomEvent(
                             'jquery-pdf-viewer:setPDFwrapperUrl', {
                             detail: {
