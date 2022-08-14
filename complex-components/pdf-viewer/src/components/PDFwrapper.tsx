@@ -45,6 +45,7 @@ class PDFwrapper extends Component<{}, State> {
   setUrlListener: any
   cancelLatestHighlightListener: any
   selectHighlightListener: any
+  removeHighlightListener: any
 
   constructor(props: any) {
     super(props)
@@ -127,6 +128,17 @@ class PDFwrapper extends Component<{}, State> {
         false
       )
     }
+    if (!this.removeHighlightListener) {
+      this.removeHighlightListener = window.addEventListener('pdf-viewer-integration:removeHighlight',
+        (e: Event) => {
+          console.debug(e)
+          if ('detail' in e && (e as CustomEvent).detail?.highlight) {
+            this.removeHighlight(JSON.parse((e as CustomEvent).detail.highlight))
+          }
+        },
+        false
+      )
+    }
 
   }
 
@@ -166,6 +178,19 @@ class PDFwrapper extends Component<{}, State> {
       })
     } else {
       highlights[index] = highlight
+    }
+    this.scrollViewerTo(highlight)
+  }
+
+  removeHighlight(highlight: IHighlight) {
+    const { highlights } = this.state
+    const index = highlights.findIndex((element) => element.id === highlight.id)
+
+    if (index > -1) {
+      highlights.splice(index, 1)
+      this.setState({
+        highlights: [...highlights],
+      })
     }
     this.scrollViewerTo(highlight)
   }
