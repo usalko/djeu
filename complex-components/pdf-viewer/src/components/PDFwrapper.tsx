@@ -8,6 +8,7 @@ import { Popup } from './Popup';
 import { Spinner } from "./Spinner";
 import { testHighlights as _testHighlights } from "./test-highlights";
 import { Tip } from './Tip';
+import Toolbar from "./Toolbar";
 
 // const highlightsStore: Record<string, Array<IHighlight>> = _testHighlights;
 
@@ -227,13 +228,9 @@ class PDFwrapper extends Component<{}, State> {
 
     return (
       <div>
-        <div>
-          <p>
-            <small>
-              Чтобы отметить область как рисунок, нажмите "Alt" и выделяйте.
-            </small>
-          </p>
-        </div>
+        <Toolbar initialSearchTextInput="" highlights={highlights} onFind={(textForFind) => {
+          this.hi
+        }}/>
         <div className="App" style={{ display: "flex", height: "100vh" }}>
           {/* <Sidebar
           highlights={highlights}

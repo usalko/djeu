@@ -3,7 +3,7 @@ import { PointerEventHandler, PureComponent } from "react";
 import ReactDom from "react-dom";
 
 import {
-  EventBus, PDFLinkService, PDFViewer
+  EventBus, PDFFindController, PDFLinkService, PDFViewer
 } from "pdfjs-dist/legacy/web/pdf_viewer";
 
 import "pdfjs-dist/web/pdf_viewer.css";
@@ -102,12 +102,16 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     eventBus: this.eventBus,
     externalLinkTarget: 2,
   });
+  findController = new PDFFindController({
+    linkService: this.linkService,
+    eventBus: this.eventBus,
+  });
 
   viewer!: PDFViewer;
 
   resizeObserver: ResizeObserver | null = null;
   containerNode?: HTMLDivElement | null = null;
-  unsubscribe = () => {};
+  unsubscribe = () => { };
 
   constructor(props: Props<T_HT>) {
     super(props);
@@ -173,6 +177,8 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
         renderer: "canvas",
         l10n: null,
       });
+
+    this.findController.setDocument(pdfDocument)
 
     this.linkService.setDocument(pdfDocument);
     this.linkService.setViewer(this.viewer);

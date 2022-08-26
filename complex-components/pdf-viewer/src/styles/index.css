@@ -50,6 +50,16 @@
     background: rgba(58, 56, 52, 0.08);
 }
 
+.search {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    width: fit-content;
+}
+
+.search:hover {
+    border: 1px solid rgba(0, 0, 0, 0.9);
+}
+
+
 /* a {
     color: #d35400;
 } */
