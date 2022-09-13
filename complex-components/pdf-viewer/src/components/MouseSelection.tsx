@@ -3,7 +3,7 @@ import { Component } from "react";
 import { asElement, isHTMLElement } from "../lib/pdfjs-dom";
 import "../style/MouseSelection.css";
 
-import type { LTWH } from "../types.js";
+import type { LeftTopWidthHeight } from "../types.js";
 
 interface Coords {
   x: number;
@@ -19,7 +19,7 @@ interface State {
 interface Props {
   onSelection: (
     startTarget: HTMLElement,
-    boundingRect: LTWH,
+    boundingRect: LeftTopWidthHeight,
     resetSelection: () => void
   ) => void;
   onDragStart: () => void;
@@ -44,7 +44,7 @@ class MouseSelection extends Component<Props, State> {
     this.setState({ start: null, end: null, locked: false });
   };
 
-  getBoundingRect(start: Coords, end: Coords): LTWH {
+  getBoundingRect(start: Coords, end: Coords): LeftTopWidthHeight {
     return {
       left: Math.min(end.x, start.x),
       top: Math.min(end.y, start.y),
@@ -181,7 +181,7 @@ class MouseSelection extends Component<Props, State> {
     });
   }
 
-  shouldRender(boundingRect: LTWH) {
+  shouldRender(boundingRect: LeftTopWidthHeight) {
     return boundingRect.width >= 1 && boundingRect.height >= 1;
   }
 

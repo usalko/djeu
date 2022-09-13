@@ -1,11 +1,11 @@
-export interface LTWH {
+export interface LeftTopWidthHeight {
   left: number;
   top: number;
   width: number;
   height: number;
 }
 
-export interface LTWHP extends LTWH {
+export interface LeftTopWidthHeightPageNumber extends LeftTopWidthHeight {
   pageNumber?: number;
 }
 
@@ -23,8 +23,8 @@ export interface Scaled {
 }
 
 export interface Position {
-  boundingRect: LTWHP;
-  rects: Array<LTWHP>;
+  boundingRect: LeftTopWidthHeightPageNumber;
+  rects: Array<LeftTopWidthHeightPageNumber>;
   pageNumber: number;
 }
 

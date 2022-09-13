@@ -227,18 +227,7 @@ class PDFwrapper extends Component<{}, State> {
 
     return (
       <div>
-        <div>
-          <p>
-            <small>
-              Чтобы отметить область как рисунок, нажмите "Alt" и выделяйте.
-            </small>
-          </p>
-        </div>
         <div className="App" style={{ display: "flex", height: "100vh" }}>
-          {/* <Sidebar
-          highlights={highlights}
-          resetHighlights={this.resetHighlights}
-        /> */}
           <div
             style={{
               height: "100vh",
@@ -250,7 +239,7 @@ class PDFwrapper extends Component<{}, State> {
               {(pdfDocument) => (
                 <PdfHighlighter
                   pdfDocument={pdfDocument}
-                  enableAreaSelection={(event) => event.altKey}
+                  enableAreaSelection={(event) => true}
                   onScrollChange={resetHash}
                   // pdfScaleValue="page-width"
                   scrollRef={(scrollTo) => {
@@ -286,14 +275,27 @@ class PDFwrapper extends Component<{}, State> {
                       highlight.content && highlight.content.image
                     );
 
-                    const component = isTextHighlight ? (
-                      <Highlight
-                        isScrolledTo={isScrolledTo}
-                        position={highlight.position}
-                        comment={highlight.comment}
-                      />
-                    ) : (
-                      <AreaHighlight
+                    // const component = isTextHighlight ? (
+                    //   <Highlight
+                    //     isScrolledTo={isScrolledTo}
+                    //     position={highlight.position}
+                    //     comment={highlight.comment}
+                    //   />
+                    // ) : (
+                    //   <AreaHighlight
+                    //     isScrolledTo={isScrolledTo}
+                    //     highlight={highlight}
+                    //     onChange={(boundingRect) => {
+                    //       this.updateHighlight(
+                    //         highlight.id,
+                    //         { boundingRect: viewportToScaled(boundingRect) },
+                    //         { image: screenshot(boundingRect) }
+                    //       );
+                    //     }}
+                    //   />
+                    // );
+
+                    const component = <AreaHighlight
                         isScrolledTo={isScrolledTo}
                         highlight={highlight}
                         onChange={(boundingRect) => {
@@ -304,7 +306,6 @@ class PDFwrapper extends Component<{}, State> {
                           );
                         }}
                       />
-                    );
 
                     return (
                       <Popup

@@ -26,8 +26,8 @@ import { scaledToViewport, viewportToScaled } from "../lib/coordinates";
 
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import type {
-  IHighlight, LTWH,
-  LTWHP, Position, Scaled, ScaledPosition
+  IHighlight, LeftTopWidthHeight,
+  LeftTopWidthHeightPageNumber, Position, Scaled, ScaledPosition
 } from "../types";
 
 type T_ViewportHighlight<T_HT> = { position: Position } & T_HT;
@@ -58,8 +58,8 @@ interface Props<T_HT> {
       callback: (highlight: T_ViewportHighlight<T_HT>) => JSX.Element
     ) => void,
     hideTip: () => void,
-    viewportToScaled: (rect: LTWHP) => Scaled,
-    screenshot: (position: LTWH) => string,
+    viewportToScaled: (rect: LeftTopWidthHeightPageNumber) => Scaled,
+    screenshot: (position: LeftTopWidthHeight) => string,
     isScrolledTo: boolean
   ) => JSX.Element;
   highlights: Array<T_HT>;
@@ -292,7 +292,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     };
   }
 
-  screenshot(position: LTWH, pageNumber: number) {
+  screenshot(position: LeftTopWidthHeight, pageNumber: number) {
     const canvas = this.viewer.getPageView(pageNumber - 1).canvas;
 
     return getAreaAsPng(canvas, position);

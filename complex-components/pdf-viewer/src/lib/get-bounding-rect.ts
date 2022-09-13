@@ -1,6 +1,6 @@
-import type { LTWHP } from "../types.js";
+import type { LeftTopWidthHeightPageNumber } from "../types.js";
 
-const getBoundingRect = (clientRects: Array<LTWHP>): LTWHP => {
+const getBoundingRect = (clientRects: Array<LeftTopWidthHeightPageNumber>): LeftTopWidthHeightPageNumber => {
   const rects = Array.from(clientRects).map((rect) => {
     const { left, top, width, height, pageNumber } = rect;
 
