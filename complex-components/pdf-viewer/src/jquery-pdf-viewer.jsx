@@ -278,6 +278,15 @@ if (typeof jQuery !== 'undefined') {
                 }
             },
 
+            workerSrc: function (workerSrc) {
+                if (!arguments.length) {
+                    return this.component.state.workerSrc;
+                } else {
+                    this.settings.workerSrc = workerSrc;
+                    this.init();
+                }
+            },
+
         });
 
         var pluginClass = PdfViewer;

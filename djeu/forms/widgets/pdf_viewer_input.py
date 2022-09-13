@@ -34,7 +34,8 @@ class PdfViewerInput(forms.FileInput):
         return super(PdfViewerInput, self).get_context(name, value, {**attrs, **{
             'class': 'pdfViewer',
             'data-label': data_label,
-            'url': url
+            'url': url,
+            # 'workerSrc': 'djeu/js/pdf.worker.min.js'
         }})
 
     @property
