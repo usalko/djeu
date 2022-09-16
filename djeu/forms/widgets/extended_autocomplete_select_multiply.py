@@ -16,6 +16,8 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         self.additional_data_components = kwargs.pop(
             'additional_data_components', None)
         super().__init__(*args, **kwargs)
+        if not hasattr(self, 'i18n_name'):
+            self.i18n_name = None
 
     def _label(self, obj) -> str:
         return str(obj)
@@ -90,7 +92,7 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         # => relative: relationship
         # => kind: relationship
         extended_many_to_many_field = self.field
-        relation_model_name = extended_many_to_many_field.through._meta.model_name if extended_many_to_many_field.through else extended_many_to_many_field._related_name
+        relation_model_name = extended_many_to_many_field.through._meta.model_name if extended_many_to_many_field.through else extended_many_to_many_field.remote_field.related_name
         owner_model_name = extended_many_to_many_field.model._meta.model_name
 
         data_components = [{field: relation_model_name}

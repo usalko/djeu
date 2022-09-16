@@ -71,12 +71,12 @@ class ExtendedAutocompleteSelect(widgets.AutocompleteSelect):
         # through_fields = (document, relative, kind)
         # => relative: relationship
         # => kind: relationship
-        exteded_foreign_key_field = self.field
-        relation_model_name = exteded_foreign_key_field.model._meta.model_name
-        # owner_model_name = exteded_foreign_key_field.model._meta.model_name
+        extended_foreign_key_field = self.field
+        relation_model_name = extended_foreign_key_field.model._meta.model_name
+        # owner_model_name = extended_foreign_key_field.model._meta.model_name
 
         data_components = [{field: relation_model_name}
-                           for field in exteded_foreign_key_field.key_data_components]
+                           for field in extended_foreign_key_field.key_data_components]
         if self.additional_data_components:
             for additional_data_component in self.additional_data_components:
                 if additional_data_component in data_components:

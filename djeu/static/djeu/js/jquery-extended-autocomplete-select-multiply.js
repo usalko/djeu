@@ -5479,7 +5479,7 @@
                             return selection.text;
                         },
                         theme: 'default',
-                        width: 'min-content',
+                        width: '100%',
                         minWidth: '300px',
                     };
                 };
