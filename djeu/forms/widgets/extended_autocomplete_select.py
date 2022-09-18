@@ -4,6 +4,8 @@ from django import forms
 from django.conf import settings
 from django.contrib.admin import widgets
 from json import dumps
+# from django.contrib import admin
+from django.urls import reverse
 
 
 class ExtendedAutocompleteSelect(widgets.AutocompleteSelect):
@@ -12,13 +14,15 @@ class ExtendedAutocompleteSelect(widgets.AutocompleteSelect):
     option_template_name = 'djeu/forms/widgets/select_option.html'
 
     # FIXME: https://stackoverflow.com/questions/63199404/django-choice-list-dynamic-choices
-    def __init__(self, *args, use_admin_site_jquery=False, additional_data_components=None, **kwargs):
-        super(ExtendedAutocompleteSelect, self).__init__(*args, **kwargs)
+    def __init__(self, *args, admin_site=None, url_name=None, use_admin_site_jquery=False, additional_data_components=None, **kwargs):
+        super(ExtendedAutocompleteSelect, self).__init__(*args, admin_site, **kwargs)
         self.allow_multiple_selected = False
         self.additional_data_components = additional_data_components
         if not hasattr(self, 'i18n_name'):
             self.i18n_name = None
         self.use_admin_site_jquery = use_admin_site_jquery
+        if url_name:
+            self.url_name = url_name
 
     def _label(self, obj) -> str:
         return str(obj)
@@ -64,6 +68,11 @@ class ExtendedAutocompleteSelect(widgets.AutocompleteSelect):
         if attrs:
             result['attrs'] = {**result['attrs'], **attrs}
         return result
+    
+    def get_url(self):
+        if self.admin_site:
+            return super(ExtendedAutocompleteSelect, self).get_url()
+        return reverse(self.url_name)
 
     def get_context(self, name, value, attrs):
         # Request models and fields for the autocomplete requests

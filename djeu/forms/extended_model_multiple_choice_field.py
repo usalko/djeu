@@ -174,6 +174,21 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
             return result
         else:
             return self.queryset.none()
+        
+    def bound_data(self, data, initial):
+        """
+        Return the value that should be shown for this field on render of a
+        bound form, given the submitted POST data for the field and the initial
+        data, if any.
+
+        For most fields, this will simply be data; FileFields need to handle it
+        a bit differently.
+        """
+        # if self.disabled:
+        #    return initial
+        # return data
+        # Initial always actual @see clean method implementation
+        return initial
 
     def clean(self, value):
         if self.widget and self.widget.field and self.widget.field.through:

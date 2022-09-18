@@ -8,6 +8,7 @@
                     data: (params) => {
                         if (params.model && params.field) {
                             return {
+                                q: params.term,
                                 term: params.term,
                                 page: params.page,
                                 app_label: element.dataset.appLabel,

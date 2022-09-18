@@ -420,7 +420,7 @@
                         }
 
                         //Support require(['a'])
-                        callback = callback || function () {};
+                        callback = callback || function () { };
 
                         //If relName is a function, it is an errback handler,
                         //so remove it.
@@ -492,7 +492,7 @@
 
         ExtendedAutocompleteSelectMultiply.define(
             'almond',
-            function () {});
+            function () { });
 
         /* global jQuery:false, $:false */
         ExtendedAutocompleteSelectMultiply.define(
@@ -599,7 +599,7 @@
 
                     var calledMethod = function (methodName) {
                         // Stub out the original method if it's not decorating an actual method
-                        var originalMethod = function () {};
+                        var originalMethod = function () { };
 
                         if (methodName in DecoratedClass.prototype) {
                             originalMethod = DecoratedClass.prototype[methodName];
@@ -1704,16 +1704,16 @@
 
                 SingleSelection.prototype.render = function () {
                     var $selection = SingleSelection.__super__.render.call(this);
-
-                    $selection.addClass('extended-autocomplete-select-multiply-selection--single');
-
+                
+                    $selection[0].classList.add('extended-autocomplete-select-multiply-selection--single');
+                
                     $selection.html(
-                        '<span class="extended-autocomplete-select-multiply-selection__rendered"></span>' +
-                        '<span class="extended-autocomplete-select-multiply-selection__arrow" role="presentation">' +
+                      '<span class="extended-autocomplete-select-multiply-selection__rendered"></span>' +
+                      '<span class="extended-autocomplete-select-multiply-selection__arrow" role="presentation">' +
                         '<b role="presentation"></b>' +
-                        '</span>'
+                      '</span>'
                     );
-
+                
                     return $selection;
                 };
 
@@ -1889,9 +1889,11 @@
                 MultipleSelection.prototype.selectionContainer = function () {
                     var $container = $(
                         '<li class="extended-autocomplete-select-multiply-selection__choice">' +
-                        '<span class="extended-autocomplete-select-multiply-selection__choice__remove" role="presentation">' +
-                        '&times;' +
-                        '</span>' +
+                            '<button type="button" class="extended-autocomplete-select-multiply-selection__choice__remove" ' +
+                                'tabindex="-1">' +
+                                '<span aria-hidden="true">&times;</span>' +
+                            '</button>' +
+                            '<span class="extended-autocomplete-select-multiply-selection__choice__display"></span>' +
                         '</li>'
                     );
 
@@ -1900,39 +1902,60 @@
 
                 MultipleSelection.prototype.update = function (data) {
                     this.clear();
-
+                
                     if (data.length === 0) {
-                        return;
+                      return;
                     }
-
+                
                     var $selections = [];
-
+                
+                    var selectionIdPrefix = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered')
+                      .attr('id') + '-choice-';
+                
                     for (var d = 0; d < data.length; d++) {
-                        var selection = data[d];
-
-                        var $selection = this.selectionContainer();
-                        var formatted = this.display(selection, $selection);
-
-                        $selection.append(formatted);
-
-                        var title = selection.title || selection.text;
-
-                        if (title) {
-                            $selection.attr('title', title);
-                        }
-
-                        Utils.StoreData($selection[0], 'data', selection);
-
-                        $selections.push($selection);
+                      var selection = data[d];
+                
+                      var $selection = this.selectionContainer();
+                      var formatted = this.display(selection, $selection);
+                
+                      var selectionId = selectionIdPrefix + Utils.generateChars(4) + '-';
+                
+                      if (selection.id) {
+                        selectionId += selection.id;
+                      } else {
+                        selectionId += Utils.generateChars(4);
+                      }
+                
+                      $selection.find('.extended-autocomplete-select-multiply-selection__choice__display')
+                        .append(formatted)
+                        .attr('id', selectionId);
+                
+                      var title = selection.title || selection.text;
+                
+                      if (title) {
+                        $selection.attr('title', title);
+                      }
+                
+                      // var removeItem = this.options.get('translations').get('removeItem');
+                
+                      var $remove = $selection.find('.extended-autocomplete-select-multiply-selection__choice__remove');
+                
+                      // $remove.attr('title', removeItem());
+                      // $remove.attr('aria-label', removeItem());
+                      $remove.attr('aria-describedby', selectionId);
+                
+                      Utils.StoreData($selection[0], 'data', selection);
+                
+                      $selections.push($selection);
                     }
-
+                
                     var $rendered = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered');
-
-                    Utils.appendMany($rendered, $selections);
-                };
-
-                return MultipleSelection;
-            });
+                
+                    $rendered.append($selections);
+                  };
+                
+                  return MultipleSelection;
+                });
 
         ExtendedAutocompleteSelectMultiply.define(
             'extendedAutocompleteSelectMultiply/selection/placeholder',
@@ -1996,7 +2019,7 @@
                 '../utils'
             ],
             function ($, KEYS, Utils) {
-                function AllowClear() {}
+                function AllowClear() { }
 
                 AllowClear.prototype.bind = function (decorated, container, $container) {
                     var self = this;
@@ -2090,25 +2113,35 @@
 
                 AllowClear.prototype.update = function (decorated, data) {
                     decorated.call(this, data);
-
+                
+                    this.$selection.find('.extended-autocomplete-select-multiply-selection__clear').remove();
+                    this.$selection[0].classList.remove('extended-autocomplete-select-multiply-selection--clearable');
+                
                     if (this.$selection.find('.extended-autocomplete-select-multiply-selection__placeholder').length > 0 ||
                         data.length === 0) {
-                        return;
+                      return;
                     }
-
+                
+                    var selectionId = this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered')
+                      .attr('id');
+                
                     var removeAll = this.options.get('translations').get('removeAllItems');
-
+                
                     var $remove = $(
-                        '<span class="extended-autocomplete-select-multiply-selection__clear" title="' + removeAll() + '">' +
-                        '&times;' +
-                        '</span>'
+                      '<button type="button" class="extended-autocomplete-select-multiply-selection__clear" tabindex="-1">' +
+                        '<span aria-hidden="true">&times;</span>' +
+                      '</button>'
                     );
+                    $remove.attr('title', removeAll());
+                    $remove.attr('aria-label', removeAll());
+                    $remove.attr('aria-describedby', selectionId);
                     Utils.StoreData($remove[0], 'data', data);
-
-                    this.$selection.find('.extended-autocomplete-select-multiply-selection__rendered').prepend($remove);
-                };
-
-                return AllowClear;
+                
+                    this.$selection.prepend($remove);
+                    this.$selection[0].classList.add('extended-autocomplete-select-multiply-selection--clearable');
+                  };
+                
+                  return AllowClear;
             });
 
         ExtendedAutocompleteSelectMultiply.define(
@@ -2502,7 +2535,7 @@
                 'jquery'
             ],
             function ($) {
-                function EventRelay() {}
+                function EventRelay() { }
 
                 EventRelay.prototype.bind = function (decorated, container, $container) {
                     var self = this;
@@ -4578,7 +4611,7 @@
                 };
 
                 HidePlaceholder.prototype.removePlaceholder = function (_, data) {
-                    var modifiedData = data.slice(0);
+                    var modifiedData = data && data.slice(0);
 
                     for (var d = data.length - 1; d >= 0; d--) {
                         var item = data[d];
@@ -4996,10 +5029,10 @@
 
         ExtendedAutocompleteSelectMultiply.define(
             'extendedAutocompleteSelectMultiply/dropdown/selectOnClose', [
-                '../utils'
-            ],
+            '../utils'
+        ],
             function (Utils) {
-                function SelectOnClose() {}
+                function SelectOnClose() { }
 
                 SelectOnClose.prototype.bind = function (decorated, container, $container) {
                     var self = this;
@@ -5051,7 +5084,7 @@
             'extendedAutocompleteSelectMultiply/dropdown/closeOnSelect',
             [],
             function () {
-                function CloseOnSelect() {}
+                function CloseOnSelect() { }
 
                 CloseOnSelect.prototype.bind = function (decorated, container, $container) {
                     var self = this;
@@ -6500,7 +6533,7 @@
                     return null;
                 }
 
-                function ContainerCSS() {}
+                function ContainerCSS() { }
 
                 ContainerCSS.prototype.render = function (decorated) {
                     var $container = decorated.call(this);
@@ -6560,7 +6593,7 @@
                     return null;
                 }
 
-                function DropdownCSS() {}
+                function DropdownCSS() { }
 
                 DropdownCSS.prototype.render = function (decorated) {
                     var $dropdown = decorated.call(this);
@@ -6890,7 +6923,7 @@
             'extendedAutocompleteSelectMultiply/dropdown/stopPropagation',
             [],
             function () {
-                function StopPropagation() {}
+                function StopPropagation() { }
 
                 StopPropagation.prototype.bind = function (decorated, container, $container) {
                     decorated.call(this, container, $container);
@@ -6930,7 +6963,7 @@
             'extendedAutocompleteSelectMultiply/selection/stopPropagation',
             [],
             function () {
-                function StopPropagation() {}
+                function StopPropagation() { }
 
                 StopPropagation.prototype.bind = function (decorated, container, $container) {
                     decorated.call(this, container, $container);
