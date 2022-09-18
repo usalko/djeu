@@ -12,12 +12,13 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
     option_template_name = 'djeu/forms/widgets/select_option.html'
 
     # FIXME: https://stackoverflow.com/questions/63199404/django-choice-list-dynamic-choices
-    def __init__(self, *args, **kwargs):
-        self.additional_data_components = kwargs.pop(
-            'additional_data_components', None)
+    def __init__(self, *args, use_admin_site_jquery=False, additional_data_components=None, **kwargs):
+        self.additional_data_components = additional_data_components
         super().__init__(*args, **kwargs)
         if not hasattr(self, 'i18n_name'):
             self.i18n_name = None
+        self.use_admin_site_jquery = use_admin_site_jquery
+
 
     def _label(self, obj) -> str:
         return str(obj)
@@ -121,18 +122,33 @@ class ExtendedAutocompleteSelectMultiple(widgets.AutocompleteSelectMultiple):
         extra = '' if settings.DEBUG else '.min'
         i18n_file = ('admin/js/vendor/select2/i18n/%s.js' %
                      self.i18n_name,) if self.i18n_name else ()
-        return forms.Media(
-            js=(
-                'admin/js/vendor/jquery/jquery%s.js' % extra,
-                'djeu/js/jquery-extended-autocomplete-select-multiply.js',
-            ) + i18n_file + (
-                'admin/js/jquery.init.js',
-                'djeu/js/jquery-extended-autocomplete-select-multiply.init.js',
-            ),
-            css={
-                'screen': (
-                    'djeu/css/jquery-extended-autocomplete-select-multiply.css',
-                    'djeu/css/autocomplete.mod.css',
+        if self.use_admin_site_jquery:
+            return forms.Media(
+                js=(
+                    'admin/js/vendor/jquery/jquery%s.js' % extra,
+                    'djeu/js/jquery-extended-autocomplete-select-multiply.js',
+                ) + i18n_file + (
+                    'admin/js/jquery.init.js',
+                    'djeu/js/jquery-extended-autocomplete-select-multiply.init.js',
                 ),
-            },
-        )
+                css={
+                    'screen': (
+                        'djeu/css/jquery-extended-autocomplete-select-multiply.css',
+                        'djeu/css/autocomplete.mod.css',
+                    ),
+                },
+            )
+        else:
+            return forms.Media(
+                js=(
+                    'djeu/js/jquery-extended-autocomplete-select-multiply.js',
+                ) + i18n_file + (
+                    'djeu/js/jquery-extended-autocomplete-select-multiply.init.js',
+                ),
+                css={
+                    'screen': (
+                        'djeu/css/jquery-extended-autocomplete-select-multiply.css',
+                        'djeu/css/autocomplete.mod.css',
+                    ),
+                },
+            )

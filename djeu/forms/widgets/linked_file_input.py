@@ -5,6 +5,10 @@ from django.conf import settings
 class LinkedFileInput(forms.FileInput):
 
     template_name = 'djeu/forms/widgets/linked-file-input.html'
+    
+    def __init__(self, *args, use_admin_site_jquery=False, **kwargs):
+        super(LinkedFileInput, self).__init__(*args, **kwargs)
+        self.use_admin_site_jquery = use_admin_site_jquery
 
     def format_value(self, value):
         """File input never renders a value."""
@@ -33,17 +37,30 @@ class LinkedFileInput(forms.FileInput):
     @property
     def media(self):
         extra = '' if settings.DEBUG else '.min'
-        return forms.Media(
-            js=(
-                'admin/js/vendor/jquery/jquery%s.js' % extra,
-                'djeu/js/jquery-filepicker.js',
-                'djeu/js/jquery-filepicker.init.js',
-            ) + (
-                'admin/js/jquery.init.js',
-            ),
-            css={
-                'screen': (
-                    'djeu/css/filepicker.default.css',
+        if self.use_admin_site_jquery:
+            return forms.Media(
+                js=(
+                    'admin/js/vendor/jquery/jquery%s.js' % extra,
+                    'djeu/js/jquery-filepicker.js',
+                    'djeu/js/jquery-filepicker.init.js',
+                ) + (
+                    'admin/js/jquery.init.js',
                 ),
-            },
-        )
+                css={
+                    'screen': (
+                        'djeu/css/filepicker.default.css',
+                    ),
+                },
+            )
+        else:
+            return forms.Media(
+                js=(
+                    'djeu/js/jquery-filepicker.js',
+                    'djeu/js/jquery-filepicker.init.js',
+                ),
+                css={
+                    'screen': (
+                        'djeu/css/filepicker.default.css',
+                    ),
+                },
+            )

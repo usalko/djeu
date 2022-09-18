@@ -10,6 +10,10 @@ class NationalityAutocompleteSelect(widgets.AutocompleteSelect):
 
     template_name = 'djeu/forms/widgets/select.html'
     option_template_name = 'djeu/forms/widgets/select_option.html'
+    
+    def __init__(self, *args, use_admin_site_jquery=False, **kwargs):
+        super(NationalityAutocompleteSelect, self).__init__(*args, **kwargs)
+        self.use_admin_site_jquery = use_admin_site_jquery
 
     # FIXME: https://stackoverflow.com/questions/63199404/django-choice-list-dynamic-choices
     def __init__(self, *args, **kwargs):
@@ -101,18 +105,33 @@ class NationalityAutocompleteSelect(widgets.AutocompleteSelect):
         extra = '' if settings.DEBUG else '.min'
         i18n_file = ('admin/js/vendor/select2/i18n/%s.js' %
                      self.i18n_name,) if self.i18n_name else ()
-        return forms.Media(
-            js=(
-                'admin/js/vendor/jquery/jquery%s.js' % extra,
-                'djeu/js/jquery-nationality-autocomplete-select-multiply.js',
-            ) + i18n_file + (
-                'admin/js/jquery.init.js',
-                'djeu/js/jquery-nationality-autocomplete-select-multiply.init.js',
-            ),
-            css={
-                'screen': (
-                    'djeu/css/jquery-nationality-autocomplete-select-multiply.css',
-                    'djeu/css/nationality-autocomplete.mod.css',
+        if self.use_admin_site_jquery:
+            return forms.Media(
+                js=(
+                    'admin/js/vendor/jquery/jquery%s.js' % extra,
+                    'djeu/js/jquery-nationality-autocomplete-select-multiply.js',
+                ) + i18n_file + (
+                    'admin/js/jquery.init.js',
+                    'djeu/js/jquery-nationality-autocomplete-select-multiply.init.js',
                 ),
-            },
-        )
+                css={
+                    'screen': (
+                        'djeu/css/jquery-nationality-autocomplete-select-multiply.css',
+                        'djeu/css/nationality-autocomplete.mod.css',
+                    ),
+                },
+            )
+        else:
+            return forms.Media(
+                js=(
+                    'djeu/js/jquery-nationality-autocomplete-select-multiply.js',
+                ) + i18n_file + (
+                    'djeu/js/jquery-nationality-autocomplete-select-multiply.init.js',
+                ),
+                css={
+                    'screen': (
+                        'djeu/css/jquery-nationality-autocomplete-select-multiply.css',
+                        'djeu/css/nationality-autocomplete.mod.css',
+                    ),
+                },
+            )

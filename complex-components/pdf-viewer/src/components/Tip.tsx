@@ -3,6 +3,7 @@ import { Component } from "react";
 import "../style/Tip.css";
 
 interface State {
+  title: string,
   compact: boolean;
   text: string;
   emoji: string;
@@ -16,9 +17,10 @@ interface Props {
 
 export class Tip extends Component<Props, State> {
   state: State = {
+    title: 'Добавить цитату',
     compact: true,
-    text: "",
-    emoji: "",
+    text: '',
+    emoji: '',
   };
 
   // for TipContainer
@@ -32,7 +34,7 @@ export class Tip extends Component<Props, State> {
 
   render() {
     const { onConfirm, onOpen } = this.props;
-    const { compact, text, emoji } = this.state;
+    const { title, text, emoji } = this.state;
 
     return (
       <div className="Tip">
@@ -45,7 +47,7 @@ export class Tip extends Component<Props, State> {
             onConfirm({ text, emoji });
           }}
         >
-          Добавить цитату
+          { title }
         </div>
         {/* {compact ? (
           <div

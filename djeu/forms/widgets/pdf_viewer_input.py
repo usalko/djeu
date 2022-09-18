@@ -9,8 +9,8 @@ class PdfViewerInput(forms.FileInput):
     template_name = 'djeu/forms/widgets/pdf-viewer-input.html'
     #template_name = 'django/forms/widgets/clearable_file_input.html'
 
-    def __init__(self, attrs=None, use_admin_site_jquery=True, **kwargs):
-        super().__init__(attrs, **kwargs)
+    def __init__(self, *args, use_admin_site_jquery=False, **kwargs):
+        super(PdfViewerInput, self).__init__(*args, **kwargs)
         self.use_admin_site_jquery = use_admin_site_jquery
 
     def format_value(self, value):
@@ -40,6 +40,7 @@ class PdfViewerInput(forms.FileInput):
 
     @property
     def media(self):
+        extra = '' if settings.DEBUG else '.min'
         if settings.DEBUG:
             if self.use_admin_site_jquery:
                 return forms.Media(
