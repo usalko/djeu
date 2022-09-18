@@ -62,7 +62,7 @@ class ExtendedModelMultipleChoiceField(ModelMultipleChoiceField):
                              values, missed_key_procedure):
         result_count = 0
         result = None
-        for value in values:  # value is comma searatd string
+        for value in values:  # value is comma separated string
             compound_key_values = dict()
             previous_comma_position = 0
             comma_position = str(value).find(',')
