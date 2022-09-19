@@ -1,5 +1,5 @@
 'use strict'; {
-    const $ = django.jQuery;
+    const $ = jQuery;
 
     $.fn.adminExtendedAutocompleteSelectMultiply = function () {
         $.each(this, function (i, element) {
