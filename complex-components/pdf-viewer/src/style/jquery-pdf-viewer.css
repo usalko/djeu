@@ -67,3 +67,8 @@ blockquote:before {
 blockquote:after {
     content: close-quote;
 }
+
+/* Override pdf.js styles ****************************************************/
+.textLayer {
+    z-index: -1;
+}

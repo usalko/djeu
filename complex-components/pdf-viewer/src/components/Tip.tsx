@@ -2,39 +2,37 @@ import { Component } from "react";
 
 import "../style/Tip.css";
 
+
+export enum ChangeMode {
+  AddNew = 1,
+  ChangeExist,
+};
+
 interface State {
-  title: string,
-  compact: boolean;
-  text: string;
-  emoji: string;
 }
 
 interface Props {
-  onConfirm: (comment: { text: string; emoji: string }) => void;
-  onOpen: () => void;
-  onUpdate?: () => void;
+  onAction: (withText: boolean) => void;
+  changeMode: ChangeMode,
+  textAvailable: boolean,
 }
 
 export class Tip extends Component<Props, State> {
+  
   state: State = {
-    title: 'Добавить цитату',
-    compact: true,
-    text: '',
-    emoji: '',
   };
 
   // for TipContainer
   componentDidUpdate(nextProps: Props, nextState: State) {
-    const { onUpdate } = this.props;
+    // const { onUpdate } = this.props;
 
-    if (onUpdate && this.state.compact !== nextState.compact) {
-      onUpdate();
-    }
+    // if (onUpdate) {
+    //   onUpdate();
+    // }
   }
 
   render() {
-    const { onConfirm, onOpen } = this.props;
-    const { title, text, emoji } = this.state;
+    const { changeMode, textAvailable, onAction } = this.props;
 
     return (
       <div className="Tip">
@@ -42,67 +40,82 @@ export class Tip extends Component<Props, State> {
           className="Tip__compact"
           onClick={(event) => {
             event.preventDefault();
-            onOpen();
-            this.setState({ compact: false });
-            onConfirm({ text, emoji });
+            onAction(false);
+            // this.setState({ compact: false });
+            // onConfirm({ text, emoji });
           }}
         >
-          { title }
+          {changeMode === ChangeMode.AddNew ? 'Добавить цитату' : 'Обновить цитату'}
         </div>
-        {/* {compact ? (
+        {textAvailable ? (
           <div
             className="Tip__compact"
-            onClick={() => {
-              onOpen();
-              this.setState({ compact: false });
-            }}
-          >
-            Add highlight
-          </div>
-        ) : (
-          <form
-            className="Tip__card"
-            onSubmit={(event) => {
+            onClick={(event) => {
               event.preventDefault();
-              onConfirm({ text, emoji });
+              onAction(true);
+              // this.setState({ compact: false });
+              // onConfirm({ text, emoji });
             }}
           >
-            <div>
-              <textarea
-                placeholder="Your comment"
-                autoFocus
-                value={text}
-                onChange={(event) =>
-                  this.setState({ text: event.target.value })
-                }
-                ref={(node) => {
-                  if (node) {
-                    node.focus();
-                  }
-                }}
-              />
+            {changeMode === ChangeMode.AddNew ? 'Добавить цитату и текст' : 'Обновить цитату и текст'}
+          </div>
+        ) : ''}
+        {
+          /* {compact ? (
+            <div
+              className="Tip__compact"
+              onClick={() => {
+                onOpen();
+                this.setState({ compact: false });
+              }}
+            >
+              Add highlight
+            </div>
+          ) : (
+            <form
+              className="Tip__card"
+              onSubmit={(event) => {
+                event.preventDefault();
+                onConfirm({ text, emoji });
+              }}
+            >
               <div>
-                {["💩", "😱", "😍", "🔥", "😳", "⚠️"].map((_emoji) => (
-                  <label key={_emoji}>
-                    <input
-                      checked={emoji === _emoji}
-                      type="radio"
-                      name="emoji"
-                      value={_emoji}
-                      onChange={(event) =>
-                        this.setState({ emoji: event.target.value })
-                      }
-                    />
-                    {_emoji}
-                  </label>
-                ))}
+                <textarea
+                  placeholder="Your comment"
+                  autoFocus
+                  value={text}
+                  onChange={(event) =>
+                    this.setState({ text: event.target.value })
+                  }
+                  ref={(node) => {
+                    if (node) {
+                      node.focus();
+                    }
+                  }}
+                />
+                <div>
+                  {["💩", "😱", "😍", "🔥", "😳", "⚠️"].map((_emoji) => (
+                    <label key={_emoji}>
+                      <input
+                        checked={emoji === _emoji}
+                        type="radio"
+                        name="emoji"
+                        value={_emoji}
+                        onChange={(event) =>
+                          this.setState({ emoji: event.target.value })
+                        }
+                      />
+                      {_emoji}
+                    </label>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div>
-              <input type="submit" value="Save" />
-            </div>
-          </form>
-        )} */}
+              <div>
+                <input type="submit" value="Save" />
+              </div>
+            </form>
+          )} */
+        }
       </div>
     );
   }

@@ -167,7 +167,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
         container: this.containerNode!,
         eventBus: this.eventBus,
         // enhanceTextSelection: true, // deprecated. https://github.com/mozilla/pdf.js/issues/9943#issuecomment-409369485
-        textLayerMode: 2,
+        textLayerMode: 1,
         removePageBorders: true,
         linkService: this.linkService,
         renderer: "canvas",

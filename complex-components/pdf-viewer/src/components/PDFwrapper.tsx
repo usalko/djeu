@@ -1,13 +1,12 @@
 import { Component } from "react";
 import { IHighlight, NewHighlight } from "../types/data";
 import { AreaHighlight } from './AreaHighlight';
-import { Highlight } from './Highlight';
 import { PdfHighlighter } from './PdfHighlighter';
 import { PdfLoader } from './PdfLoader';
 import { Popup } from './Popup';
 import { Spinner } from "./Spinner";
-import { testHighlights as _testHighlights } from "./test-highlights";
-import { Tip } from './Tip';
+// import { testHighlights as _testHighlights } from "./test-highlights";
+import { Tip, ChangeMode } from './Tip';
 
 // const highlightsStore: Record<string, Array<IHighlight>> = _testHighlights;
 
@@ -286,10 +285,12 @@ class PDFwrapper extends Component<{}, State> {
                     transformSelection
                   ) => (
                     <Tip
-                      onOpen={transformSelection}
-                      onConfirm={(comment) => {
-                        this.addHighlight({ content, position, comment });
-
+                      changeMode={ChangeMode.AddNew}
+                      textAvailable={content.text ? false: true}
+                      onAction={(withText) => {
+                        transformSelection();
+                        this.addHighlight({ content, position, comment: {text: '', emoji: ''} });
+                        //FIXME: hide the tip only
                         hideTipAndSelection();
                       }}
                     />

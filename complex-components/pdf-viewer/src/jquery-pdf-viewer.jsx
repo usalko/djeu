@@ -1,6 +1,6 @@
-import PDFwrapper from "./components/PDFwrapper";
+import PDFwrapper from './components/PDFwrapper';
 import ReactDOM from 'react-dom';
-import "./styles/index.css";
+import './style/jquery-pdf-viewer.css';
 import jQuery from 'jquery';
 
 if (typeof jQuery !== 'undefined') {
@@ -16,7 +16,7 @@ if (typeof jQuery !== 'undefined') {
                 value: 0
             };
 
-        var dataOptions = ['label'];
+        // var dataOptions = ['label'];
 
         function getFilename(url) {
             var match = /\/([^\\\/:*?\"<>|]+)$/i.exec(url);
@@ -50,15 +50,15 @@ if (typeof jQuery !== 'undefined') {
             var $input = $('<input/>'), input = $input.get(0);
             var $button = $('<button type="button"></button>'), button = $button.get(0);
 
-            var style = typeof options.style == 'string' ? $.fn.filepicker.getStyle(
-                options.style === "auto" ?
-                    // detect styles
-                    isBootstrap() ? 'bootstrap' :
-                        isJQueryUI() ? 'jquery-ui' :
-                            'default'
-                    // option value
-                    : options.style
-            ) : options.style;
+            // var style = typeof options.style == 'string' ? $.fn.filepicker.getStyle(
+            //     options.style === "auto" ?
+            //         // detect styles
+            //         isBootstrap() ? 'bootstrap' :
+            //             isJQueryUI() ? 'jquery-ui' :
+            //                 'default'
+            //         // option value
+            //         : options.style
+            // ) : options.style;
 
             $window
                 .on('resize', function (e) {
@@ -213,13 +213,13 @@ if (typeof jQuery !== 'undefined') {
                 update.call(instance);
             }
 
-            function isBootstrap() {
-                return $('<div></div>').addClass('pull-right').css('float') == "right";
-            }
+            // function isBootstrap() {
+            //     return $('<div></div>').addClass('pull-right').css('float') === "right";
+            // }
 
-            function isJQueryUI() {
-                return $('<div></div>').addClass('ui-front').css('z-index') > 1;
-            }
+            // function isJQueryUI() {
+            //     return $('<div></div>').addClass('ui-front').css('z-index') > 1;
+            // }
 
             function init() {
 
