@@ -1,10 +1,31 @@
 .Tip__compact {
   cursor: pointer;
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.75);
   color: #3d464d;
+  border: 1px solid rgba(0, 0, 0, 0.75);
   padding: 5px 10px;
-  border-radius: 3px;
+  border-radius: 0px;
+}
+
+.Tip__compact:hover {
+  background-color: #4a4d50;
+  color: #fff;
+}
+
+.Tip__compact_without_top_bound {
+  cursor: pointer;
+  background-color: #fff;
+  color: #3d464d;
+  border-left: 1px solid rgba(0, 0, 0, 0.75);
+  border-right: 1px solid rgba(0, 0, 0, 0.75);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.75);
+  padding: 5px 10px;
+  border-radius: 0px;
+}
+
+.Tip__compact_without_top_bound:hover {
+  background-color: #4a4d50;
+  color: #fff;
 }
 
 .Tip__card {

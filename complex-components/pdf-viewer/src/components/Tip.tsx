@@ -49,7 +49,7 @@ export class Tip extends Component<Props, State> {
         </div>
         {textAvailable ? (
           <div
-            className="Tip__compact"
+            className="Tip__compact_without_top_bound"
             onClick={(event) => {
               event.preventDefault();
               onAction(true);
