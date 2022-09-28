@@ -6,14 +6,14 @@ import "../style/MouseSelection.css";
 import type { LeftTopWidthHeight } from "../types.js";
 
 interface Coords {
-  x: number;
-  y: number;
+  x: number
+  y: number
 }
 
 interface State {
-  locked: boolean;
-  start: Coords | null;
-  end: Coords | null;
+  locked: boolean
+  start: Coords | null
+  end: Coords | null
 }
 
 interface Props {
@@ -41,7 +41,11 @@ class MouseSelection extends Component<Props, State> {
     const { onDragEnd } = this.props;
 
     onDragEnd();
-    this.setState({ start: null, end: null, locked: false });
+    this.setState({
+      start: null,
+      end: null,
+      locked: false,
+    });
   };
 
   getBoundingRect(start: Coords, end: Coords): LeftTopWidthHeight {
@@ -73,6 +77,8 @@ class MouseSelection extends Component<Props, State> {
     const { onSelection, onDragStart, onDragEnd, shouldStart } = this.props;
 
     const container = asElement(this.root.parentElement);
+    const stickyParent = this.stickyParent(this.root.parentElement)
+    const initialStickyParentTop = stickyParent ? stickyParent.getBoundingClientRect().top : 0
 
     if (!isHTMLElement(container)) {
       return;
@@ -90,7 +96,8 @@ class MouseSelection extends Component<Props, State> {
         y:
           pageY -
           containerBoundingRect.top +
-          container.scrollTop -
+          container.scrollTop +
+          (!stickyParent ? 0 : initialStickyParentTop - stickyParent.getBoundingClientRect().top) -
           window.scrollY,
       };
     };
@@ -159,6 +166,7 @@ class MouseSelection extends Component<Props, State> {
             locked: true,
           },
           () => {
+            // Callback
             const { start, end } = that.state;
 
             if (!start || !end) {
@@ -170,6 +178,7 @@ class MouseSelection extends Component<Props, State> {
 
               onDragEnd();
             }
+
           }
         );
       };
@@ -179,6 +188,17 @@ class MouseSelection extends Component<Props, State> {
         doc.body.addEventListener("mouseup", onMouseUp);
       }
     });
+  }
+
+  stickyParent(parentElement: HTMLElement | null): HTMLElement | null {
+    if (!parentElement) {
+      return null
+    }
+    // FIXME: Hardcore class name (try to use css class definition and position)
+    if (parentElement.style.position === 'sticky' || parentElement.className === 'publicationCreateForm') {
+      return parentElement
+    }
+    return this.stickyParent(parentElement.parentElement)
   }
 
   shouldRender(boundingRect: LeftTopWidthHeight) {
