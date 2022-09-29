@@ -360,9 +360,12 @@ class PDFwrapper extends Component<{}, State> {
                     transformSelection,
                   ) => (<Tip
                     changeMode={changeMode}
-                    textAvailable={content.text && content.text !== '-' ? false : true}
+                    textAvailable={content.text && content.text !== '-' ? true : false}
                     onAction={(withText) => {
                       transformSelection();
+                      if (!withText) {
+                        content.text = '-'
+                      }
                       this.addHighlight({ content, position, comment: { text: '', emoji: '' } });
                       hideTipAndSelection();
                     }}
