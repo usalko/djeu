@@ -135,20 +135,18 @@ if (typeof jQuery !== 'undefined') {
                     }
                     var fileUrl = files[0].src
 
-                    if ($preview[0].hasOwnProperty('_reactRootContainer')) {
-                        // FIXME: Add listeners not for window level but element level only
-                        window.dispatchEvent(new CustomEvent(
-                            'jquery-pdf-viewer:setPDFwrapperUrl', {
-                            detail: {
-                                url: fileUrl,
-                            }
-                        }))
-                    } else {
+                    if (!$preview[0].hasOwnProperty('_reactRootContainer')) {
                         ReactDOM.render(
-                            <PDFwrapper url={fileUrl} />,
+                            <PDFwrapper />,
                             $preview[0]
                         );
                     }
+                    window.dispatchEvent(new CustomEvent(
+                        'jquery-pdf-viewer:setPDFwrapperUrl', {
+                        detail: {
+                            url: fileUrl,
+                        }
+                    }))
 
                     //$preview.append($thumbnail);
 

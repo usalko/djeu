@@ -43,6 +43,7 @@ class PDFwrapper extends Component<{}, State> {
 
   // FIXME: Add listeners not for window level but element level only
   setUrlListener: any
+  setHighlightsListener: any
   cancelLatestHighlightListener: any
   selectHighlightListener: any
   editHighlightListener: any
@@ -102,6 +103,17 @@ class PDFwrapper extends Component<{}, State> {
               this.toggleDocument(e?.detail?.url)
             }
           }
+        },
+        false
+      )
+    }
+    if (!this.setHighlightsListener) {
+      this.setHighlightsListener = window.addEventListener('jquery-pdf-viewer:setHighlights',
+        (e: Event) => {
+            console.debug(e)
+            if ((e as CustomEvent).detail?.highlights) {
+              this.setHighlights(JSON.parse((e as CustomEvent).detail.highlights))
+            }
         },
         false
       )
@@ -180,6 +192,15 @@ class PDFwrapper extends Component<{}, State> {
 
   hasId(object: any): object is IHighlight {
     return 'id' in object;
+  }
+
+  setHighlights(highlights: Array<IHighlight>) {
+    if (highlights) {
+      this.setState({
+        highlights: [...highlights],
+        changeMode: ChangeMode.AddNew,
+      })
+    }
   }
 
   addHighlight(highlight: NewHighlight) {
