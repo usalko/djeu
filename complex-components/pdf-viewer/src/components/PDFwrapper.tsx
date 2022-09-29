@@ -11,8 +11,9 @@ import { Tip, ChangeMode } from './Tip';
 // const highlightsStore: Record<string, Array<IHighlight>> = _testHighlights;
 
 export interface State {
-  url: string;
-  highlights: Array<IHighlight>;
+  url: string
+  highlights: Array<IHighlight>
+  changeMode: ChangeMode
 }
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -46,18 +47,22 @@ class PDFwrapper extends Component<{}, State> {
   selectHighlightListener: any
   editHighlightListener: any
   removeHighlightListener: any
+  afterPersistHighlightListener: any
+  cancelEditHighlightListener: any
 
   constructor(props: any) {
     super(props)
     this.state = {
       url: props.url,
       highlights: props.highlights || [],
+      changeMode: ChangeMode.AddNew,
     }
   }
 
   resetHighlights = () => {
     this.setState({
       highlights: [],
+      changeMode: ChangeMode.AddNew,
     })
   }
 
@@ -65,14 +70,7 @@ class PDFwrapper extends Component<{}, State> {
     this.setState({
       url: newUrl,
       highlights: [],
-    })
-  }
-
-  cancelLatestHighlight = () => {
-    const highlights = this.state.highlights
-    highlights.pop()
-    this.setState({
-      highlights: [...highlights],
+      changeMode: ChangeMode.AddNew,
     })
   }
 
@@ -150,7 +148,28 @@ class PDFwrapper extends Component<{}, State> {
         false
       )
     }
-
+    if (!this.afterPersistHighlightListener) {
+      this.afterPersistHighlightListener = window.addEventListener('pdf-viewer-integration:afterPersistHighlight',
+        (e: Event) => {
+          console.debug(e)
+          if ('detail' in e && (e as CustomEvent).detail?.highlight) {
+            this.afterPersistHighlight(JSON.parse((e as CustomEvent).detail.highlight))
+          }
+        },
+        false
+      )
+    }
+    if (!this.cancelEditHighlightListener) {
+      this.cancelEditHighlightListener = window.addEventListener('pdf-viewer-integration:cancelEditHighlight',
+        (e: Event) => {
+          console.debug(e)
+          if ('detail' in e && (e as CustomEvent).detail?.highlight) {
+            this.cancelEditHighlight(JSON.parse((e as CustomEvent).detail.highlight))
+          }
+        },
+        false
+      )
+    }
   }
 
   getHighlightById(id: string) {
@@ -175,6 +194,7 @@ class PDFwrapper extends Component<{}, State> {
 
     this.setState({
       highlights: [identifiedHighlight, ...highlights],
+      changeMode: ChangeMode.ChangeExist,
     })
 
   }
@@ -200,9 +220,13 @@ class PDFwrapper extends Component<{}, State> {
     if (index === -1) {
       this.setState({
         highlights: [highlight, ...highlights],
+        changeMode: ChangeMode.ChangeExist,
       })
     } else {
       highlights[index] = highlight
+      this.setState({
+        changeMode: ChangeMode.ChangeExist,
+      })
     }
     this.scrollViewerTo(highlight)
   }
@@ -215,6 +239,56 @@ class PDFwrapper extends Component<{}, State> {
       highlights.splice(index, 1)
       this.setState({
         highlights: [...highlights],
+        changeMode: ChangeMode.AddNew,
+      })
+    } else {
+      this.setState({
+        changeMode: ChangeMode.AddNew,
+      })
+    }
+    this.scrollViewerTo(highlight)
+  }
+
+  afterPersistHighlight(highlight: IHighlight) {
+    const { highlights } = this.state
+    const index = highlights.findIndex((element) => element.id === highlight.id)
+
+    if (index > -1) {
+      highlights.splice(index, 1)
+      this.setState({
+        highlights: [...highlights],
+        changeMode: ChangeMode.AddNew,
+      })
+    } else {
+      this.setState({
+        changeMode: ChangeMode.AddNew,
+      })
+    }
+    this.scrollViewerTo(highlight)
+  }
+
+  cancelLatestHighlight = () => {
+    const highlights = this.state.highlights
+    highlights.pop()
+    this.setState({
+      highlights: [...highlights],
+      changeMode: ChangeMode.AddNew,
+    })
+  }
+
+  cancelEditHighlight = (highlight: IHighlight) => {
+    const { highlights } = this.state
+    const index = highlights.findIndex((element) => element.id === highlight.id)
+
+    if (index === -1) {
+      this.setState({
+        highlights: [highlight, ...highlights],
+        changeMode: ChangeMode.AddNew,
+      })
+    } else {
+      highlights[index] = highlight
+      this.setState({
+        changeMode: ChangeMode.AddNew,
       })
     }
     this.scrollViewerTo(highlight)
@@ -246,6 +320,7 @@ class PDFwrapper extends Component<{}, State> {
           }
           : h
       }),
+      changeMode: ChangeMode.ChangeExist,
     });
   }
 
@@ -254,7 +329,7 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   render() {
-    const { url, highlights } = this.state
+    const { url, highlights, changeMode } = this.state
 
     return (
       <div>
@@ -270,7 +345,7 @@ class PDFwrapper extends Component<{}, State> {
               {(pdfDocument) => (
                 <PdfHighlighter
                   pdfDocument={pdfDocument}
-                  enableAreaSelection={(event) => true}
+                  enableAreaSelection={(event) => changeMode === ChangeMode.AddNew}
                   onScrollChange={resetHash}
                   // pdfScaleValue="page-width"
                   scrollRef={(scrollTo) => {
@@ -282,18 +357,16 @@ class PDFwrapper extends Component<{}, State> {
                     position,
                     content,
                     hideTipAndSelection,
-                    transformSelection
-                  ) => (
-                    <Tip
-                      changeMode={ChangeMode.AddNew}
-                      textAvailable={content.text ? false : true}
-                      onAction={(withText) => {
-                        transformSelection();
-                        this.addHighlight({ content, position, comment: { text: '', emoji: '' } });
-                        hideTipAndSelection();
-                      }}
-                    />
-                  )}
+                    transformSelection,
+                  ) => (<Tip
+                    changeMode={changeMode}
+                    textAvailable={content.text && content.text !== '-' ? false : true}
+                    onAction={(withText) => {
+                      transformSelection();
+                      this.addHighlight({ content, position, comment: { text: '', emoji: '' } });
+                      hideTipAndSelection();
+                    }}
+                  />)}
                   highlightTransform={(
                     highlight,
                     index,
@@ -313,7 +386,7 @@ class PDFwrapper extends Component<{}, State> {
                         key={index}
                         children={
                           <AreaHighlight
-                            isScrolledTo={isScrolledTo}
+                            locked={false}
                             highlight={highlight}
                             onChange={(boundingRect) => {
                               this.updateHighlight(

@@ -10,17 +10,17 @@ import type { LeftTopWidthHeightPageNumber, ViewportHighlight } from "../types";
 interface Props {
   highlight: ViewportHighlight;
   onChange: (rect: LeftTopWidthHeightPageNumber) => void;
-  isScrolledTo: boolean;
+  locked: boolean;
 }
 
 export class AreaHighlight extends Component<Props> {
   render() {
-    const { highlight, onChange, isScrolledTo, ...otherProps } = this.props;
+    const { highlight, onChange, locked, ...otherProps } = this.props;
 
     return (
       <div
         className={`AreaHighlight ${
-          isScrolledTo ? "AreaHighlight--scrolledTo" : ""
+          locked ? "AreaHighlight--locked" : ""
         }`}
       >
         <Rnd
