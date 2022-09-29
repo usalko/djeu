@@ -345,7 +345,11 @@ class PDFwrapper extends Component<{}, State> {
               {(pdfDocument) => (
                 <PdfHighlighter
                   pdfDocument={pdfDocument}
-                  enableAreaSelection={(event) => changeMode === ChangeMode.AddNew}
+                  enableAreaSelection={(event) => {
+                    // console.debug(`Enable area selection ${event}`)
+                    // Disable react optimization (state not always passed)
+                    return event.target !== null && changeMode === ChangeMode.AddNew
+                  }}
                   onScrollChange={resetHash}
                   // pdfScaleValue="page-width"
                   scrollRef={(scrollTo) => {
