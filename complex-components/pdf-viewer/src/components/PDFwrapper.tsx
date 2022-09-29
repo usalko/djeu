@@ -330,6 +330,7 @@ class PDFwrapper extends Component<{}, State> {
 
   render() {
     const { url, highlights, changeMode } = this.state
+    const self = this
 
     return (
       <div>
@@ -345,11 +346,7 @@ class PDFwrapper extends Component<{}, State> {
               {(pdfDocument) => (
                 <PdfHighlighter
                   pdfDocument={pdfDocument}
-                  enableAreaSelection={(event) => {
-                    // console.debug(`Enable area selection ${event}`)
-                    // Disable react optimization (state not always passed)
-                    return event.target !== null && changeMode === ChangeMode.AddNew
-                  }}
+                  enableAreaSelection={(event) => self.state?.changeMode === ChangeMode.AddNew}
                   onScrollChange={resetHash}
                   // pdfScaleValue="page-width"
                   scrollRef={(scrollTo) => {
