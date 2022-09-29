@@ -170,13 +170,13 @@ class MouseSelection extends Component<Props, State> {
             const { start, end } = that.state;
 
             if (!start || !end) {
-              return;
+              return
             }
 
             if (isHTMLElement(event.target)) {
-              onSelection(startTarget, boundingRect, that.reset);
+              onSelection(startTarget, boundingRect, that.reset)
 
-              onDragEnd();
+              onDragEnd()
             }
 
           }
@@ -189,6 +189,10 @@ class MouseSelection extends Component<Props, State> {
       }
     });
   }
+
+  // _trace() {
+  //   console.debug(`MouseSelection state: ${JSON.stringify(this.state)}`)
+  // }
 
   stickyParent(parentElement: HTMLElement | null): HTMLElement | null {
     if (!parentElement) {

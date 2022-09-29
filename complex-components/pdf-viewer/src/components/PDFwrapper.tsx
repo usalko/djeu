@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { IHighlight, NewHighlight } from "../types/data";
+import { IHighlight, NewHighlight } from "../types";
 import { AreaHighlight } from './AreaHighlight';
 import { PdfHighlighter } from './PdfHighlighter';
 import { PdfLoader } from './PdfLoader';
@@ -138,7 +138,7 @@ class PDFwrapper extends Component<{}, State> {
         },
         false
       )
-    }    
+    }
     if (!this.removeHighlightListener) {
       this.removeHighlightListener = window.addEventListener('pdf-viewer-integration:removeHighlight',
         (e: Event) => {
@@ -286,11 +286,10 @@ class PDFwrapper extends Component<{}, State> {
                   ) => (
                     <Tip
                       changeMode={ChangeMode.AddNew}
-                      textAvailable={content.text ? false: true}
+                      textAvailable={content.text ? false : true}
                       onAction={(withText) => {
                         transformSelection();
-                        this.addHighlight({ content, position, comment: {text: '', emoji: ''} });
-                        //FIXME: hide the tip only
+                        this.addHighlight({ content, position, comment: { text: '', emoji: '' } });
                         hideTipAndSelection();
                       }}
                     />
@@ -304,45 +303,6 @@ class PDFwrapper extends Component<{}, State> {
                     screenshot,
                     isScrolledTo
                   ) => {
-                    // const isTextHighlight = !Boolean(
-                    //   highlight.content && highlight.content.image
-                    // );
-
-                    // const component = isTextHighlight ? (
-                    //   <Highlight
-                    //     isScrolledTo={isScrolledTo}
-                    //     position={highlight.position}
-                    //     comment={highlight.comment}
-                    //   />
-                    // ) : (
-                    //   <AreaHighlight
-                    //     isScrolledTo={isScrolledTo}
-                    //     highlight={highlight}
-                    //     onChange={(boundingRect) => {
-                    //       this.updateHighlight(
-                    //         highlight.id,
-                    //         { boundingRect: viewportToScaled(boundingRect) },
-                    //         { image: screenshot(boundingRect) }
-                    //       );
-                    //     }}
-                    //   />
-                    // );
-
-                    const component = <AreaHighlight
-                      isScrolledTo={isScrolledTo}
-                      highlight={highlight}
-                      onChange={(boundingRect) => {
-                        this.updateHighlight(
-                          highlight.id,
-                          { pageNumber: boundingRect.pageNumber, boundingRect: viewportToScaled(boundingRect) },
-                          {
-                            text: highlight.content.text,
-                            image: screenshot(boundingRect),
-                          }
-                        );
-                      }}
-                    />
-
                     return (
                       <Popup
                         popupContent={<HighlightPopup {...highlight} />}
@@ -351,7 +311,22 @@ class PDFwrapper extends Component<{}, State> {
                         }
                         onMouseOut={hideTip}
                         key={index}
-                        children={component}
+                        children={
+                          <AreaHighlight
+                            isScrolledTo={isScrolledTo}
+                            highlight={highlight}
+                            onChange={(boundingRect) => {
+                              this.updateHighlight(
+                                highlight.id,
+                                { pageNumber: boundingRect.pageNumber, boundingRect: viewportToScaled(boundingRect) },
+                                {
+                                  text: highlight.content.text,
+                                  image: screenshot(boundingRect),
+                                }
+                              );
+                            }}
+                          />
+                        }
                       />
                     );
                   }}

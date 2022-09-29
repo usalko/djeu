@@ -9,6 +9,10 @@
   position: absolute;
   z-index: 3;
   left: 0;
+  top: 0;
+  opacity: 1;
+  mix-blend-mode: multiply;
+  display: flex;
 }
 
 .PdfHighlighter__tip-container {
@@ -19,4 +23,23 @@
 .PdfHighlighter--disable-selection {
   user-select: none;
   pointer-events: none;
+}
+
+.PdfHighlighter__highlight-layer ::selection {
+  background: rgba(252, 232, 151, 1);
+  mix-blend-mode: multiply;
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .PdfHighlighter__highlight-layer {opacity: 0.5;}
+}
+
+/* Internet Explorer support method */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .PdfHighlighter__highlight-layer {opacity: 0.5 }
+}
+
+/* Microsoft Edge Browser 12+ (All) - @supports method */
+@supports (-ms-ime-align:auto) {
+  .PdfHighlighter__highlight-layer {opacity: 0.5 }
 }

@@ -68,17 +68,25 @@ export const getPagesFromRange = (range: Range): Page[] => {
 };
 
 export const findOrCreateContainerLayer = (
-  container: HTMLElement,
+  pageViewDiv: HTMLElement,
   className: string
 ) => {
-  const doc = getDocument(container);
-  let layer = container.querySelector(`.${className}`);
+  const doc = getDocument(pageViewDiv)
+  let layer: HTMLElement | null = pageViewDiv.querySelector(`.${className}`)
 
   if (!layer) {
     layer = doc.createElement("div");
     layer.className = className;
-    container.appendChild(layer);
+    pageViewDiv.appendChild(layer);
   }
+
+  // const canvasWrapper: HTMLElement | null = pageViewDiv.querySelector('.canvasWrapper')
+  // const canvasWrapperBoundingClientRect = canvasWrapper?.getBoundingClientRect()
+  // layer.style.top = canvasWrapperBoundingClientRect?.top + 'px' || ''
+  // layer.style.left = canvasWrapperBoundingClientRect?.left +'px' || ''
+
+  layer.style.width = pageViewDiv.style.width
+  layer.style.height = pageViewDiv.style.height
 
   return layer;
 };

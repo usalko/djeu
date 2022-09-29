@@ -24,7 +24,7 @@ import TipContainer from "./TipContainer";
 
 import { scaledToViewport, viewportToScaled } from "../lib/coordinates";
 
-import type { PDFDocumentProxy, PDFPageProxy } from "pdfjs-dist";
+import type { PDFDocumentProxy } from "pdfjs-dist";
 import type {
   IHighlight, LeftTopWidthHeight,
   LeftTopWidthHeightPageNumber, Position, Scaled, ScaledPosition
@@ -187,14 +187,14 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   }
 
   findOrCreateHighlightLayer(page: number) {
-    const { textLayer } = this.viewer.getPageView(page - 1) || {};
+    const pageView = this.viewer.getPageView(page - 1) || {};
 
-    if (!textLayer) {
+    if (!pageView || !pageView.div) {
       return null;
     }
 
     return findOrCreateContainerLayer(
-      textLayer.textLayerDiv,
+      pageView.div,
       "PdfHighlighter__highlight-layer"
     );
   }

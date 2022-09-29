@@ -1,3 +1,7 @@
+export interface PDFurl {
+  scr: string;    
+}
+
 export interface LeftTopWidthHeight {
   left: number;
   top: number;
