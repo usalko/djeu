@@ -65,6 +65,11 @@ class MouseSelection extends Component<Props, State> {
     const isVisible = Boolean(start && end);
 
     onChange(isVisible);
+
+    // const stickyParent = this.root?.parentElement ? this.stickyParent(this.root?.parentElement): null
+    // const initialStickyParentTop = stickyParent ? stickyParent.getBoundingClientRect().top : 0
+
+    // console.debug(`Component MouseSelection did update ${initialStickyParentTop}`)
   }
 
   componentDidMount() {
@@ -78,7 +83,7 @@ class MouseSelection extends Component<Props, State> {
 
     const container = asElement(this.root.parentElement);
     const stickyParent = this.stickyParent(this.root.parentElement)
-    const initialStickyParentTop = stickyParent ? stickyParent.getBoundingClientRect().top : 0
+    let initialStickyParentTop = 0 // stickyParent ? stickyParent.getBoundingClientRect().top : 0
 
     if (!isHTMLElement(container)) {
       return;
@@ -90,15 +95,20 @@ class MouseSelection extends Component<Props, State> {
       if (!containerBoundingRect) {
         containerBoundingRect = container.getBoundingClientRect();
       }
+      if (window.scrollY === 0) {
+        initialStickyParentTop = stickyParent ? stickyParent.getBoundingClientRect().top : 0
+
+        // console.debug(`Component MouseSelection on window.scrollY === 0 ${initialStickyParentTop}`)
+      }
 
       return {
         x: pageX - containerBoundingRect.left + container.scrollLeft,
         y:
-          pageY -
-          containerBoundingRect.top +
-          container.scrollTop +
-          (!stickyParent ? 0 : initialStickyParentTop - stickyParent.getBoundingClientRect().top) -
-          window.scrollY,
+          pageY
+          - containerBoundingRect.top
+          + container.scrollTop
+          + (!stickyParent ? 0 : initialStickyParentTop - stickyParent.getBoundingClientRect().top)
+          - window.scrollY,
       };
     };
 
@@ -175,7 +185,6 @@ class MouseSelection extends Component<Props, State> {
 
             if (isHTMLElement(event.target)) {
               onSelection(startTarget, boundingRect, that.reset)
-
               onDragEnd()
             }
 
@@ -188,6 +197,8 @@ class MouseSelection extends Component<Props, State> {
         doc.body.addEventListener("mouseup", onMouseUp);
       }
     });
+
+    // console.debug(`Component MouseSelection did mount ${initialStickyParentTop}`)
   }
 
   // _trace() {

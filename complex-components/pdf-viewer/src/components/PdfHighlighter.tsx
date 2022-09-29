@@ -22,7 +22,7 @@ import {
 import MouseSelection from "./MouseSelection";
 import TipContainer from "./TipContainer";
 
-import { scaledToViewport, viewportToScaled } from "../lib/coordinates";
+import { intersectRect, scaledToViewport, viewportToScaled } from "../lib/coordinates";
 
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import type {
@@ -167,7 +167,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
         container: this.containerNode!,
         eventBus: this.eventBus,
         // enhanceTextSelection: true, // deprecated. https://github.com/mozilla/pdf.js/issues/9943#issuecomment-409369485
-        textLayerMode: 1,
+        textLayerMode: 1, // Only simple layer, @notice z-index: -1 on the styles
         removePageBorders: true,
         linkService: this.linkService,
         renderer: "canvas",
@@ -507,7 +507,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
     this.setState({
       isCollapsed: false,
-      range,
+      range: range,
     });
 
     // this.debouncedAfterSelection();
@@ -616,6 +616,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
   render() {
     const { onSelectionFinished, enableAreaSelection } = this.props;
+    const self = this;
 
     return (
       <div onPointerDown={this.onMouseDown}>
@@ -666,12 +667,21 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                   pageBoundingRect.pageNumber
                 );
 
-                // TODO: Please if it possible, direct mapping pdf objects consider i.e. without the ugly selection on pdf.js textlayer.
-                const container = this.containerNode;
-                const selection = getWindow(container).getSelection();
+                const range = self.state?.range // selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null
+                let text = range ? range.toString() : '-'
 
-                const range = selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
-                const text = range ? range.toString() : '-';
+                const pageView = self.viewer.getPageView(page.number - 1) || {};
+                if (!range && pageView.textLayer) {
+                  console.debug(`Try to select text on the text layer ${JSON.stringify(pageBoundingRect)}`)
+                  pageView.textLayer?.textLayerDiv?.childNodes.forEach(function check(child: any) {
+                    const textRect = child.nodeType === Node.TEXT_NODE && typeof child.parentElement?.getBoundingClientRect === 'function' ? child.parentElement.getBoundingClientRect(): null
+                    if (textRect && intersectRect(textRect, boundingRect)) {
+                      text += child.nodeValue.trim() + ' '
+                    }
+                    child.childNodes.forEach(check)
+                  });
+                  console.log(`Text is ${text}`)
+                }
 
                 this.setTip(
                   viewportPosition,
