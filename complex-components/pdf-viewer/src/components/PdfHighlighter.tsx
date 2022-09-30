@@ -640,10 +640,10 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                 Boolean(asElement(event.target).closest(".page"))
               }
               onSelection={(startTarget, boundingRect, resetSelection) => {
-                const page = getPageFromElement(startTarget);
+                const page = getPageFromElement(startTarget)
 
                 if (!page) {
-                  return;
+                  return
                 }
 
                 const pageBoundingRect = {
@@ -651,13 +651,13 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                   top: boundingRect.top - page.node.offsetTop,
                   left: boundingRect.left - page.node.offsetLeft,
                   pageNumber: page.number,
-                };
+                }
 
                 const viewportPosition = {
                   boundingRect: pageBoundingRect,
                   rects: [],
                   pageNumber: page.number,
-                };
+                }
 
                 const scaledPosition =
                   this.viewportPositionToScaled(viewportPosition);
@@ -665,22 +665,33 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                 const image = this.screenshot(
                   pageBoundingRect,
                   pageBoundingRect.pageNumber
-                );
+                )
 
                 const range = self.state?.range // selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null
                 let text = range ? range.toString() : '-'
 
                 const pageView = self.viewer.getPageView(page.number - 1) || {};
-                if (!range && pageView.textLayer) {
-                  console.debug(`Try to select text on the text layer ${JSON.stringify(pageBoundingRect)}`)
+                if (pageView.textLayer) {
+                  // FIXME: for include intersectRect filter
+                  // const containerRect = pageView.div.parentElement.getBoundingClientRect()
+                  // const selectionRect = {
+                  //   left: boundingRect.left,
+                  //   top: boundingRect.top,
+                  //   right: boundingRect.left + boundingRect.width,
+                  //   bottom: boundingRect.top + boundingRect.height,
+                  // }
+                  // console.debug(`Try to select text on the text layer ${JSON.stringify(selectionRect)}`)
                   pageView.textLayer?.textLayerDiv?.childNodes.forEach(function check(child: any) {
                     const textRect = child.nodeType === Node.TEXT_NODE && typeof child.parentElement?.getBoundingClientRect === 'function' ? child.parentElement.getBoundingClientRect(): null
-                    if (textRect && intersectRect(textRect, boundingRect)) {
-                      text += child.nodeValue.trim() + ' '
+                    if (textRect) {
+                      console.debug(`Text: ${child.textContent} ${JSON.stringify(textRect)}`)
                     }
+                    //if (textRect && intersectRect(textRect, selectionRect)) {
+                      text += child.nodeValue.trim() + ' '
+                    //}
                     child.childNodes.forEach(check)
                   });
-                  console.log(`Text is ${text}`)
+                  //console.log(`Text is ${text}`)
                 }
 
                 this.setTip(
