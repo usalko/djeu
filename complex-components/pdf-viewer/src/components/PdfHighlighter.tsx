@@ -683,9 +683,9 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                   // console.debug(`Try to select text on the text layer ${JSON.stringify(selectionRect)}`)
                   pageView.textLayer?.textLayerDiv?.childNodes.forEach(function check(child: any) {
                     const textRect = child.nodeType === Node.TEXT_NODE && typeof child.parentElement?.getBoundingClientRect === 'function' ? child.parentElement.getBoundingClientRect(): null
-                    if (textRect) {
-                      console.debug(`Text: ${child.textContent} ${JSON.stringify(textRect)}`)
-                    }
+                    // if (textRect) {
+                    //   console.debug(`Text: ${child.textContent} ${JSON.stringify(textRect)}`)
+                    // }
                     if (textRect) { //} && intersectRect(textRect, selectionRect)) {
                       text += child.nodeValue.trim() + ' '
                     }
