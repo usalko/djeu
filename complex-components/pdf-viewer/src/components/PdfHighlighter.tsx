@@ -686,9 +686,9 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                     if (textRect) {
                       console.debug(`Text: ${child.textContent} ${JSON.stringify(textRect)}`)
                     }
-                    //if (textRect && intersectRect(textRect, selectionRect)) {
+                    if (textRect) { //} && intersectRect(textRect, selectionRect)) {
                       text += child.nodeValue.trim() + ' '
-                    //}
+                    }
                     child.childNodes.forEach(check)
                   });
                   //console.log(`Text is ${text}`)
