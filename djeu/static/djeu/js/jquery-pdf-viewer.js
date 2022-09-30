@@ -58137,9 +58137,8 @@ var text=range?range.toString():'-';var pageView=self.viewer.getPageView(page.nu
 //   bottom: boundingRect.top + boundingRect.height,
 // }
 // console.debug(`Try to select text on the text layer ${JSON.stringify(selectionRect)}`)
-(_pageView$textLayer=pageView.textLayer)===null||_pageView$textLayer===void 0?void 0:(_pageView$textLayer$t=_pageView$textLayer.textLayerDiv)===null||_pageView$textLayer$t===void 0?void 0:_pageView$textLayer$t.childNodes.forEach(function check(child){var _child$parentElement;var textRect=child.nodeType===Node.TEXT_NODE&&typeof((_child$parentElement=child.parentElement)===null||_child$parentElement===void 0?void 0:_child$parentElement.getBoundingClientRect)==='function'?child.parentElement.getBoundingClientRect():null;if(textRect){console.debug("Text: ".concat(child.textContent," ").concat(JSON.stringify(textRect)));}//if (textRect && intersectRect(textRect, selectionRect)) {
-text+=child.nodeValue.trim()+' ';//}
-child.childNodes.forEach(check);});//console.log(`Text is ${text}`)
+(_pageView$textLayer=pageView.textLayer)===null||_pageView$textLayer===void 0?void 0:(_pageView$textLayer$t=_pageView$textLayer.textLayerDiv)===null||_pageView$textLayer$t===void 0?void 0:_pageView$textLayer$t.childNodes.forEach(function check(child){var _child$parentElement;var textRect=child.nodeType===Node.TEXT_NODE&&typeof((_child$parentElement=child.parentElement)===null||_child$parentElement===void 0?void 0:_child$parentElement.getBoundingClientRect)==='function'?child.parentElement.getBoundingClientRect():null;if(textRect){console.debug("Text: ".concat(child.textContent," ").concat(JSON.stringify(textRect)));}if(textRect){//} && intersectRect(textRect, selectionRect)) {
+text+=child.nodeValue.trim()+' ';}child.childNodes.forEach(check);});//console.log(`Text is ${text}`)
 }_this3.setTip(viewportPosition,onSelectionFinished(scaledPosition,{text:text,image:image},function(){return _this3.hideTipAndSelection();},function(){return _this3.setState({ghostHighlight:{position:scaledPosition,content:{text:text,image:image}}},function(){resetSelection();_this3.renderHighlights();});}));}}):null]})});}}]);return PdfHighlighter;}(react.PureComponent);PdfHighlighter_PdfHighlighter.defaultProps={pdfScaleValue:"auto"};
 // EXTERNAL MODULE: ./node_modules/pdfjs-dist/legacy/build/pdf.js
 var pdf = __webpack_require__(560);
