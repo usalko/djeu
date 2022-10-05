@@ -275,13 +275,12 @@ class PDFwrapper extends Component<{}, State> {
     const index = highlights.findIndex((element) => element.id === highlight.id)
 
     if (index > -1) {
-      highlights.splice(index, 1)
       this.setState({
-        highlights: [...highlights],
         changeMode: ChangeMode.AddNew,
       })
     } else {
       this.setState({
+        highlights: [highlight, ...highlights],
         changeMode: ChangeMode.AddNew,
       })
     }

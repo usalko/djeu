@@ -83,7 +83,7 @@ class MouseSelection extends Component<Props, State> {
 
     const container = asElement(this.root.parentElement);
     const stickyParent = this.stickyParent(this.root.parentElement)
-    let initialStickyParentTop = 0 // stickyParent ? stickyParent.getBoundingClientRect().top : 0
+    const initialStickyParentTop = stickyParent ? stickyParent.getBoundingClientRect().top : 0
 
     if (!isHTMLElement(container)) {
       return;
@@ -95,11 +95,14 @@ class MouseSelection extends Component<Props, State> {
       if (!containerBoundingRect) {
         containerBoundingRect = container.getBoundingClientRect();
       }
-      if (window.scrollY === 0) {
-        initialStickyParentTop = stickyParent ? stickyParent.getBoundingClientRect().top : 0
+      // if (window.scrollY === 0) {
+      //   initialStickyParentTop = stickyParent ? stickyParent.getBoundingClientRect().top : 0
 
-        // console.debug(`Component MouseSelection on window.scrollY === 0 ${initialStickyParentTop}`)
-      }
+      //   console.debug(`Component MouseSelection on window.scrollY === 0 ${initialStickyParentTop}`)
+      // } else {
+      //   console.debug(`Component MouseSelection if window.scrollY !== 0 ${initialStickyParentTop}`)
+      // }
+      console.debug(`Parent container is ${container}`)
 
       return {
         x: pageX - containerBoundingRect.left + container.scrollLeft,
