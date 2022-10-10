@@ -102,7 +102,8 @@ class MouseSelection extends Component<Props, State> {
       // } else {
       //   console.debug(`Component MouseSelection if window.scrollY !== 0 ${initialStickyParentTop}`)
       // }
-      console.debug(`Parent container is ${container}`)
+      const stickyDelta = (!stickyParent ? 0 : initialStickyParentTop - stickyParent.getBoundingClientRect().top)
+      console.debug(`Parent container coords is ${JSON.stringify(container.getBoundingClientRect())} initial: \n${JSON.stringify(containerBoundingRect)}\nstickyDelta is ${stickyDelta}`)
 
       return {
         x: pageX - containerBoundingRect.left + container.scrollLeft,
@@ -110,7 +111,7 @@ class MouseSelection extends Component<Props, State> {
           pageY
           - containerBoundingRect.top
           + container.scrollTop
-          + (!stickyParent ? 0 : initialStickyParentTop - stickyParent.getBoundingClientRect().top)
+          + stickyDelta
           - window.scrollY,
       };
     };
