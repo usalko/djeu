@@ -13,7 +13,8 @@ import { Tip, ChangeMode } from './Tip';
 export interface State {
   url: string
   highlights: Array<IHighlight>
-  changeMode: ChangeMode
+  changeMode: ChangeMode,
+  selectedIndex: number,
 }
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -57,6 +58,7 @@ class PDFwrapper extends Component<{}, State> {
       url: props.url,
       highlights: props.highlights || [],
       changeMode: ChangeMode.AddNew,
+      selectedIndex: -1,
     }
   }
 
@@ -64,6 +66,7 @@ class PDFwrapper extends Component<{}, State> {
     this.setState({
       highlights: [],
       changeMode: ChangeMode.AddNew,
+      selectedIndex: -1,
     })
   }
 
@@ -72,6 +75,7 @@ class PDFwrapper extends Component<{}, State> {
       url: newUrl,
       highlights: [],
       changeMode: ChangeMode.AddNew,
+      selectedIndex: -1,
     })
   }
 
@@ -110,10 +114,10 @@ class PDFwrapper extends Component<{}, State> {
     if (!this.setHighlightsListener) {
       this.setHighlightsListener = window.addEventListener('jquery-pdf-viewer:setHighlights',
         (e: Event) => {
-            console.debug(e)
-            if ((e as CustomEvent).detail?.highlights) {
-              this.setHighlights(JSON.parse((e as CustomEvent).detail.highlights))
-            }
+          console.debug(e)
+          if ((e as CustomEvent).detail?.highlights) {
+            this.setHighlights(JSON.parse((e as CustomEvent).detail.highlights))
+          }
         },
         false
       )
@@ -194,12 +198,22 @@ class PDFwrapper extends Component<{}, State> {
     return 'id' in object;
   }
 
-  setHighlights(highlights: Array<IHighlight>) {
+  setHighlights(uploadedHighlights: Array<IHighlight>) {
+    const { highlights, selectedIndex } = this.state
+    const selectedHighlight = highlights && selectedIndex > -1 ? highlights[selectedIndex] : null
+
+    const newSelectedIndex = selectedHighlight ? uploadedHighlights.findIndex((element) => element.id === selectedHighlight.id) : -1
+
     if (highlights) {
       this.setState({
-        highlights: [...highlights],
+        highlights: [...uploadedHighlights],
         changeMode: ChangeMode.AddNew,
+        selectedIndex: newSelectedIndex
       })
+    }
+
+    if (newSelectedIndex > -1) {
+      this.scrollViewerTo(selectedHighlight)
     }
   }
 
@@ -227,9 +241,14 @@ class PDFwrapper extends Component<{}, State> {
     if (index === -1) {
       this.setState({
         highlights: [highlight, ...highlights],
+        selectedIndex: 0,
       })
     } else {
       highlights[index] = highlight
+      this.setState({
+        highlights: [highlight, ...highlights],
+        selectedIndex: index,
+      })
     }
     this.scrollViewerTo(highlight)
   }
@@ -253,7 +272,7 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   removeHighlight(highlight: IHighlight) {
-    const { highlights } = this.state
+    const { highlights, selectedIndex } = this.state
     const index = highlights.findIndex((element) => element.id === highlight.id)
 
     if (index > -1) {
@@ -261,6 +280,7 @@ class PDFwrapper extends Component<{}, State> {
       this.setState({
         highlights: [...highlights],
         changeMode: ChangeMode.AddNew,
+        selectedIndex: selectedIndex === index ? -1 : selectedIndex
       })
     } else {
       this.setState({
@@ -288,11 +308,12 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   cancelLatestHighlight = () => {
-    const highlights = this.state.highlights
+    const { highlights, selectedIndex } = this.state
     highlights.pop()
     this.setState({
       highlights: [...highlights],
       changeMode: ChangeMode.AddNew,
+      selectedIndex: selectedIndex > -1 ? selectedIndex - 1 : -1
     })
   }
 
