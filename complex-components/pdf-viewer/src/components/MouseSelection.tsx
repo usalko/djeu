@@ -89,23 +89,18 @@ class MouseSelection extends Component<Props, State> {
       return;
     }
 
-    let containerBoundingRect: DOMRect | null = null;
+    // let containerBoundingRect: DOMRect | null = null;
 
     const containerCoords = (pageX: number, pageY: number) => {
-      if (!containerBoundingRect) {
-        containerBoundingRect = container.getBoundingClientRect();
-      }
-      // if (window.scrollY === 0) {
-      //   initialStickyParentTop = stickyParent ? stickyParent.getBoundingClientRect().top : 0
-
-      //   console.debug(`Component MouseSelection on window.scrollY === 0 ${initialStickyParentTop}`)
-      // } else {
-      //   console.debug(`Component MouseSelection if window.scrollY !== 0 ${initialStickyParentTop}`)
+      // if (!containerBoundingRect) {
+      //   containerBoundingRect = container.getBoundingClientRect();
       // }
-      const stickyParentOffsetTop = stickyParent ? stickyParent.offsetTop : 0
-      const stickyParentY = stickyParent ? stickyParent.getBoundingClientRect().y : 0
+      const containerBoundingRect = container.getBoundingClientRect();
+
+      // const stickyParentOffsetTop = stickyParent ? stickyParent.offsetTop : 0
+      // const stickyParentY = stickyParent ? stickyParent.getBoundingClientRect().y : 0
       // const stickyParentParentY = stickyParent && stickyParent.parentElement ? stickyParent.parentElement.getBoundingClientRect().y : 0
-      const stickyEffect = initialStickyParentOffsetTop < stickyParentOffsetTop // (!stickyParent ? 0 : initialStickyParentTop - stickyParent.getBoundingClientRect().top)
+      // const stickyEffect = initialStickyParentOffsetTop < stickyParentOffsetTop // (!stickyParent ? 0 : initialStickyParentTop - stickyParent.getBoundingClientRect().top)
       // console.debug(`Parent container coords is ${JSON.stringify(container.getBoundingClientRect())} initial:\n${JSON.stringify(containerBoundingRect)}\nstickyEffect is ${stickyEffect}, container.scrollTop is ${container.scrollTop}, window.scrollY is ${window.scrollY}, stickyParentY is ${stickyParentY}, stickyParentParentY is ${stickyParentParentY}, stickyParentTop is ${JSON.stringify(stickyParentOffsetTop)}`)
 
       return {
@@ -115,7 +110,8 @@ class MouseSelection extends Component<Props, State> {
           - containerBoundingRect.top
           + container.scrollTop
           // + stickyDelta
-          - (stickyEffect ? window.scrollY - (stickyParentY + (initialStickyParentOffsetTop - stickyParentY) / 2) : 0)
+          // + (stickyEffect ?  (stickyParentY + (initialStickyParentOffsetTop - stickyParentY) / 2) : 0)
+          - window.scrollY
         ,
       };
     };
