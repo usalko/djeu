@@ -78,7 +78,16 @@ export const scaledToViewport = (
   }
 }
 
-export const intersectRect = (
+export const domRectFromRect = (r: any): DOMRect => {
+  return DOMRect.fromRect({
+    x: r.left,
+    y: r.top,
+    width: r.width,
+    height: r.height,
+  })
+}
+
+export const intersectDOMRect = (
   r1: any,
   r2: any,
 ): boolean => {

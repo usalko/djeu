@@ -22,7 +22,8 @@ import {
 import MouseSelection from "./MouseSelection";
 import TipContainer from "./TipContainer";
 
-import { intersectRect, scaledToViewport, viewportToScaled } from "../lib/coordinates";
+import { intersectDOMRect, scaledToViewport, viewportToScaled, domRectFromRect } from "../lib/coordinates";
+import { postprocessingText } from "../lib/text-tools"
 
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import type {
@@ -674,7 +675,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                 if (pageView.textLayer) {
                   // FIXME: for include intersectRect filter
                   // const containerRect = pageView.div.parentElement.getBoundingClientRect()
-                  // const selectionRect = {
                   //   left: boundingRect.left,
                   //   top: boundingRect.top,
                   //   right: boundingRect.left + boundingRect.width,
@@ -682,11 +682,20 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                   // }
                   // console.debug(`Try to select text on the text layer ${JSON.stringify(selectionRect)}`)
                   pageView.textLayer?.textLayerDiv?.childNodes.forEach(function check(child: any) {
-                    const textRect = child.nodeType === Node.TEXT_NODE && typeof child.parentElement?.getBoundingClientRect === 'function' ? child.parentElement.getBoundingClientRect(): null
+                    const textContainer = child.parentElement
+                    // const textRect = child.nodeType === Node.TEXT_NODE && typeof child.parentElement?.getBoundingClientRect === 'function' ? child.parentElement.getBoundingClientRect() : null
                     // if (textRect) {
                     //   console.debug(`Text: ${child.textContent} ${JSON.stringify(textRect)}`)
                     // }
-                    if (textRect) { //} && intersectRect(textRect, selectionRect)) {
+                    if (child.nodeType === Node.TEXT_NODE && (
+                      intersectDOMRect(domRectFromRect({
+                        top: textContainer.offsetTop,
+                        left: textContainer.offsetLeft,
+                        width: textContainer.offsetWidth,
+                        height: textContainer.offsetHeight,
+                      }), domRectFromRect(pageBoundingRect)))) {
+                      // console.debug(JSON.stringify(textContainer))
+                      // console.debug(JSON.stringify(page))
                       text += child.nodeValue.trim() + ' '
                     }
                     child.childNodes.forEach(check)
@@ -698,14 +707,14 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                   viewportPosition,
                   onSelectionFinished(
                     scaledPosition,
-                    { text, image },
+                    { text: postprocessingText(text), image },
                     () => this.hideTipAndSelection(),
                     () =>
                       this.setState(
                         {
                           ghostHighlight: {
                             position: scaledPosition,
-                            content: { text, image },
+                            content: { text: postprocessingText(text), image },
                           },
                         },
                         () => {

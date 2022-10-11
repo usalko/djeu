@@ -14,8 +14,10 @@ interface Props {
   pageBoundingRect: LeftTopWidthHeightPageNumber;
 }
 
-const clamp = (value: number, left: number, right: number) =>
-  Math.min(Math.max(value, left), right);
+const clamp = (value: number, left: number, right: number) => {
+  const result = Math.min(Math.max(value, left), right)
+  return result > 0 ? result : 0
+}
 
 class TipContainer extends Component<Props, State> {
   state: State = {

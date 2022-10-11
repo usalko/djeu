@@ -4,19 +4,19 @@ import optimizeClientRects from "./optimize-client-rects";
 
 const isClientRectInsidePageRect = (clientRect: DOMRect, pageRect: DOMRect) => {
   if (clientRect.top < pageRect.top) {
-    return false;
+    return false
   }
   if (clientRect.bottom > pageRect.bottom) {
-    return false;
+    return false
   }
   if (clientRect.right > pageRect.right) {
-    return false;
+    return false
   }
   if (clientRect.left < pageRect.left) {
-    return false;
+    return false
   }
 
-  return true;
+  return true
 };
 
 const getClientRects = (
@@ -24,13 +24,13 @@ const getClientRects = (
   pages: Page[],
   shouldOptimize: boolean = true
 ): Array<LeftTopWidthHeightPageNumber> => {
-  const clientRects = Array.from(range.getClientRects());
+  const clientRects = Array.from(range.getClientRects())
 
-  const rects: LeftTopWidthHeightPageNumber[] = [];
+  const rects: LeftTopWidthHeightPageNumber[] = []
 
   for (const clientRect of clientRects) {
     for (const page of pages) {
-      const pageRect = page.node.getBoundingClientRect();
+      const pageRect = page.node.getBoundingClientRect()
 
       if (
         isClientRectInsidePageRect(clientRect, pageRect) &&
@@ -47,14 +47,14 @@ const getClientRects = (
           width: clientRect.width,
           height: clientRect.height,
           pageNumber: page.number,
-        } as LeftTopWidthHeightPageNumber;
+        } as LeftTopWidthHeightPageNumber
 
-        rects.push(highlightedRect);
+        rects.push(highlightedRect)
       }
     }
   }
 
-  return shouldOptimize ? optimizeClientRects(rects) : rects;
+  return shouldOptimize ? optimizeClientRects(rects) : rects
 };
 
 export default getClientRects;

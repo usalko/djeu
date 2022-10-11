@@ -20,7 +20,7 @@ interface Props {
   onSelection: (
     startTarget: HTMLElement,
     boundingRect: LeftTopWidthHeight,
-    resetSelection: () => void
+    resetSelection: () => void,
   ) => void;
   onDragStart: () => void;
   onDragEnd: () => void;
@@ -82,8 +82,8 @@ class MouseSelection extends Component<Props, State> {
     const { onSelection, onDragStart, onDragEnd, shouldStart } = this.props;
 
     const container = asElement(this.root.parentElement);
-    const stickyParent = this.stickyParent(this.root.parentElement)
-    const initialStickyParentOffsetTop = stickyParent ? stickyParent.offsetTop : 0
+    // const stickyParent = this.stickyParent(this.root.parentElement)
+    // const initialStickyParentOffsetTop = stickyParent ? stickyParent.offsetTop : 0
 
     if (!isHTMLElement(container)) {
       return;
