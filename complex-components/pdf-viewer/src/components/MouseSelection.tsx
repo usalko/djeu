@@ -83,7 +83,7 @@ class MouseSelection extends Component<Props, State> {
 
     const container = asElement(this.root.parentElement);
     const stickyParent = this.stickyParent(this.root.parentElement)
-    const initialStickyParentTop = stickyParent ? stickyParent.getBoundingClientRect().top : 0
+    const initialStickyParentOffsetTop = stickyParent ? stickyParent.offsetTop : 0
 
     if (!isHTMLElement(container)) {
       return;
@@ -102,8 +102,11 @@ class MouseSelection extends Component<Props, State> {
       // } else {
       //   console.debug(`Component MouseSelection if window.scrollY !== 0 ${initialStickyParentTop}`)
       // }
-      const stickyDelta = (!stickyParent ? 0 : initialStickyParentTop - stickyParent.getBoundingClientRect().top)
-      console.debug(`Parent container coords is ${JSON.stringify(container.getBoundingClientRect())} initial: \n${JSON.stringify(containerBoundingRect)}\nstickyDelta is ${stickyDelta}`)
+      const stickyParentOffsetTop = stickyParent ? stickyParent.offsetTop : 0
+      const stickyParentY = stickyParent ? stickyParent.getBoundingClientRect().y : 0
+      // const stickyParentParentY = stickyParent && stickyParent.parentElement ? stickyParent.parentElement.getBoundingClientRect().y : 0
+      const stickyEffect = initialStickyParentOffsetTop < stickyParentOffsetTop // (!stickyParent ? 0 : initialStickyParentTop - stickyParent.getBoundingClientRect().top)
+      // console.debug(`Parent container coords is ${JSON.stringify(container.getBoundingClientRect())} initial:\n${JSON.stringify(containerBoundingRect)}\nstickyEffect is ${stickyEffect}, container.scrollTop is ${container.scrollTop}, window.scrollY is ${window.scrollY}, stickyParentY is ${stickyParentY}, stickyParentParentY is ${stickyParentParentY}, stickyParentTop is ${JSON.stringify(stickyParentOffsetTop)}`)
 
       return {
         x: pageX - containerBoundingRect.left + container.scrollLeft,
@@ -111,8 +114,9 @@ class MouseSelection extends Component<Props, State> {
           pageY
           - containerBoundingRect.top
           + container.scrollTop
-          + stickyDelta
-          - window.scrollY,
+          // + stickyDelta
+          - (stickyEffect ? window.scrollY - (stickyParentY + (initialStickyParentOffsetTop - stickyParentY) / 2) : 0)
+        ,
       };
     };
 
