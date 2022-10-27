@@ -34,20 +34,20 @@ import type {
 type T_ViewportHighlight<T_HT> = { position: Position } & T_HT;
 
 interface State<T_HT> {
-  ghostHighlight: {
+  ghostHighlights: Array<{
     position: ScaledPosition;
     content?: { text?: string; image?: string };
-  } | null;
-  isCollapsed: boolean;
-  range: Range | null;
+  }>
+  isCollapsed: boolean
+  range: Range | null
   tip: {
-    highlight: T_ViewportHighlight<T_HT>;
-    callback: (highlight: T_ViewportHighlight<T_HT>) => JSX.Element;
-  } | null;
-  tipPosition: Position | null;
-  tipChildren: JSX.Element | null;
-  isAreaSelectionInProgress: boolean;
-  scrolledToHighlightId: string;
+    highlight: T_ViewportHighlight<T_HT>
+    callback: (highlight: T_ViewportHighlight<T_HT>) => JSX.Element
+  } | null
+  tipPosition: Position | null
+  tipChildren: JSX.Element | null
+  isAreaSelectionInProgress: boolean
+  scrolledToHighlightId: string
 }
 
 interface Props<T_HT> {
@@ -62,22 +62,22 @@ interface Props<T_HT> {
     viewportToScaled: (rect: LeftTopWidthHeightPageNumber) => Scaled,
     screenshot: (position: LeftTopWidthHeight) => string,
     isScrolledTo: boolean
-  ) => JSX.Element;
-  highlights: Array<T_HT>;
-  onScrollChange: () => void;
-  scrollRef: (scrollTo: (highlight: IHighlight) => void) => void;
-  pdfDocument: PDFDocumentProxy;
-  pdfScaleValue: string;
+  ) => JSX.Element
+  highlights: Array<T_HT>
+  onScrollChange: () => void
+  scrollRef: (scrollTo: (highlight: IHighlight) => void) => void
+  pdfDocument: PDFDocumentProxy
+  pdfScaleValue: string
   onSelectionFinished: (
     position: ScaledPosition,
-    content: { text?: string; image?: string },
+    content: { text?: string, image?: string },
     hideTipAndSelection: () => void,
     transformSelection: () => void
-  ) => JSX.Element | null;
-  enableAreaSelection: (event: MouseEvent) => boolean;
+  ) => JSX.Element | null
+  enableAreaSelection: (event: MouseEvent) => boolean
 }
 
-const EMPTY_ID = "empty-id";
+const EMPTY_ID = "empty-id"
 
 export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   Props<T_HT>,
@@ -85,10 +85,10 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 > {
   static defaultProps = {
     pdfScaleValue: "auto",
-  };
+  }
 
   state: State<T_HT> = {
-    ghostHighlight: null,
+    ghostHighlights: [],
     isCollapsed: true,
     range: null,
     scrolledToHighlightId: EMPTY_ID,
@@ -96,58 +96,58 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     tip: null,
     tipPosition: null,
     tipChildren: null,
-  };
+  }
 
   eventBus = new EventBus();
   linkService = new PDFLinkService({
     eventBus: this.eventBus,
     externalLinkTarget: 2,
-  });
+  })
 
-  viewer!: PDFViewer;
+  viewer!: PDFViewer
 
-  resizeObserver: ResizeObserver | null = null;
-  containerNode?: HTMLDivElement | null = null;
-  unsubscribe = () => { };
+  resizeObserver: ResizeObserver | null = null
+  containerNode?: HTMLDivElement | null = null
+  unsubscribe = () => { }
 
   constructor(props: Props<T_HT>) {
-    super(props);
+    super(props)
     if (typeof ResizeObserver !== "undefined") {
-      this.resizeObserver = new ResizeObserver(this.debouncedScaleValue);
+      this.resizeObserver = new ResizeObserver(this.debouncedScaleValue)
     }
   }
 
   componentDidMount() {
-    this.init();
+    this.init()
   }
 
   attachRef = (ref: HTMLDivElement | null) => {
-    const { eventBus, resizeObserver: observer } = this;
-    this.containerNode = ref;
-    this.unsubscribe();
+    const { eventBus, resizeObserver: observer } = this
+    this.containerNode = ref
+    this.unsubscribe()
 
     if (ref) {
-      const { ownerDocument: doc } = ref;
-      eventBus.on("textlayerrendered", this.onTextLayerRendered);
-      eventBus.on("pagesinit", this.onDocumentReady);
-      doc.addEventListener("selectionchange", this.onSelectionChange);
-      doc.addEventListener("keydown", this.handleKeyDown);
-      doc.defaultView?.addEventListener("resize", this.debouncedScaleValue);
-      if (observer) observer.observe(ref);
+      const { ownerDocument: doc } = ref
+      eventBus.on("textlayerrendered", this.onTextLayerRendered)
+      eventBus.on("pagesinit", this.onDocumentReady)
+      doc.addEventListener("selectionchange", this.onSelectionChange)
+      doc.addEventListener("keydown", this.handleKeyDown)
+      doc.defaultView?.addEventListener("resize", this.debouncedScaleValue)
+      if (observer) observer.observe(ref)
 
       this.unsubscribe = () => {
-        eventBus.off("pagesinit", this.onDocumentReady);
-        eventBus.off("textlayerrendered", this.onTextLayerRendered);
-        doc.removeEventListener("selectionchange", this.onSelectionChange);
-        doc.removeEventListener("keydown", this.handleKeyDown);
+        eventBus.off("pagesinit", this.onDocumentReady)
+        eventBus.off("textlayerrendered", this.onTextLayerRendered)
+        doc.removeEventListener("selectionchange", this.onSelectionChange)
+        doc.removeEventListener("keydown", this.handleKeyDown)
         doc.defaultView?.removeEventListener(
           "resize",
           this.debouncedScaleValue
-        );
-        if (observer) observer.disconnect();
-      };
+        )
+        if (observer) observer.disconnect()
+      }
     }
-  };
+  }
 
   componentDidUpdate(prevProps: Props<T_HT>) {
     if (prevProps.pdfDocument !== this.props.pdfDocument) {
@@ -203,9 +203,9 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   groupHighlightsByPage(highlights: Array<T_HT>): {
     [pageNumber: string]: Array<T_HT>;
   } {
-    const { ghostHighlight } = this.state;
+    const { ghostHighlights } = this.state;
 
-    const allHighlights = [...highlights, ghostHighlight].filter(Boolean);
+    const allHighlights = [...highlights, ...ghostHighlights].filter(Boolean);
 
     const pageNumbers = new Set<number>();
     for (const highlight of allHighlights) {
@@ -266,10 +266,10 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   }
 
   showTip(highlight: T_ViewportHighlight<T_HT>, content: JSX.Element) {
-    const { isCollapsed, ghostHighlight, isAreaSelectionInProgress } =
+    const { isCollapsed, ghostHighlights, isAreaSelectionInProgress } =
       this.state;
 
-    const highlightInProgress = !isCollapsed || ghostHighlight;
+    const highlightInProgress = !isCollapsed || ghostHighlights;
 
     if (highlightInProgress || isAreaSelectionInProgress) {
       return;
@@ -381,7 +381,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
       tipChildren: null,
     });
 
-    this.setState({ ghostHighlight: null, tip: null }, () =>
+    this.setState({ ghostHighlights: [], tip: null }, () =>
       this.renderHighlights()
     );
   };
@@ -590,7 +590,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
         () =>
           this.setState(
             {
-              ghostHighlight: { position: scaledPosition },
+              ghostHighlights: [{ position: scaledPosition }],
             },
             () => this.renderHighlights()
           )
@@ -702,10 +702,10 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                     () =>
                       this.setState(
                         {
-                          ghostHighlight: {
+                          ghostHighlights: [{
                             position: startScaledPosition,
                             content: { text: postprocessingText(startText), image: startImage },
-                          },
+                          }],
                         },
                         () => {
                           resetSelection();
