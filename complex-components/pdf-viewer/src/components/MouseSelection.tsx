@@ -19,6 +19,7 @@ interface State {
 interface Props {
   onSelection: (
     startTarget: HTMLElement,
+    finishTarget: HTMLElement,
     boundingRect: LeftTopWidthHeight,
     resetSelection: () => void,
   ) => void;
@@ -188,7 +189,7 @@ class MouseSelection extends Component<Props, State> {
             }
 
             if (isHTMLElement(event.target)) {
-              onSelection(startTarget, boundingRect, that.reset)
+              onSelection(startTarget, asElement(event.target), boundingRect, that.reset)
               onDragEnd()
             }
 

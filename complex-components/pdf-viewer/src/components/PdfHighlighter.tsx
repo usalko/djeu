@@ -640,81 +640,71 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                 isHTMLElement(event.target) &&
                 Boolean(asElement(event.target).closest(".page"))
               }
-              onSelection={(startTarget, boundingRect, resetSelection) => {
-                const page = getPageFromElement(startTarget)
+              onSelection={(startTarget, finishTarget, boundingRect, resetSelection) => {
+                const startPage = getPageFromElement(startTarget)
+                const finishPage = getPageFromElement(finishTarget)
 
-                if (!page) {
+                if (!startPage) {
                   return
                 }
 
-                const pageBoundingRect = {
+                const startPageBoundingRect = {
                   ...boundingRect,
-                  top: boundingRect.top - page.node.offsetTop,
-                  left: boundingRect.left - page.node.offsetLeft,
-                  pageNumber: page.number,
+                  top: boundingRect.top - startPage.node.offsetTop,
+                  left: boundingRect.left - startPage.node.offsetLeft,
+                  pageNumber: startPage.number,
                 }
 
-                const viewportPosition = {
-                  boundingRect: pageBoundingRect,
+                const startViewportPosition = {
+                  boundingRect: startPageBoundingRect,
                   rects: [],
-                  pageNumber: page.number,
+                  pageNumber: startPage.number,
                 }
 
-                const scaledPosition =
-                  this.viewportPositionToScaled(viewportPosition);
+                const startScaledPosition =
+                  this.viewportPositionToScaled(startViewportPosition);
 
-                const image = this.screenshot(
-                  pageBoundingRect,
-                  pageBoundingRect.pageNumber
+                const startImage = this.screenshot(
+                  startPageBoundingRect,
+                  startPageBoundingRect.pageNumber
                 )
 
-                const range = self.state?.range // selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null
-                let text = range ? range.toString() : '-'
+                let startText = '-'
 
-                const pageView = self.viewer.getPageView(page.number - 1) || {};
-                if (pageView.textLayer) {
-                  // FIXME: for include intersectRect filter
-                  // const containerRect = pageView.div.parentElement.getBoundingClientRect()
-                  //   left: boundingRect.left,
-                  //   top: boundingRect.top,
-                  //   right: boundingRect.left + boundingRect.width,
-                  //   bottom: boundingRect.top + boundingRect.height,
-                  // }
-                  // console.debug(`Try to select text on the text layer ${JSON.stringify(selectionRect)}`)
-                  pageView.textLayer?.textLayerDiv?.childNodes.forEach(function check(child: any) {
+                const startPageView = self.viewer.getPageView(startPage.number - 1) || {};
+                if (startPageView.textLayer) {
+                  startPageView.textLayer?.textLayerDiv?.childNodes.forEach(function check(child: any) {
                     const textContainer = child.parentElement
-                    // const textRect = child.nodeType === Node.TEXT_NODE && typeof child.parentElement?.getBoundingClientRect === 'function' ? child.parentElement.getBoundingClientRect() : null
-                    // if (textRect) {
-                    //   console.debug(`Text: ${child.textContent} ${JSON.stringify(textRect)}`)
-                    // }
                     if (child.nodeType === Node.TEXT_NODE && (
                       intersectDOMRect(domRectFromRect({
                         top: textContainer.offsetTop,
                         left: textContainer.offsetLeft,
                         width: textContainer.offsetWidth,
                         height: textContainer.offsetHeight,
-                      }), domRectFromRect(pageBoundingRect)))) {
-                      // console.debug(JSON.stringify(textContainer))
-                      // console.debug(JSON.stringify(page))
-                      text += child.nodeValue.trim() + ' '
+                      }), domRectFromRect(startPageBoundingRect)))) {
+                      startText += child.nodeValue.trim() + ' '
                     }
                     child.childNodes.forEach(check)
-                  });
+                  })
                   //console.log(`Text is ${text}`)
                 }
 
+                if (startTarget !== finishTarget) {
+                  console.debug(`The selection has the two rectangles`)
+                }
+
                 this.setTip(
-                  viewportPosition,
+                  startViewportPosition,
                   onSelectionFinished(
-                    scaledPosition,
-                    { text: postprocessingText(text), image },
+                    startScaledPosition,
+                    { text: postprocessingText(startText), image: startImage },
                     () => this.hideTipAndSelection(),
                     () =>
                       this.setState(
                         {
                           ghostHighlight: {
-                            position: scaledPosition,
-                            content: { text: postprocessingText(text), image },
+                            position: startScaledPosition,
+                            content: { text: postprocessingText(startText), image: startImage },
                           },
                         },
                         () => {
