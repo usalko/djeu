@@ -689,23 +689,75 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                   //console.log(`Text is ${text}`)
                 }
 
-                if (startTarget !== finishTarget) {
+                const positions = [startScaledPosition]
+                const contents = [{ text: postprocessingText(startText), image: startImage }]
+                const ghostHighlights = [{
+                  position: startScaledPosition,
+                  content: { text: postprocessingText(startText), image: startImage },
+                }]
+
+                if (startTarget !== finishTarget && finishPage) {
                   console.debug(`The selection has the two rectangles`)
+                  const finishPageBoundingRect = {
+                    ...boundingRect,
+                    top: boundingRect.top - finishPage.node.offsetTop,
+                    left: boundingRect.left - finishPage.node.offsetLeft,
+                    pageNumber: finishPage.number,
+                  }
+
+                  const finishViewportPosition = {
+                    boundingRect: finishPageBoundingRect,
+                    rects: [],
+                    pageNumber: finishPage.number,
+                  }
+
+                  const finishScaledPosition =
+                    this.viewportPositionToScaled(finishViewportPosition);
+
+                  const finishImage = this.screenshot(
+                    finishPageBoundingRect,
+                    finishPageBoundingRect.pageNumber
+                  )
+
+                  let finishText = '-'
+
+                  const finishPageView = self.viewer.getPageView(finishPage.number - 1) || {};
+                  if (finishPageView.textLayer) {
+                    finishPageView.textLayer?.textLayerDiv?.childNodes.forEach(function check(child: any) {
+                      const textContainer = child.parentElement
+                      if (child.nodeType === Node.TEXT_NODE && (
+                        intersectDOMRect(domRectFromRect({
+                          top: textContainer.offsetTop,
+                          left: textContainer.offsetLeft,
+                          width: textContainer.offsetWidth,
+                          height: textContainer.offsetHeight,
+                        }), domRectFromRect(finishPageBoundingRect)))) {
+                        finishText += child.nodeValue.trim() + ' '
+                      }
+                      child.childNodes.forEach(check)
+                    })
+                    //console.log(`Text is ${text}`)
+                  }
+
+                  // Update arrays
+                  positions.push(finishScaledPosition)
+                  contents.push({ text: postprocessingText(finishText), image: finishImage })
+                  ghostHighlights.push({
+                    position: finishScaledPosition,
+                    content: { text: postprocessingText(finishText), image: finishImage },
+                  })
                 }
 
                 this.setTip(
                   startViewportPosition,
                   onSelectionFinished(
-                    [startScaledPosition],
-                    [{ text: postprocessingText(startText), image: startImage }],
+                    positions,
+                    contents,
                     () => this.hideTipAndSelection(),
                     () =>
                       this.setState(
                         {
-                          ghostHighlights: [{
-                            position: startScaledPosition,
-                            content: { text: postprocessingText(startText), image: startImage },
-                          }],
+                          ghostHighlights: ghostHighlights,
                         },
                         () => {
                           resetSelection()
