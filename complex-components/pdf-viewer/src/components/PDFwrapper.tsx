@@ -46,7 +46,7 @@ class PDFwrapper extends Component<{}, State> {
   setUrlListener: any
   setHighlightsListener: any
   cancelLatestHighlightListener: any
-  selectHighlightListener: any
+  selectHighlightsListener: any
   editHighlightListener: any
   removeHighlightListener: any
   afterPersistHighlightListener: any
@@ -131,12 +131,12 @@ class PDFwrapper extends Component<{}, State> {
         false
       )
     }
-    if (!this.selectHighlightListener) {
-      this.selectHighlightListener = window.addEventListener('pdf-viewer-integration:selectHighlight',
+    if (!this.selectHighlightsListener) {
+      this.selectHighlightsListener = window.addEventListener('pdf-viewer-integration:selectHighlights',
         (e: Event) => {
           console.debug(e)
-          if ('detail' in e && (e as CustomEvent).detail?.highlight) {
-            this.selectHighlight(JSON.parse((e as CustomEvent).detail.highlight))
+          if ('detail' in e && (e as CustomEvent).detail?.highlights) {
+            this.selectHighlights(JSON.parse((e as CustomEvent).detail.highlights))
           }
         },
         false
@@ -195,7 +195,7 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   hasId(object: any): object is IHighlight {
-    return 'id' in object;
+    return 'id' in object
   }
 
   setHighlights(uploadedHighlights: Array<IHighlight>) {
@@ -217,40 +217,40 @@ class PDFwrapper extends Component<{}, State> {
     }
   }
 
-  addHighlight(highlight: NewHighlight) {
+  addHighlights(newHighlights: Array<NewHighlight>) {
     const { highlights } = this.state
 
     // console.log("Saving highlight", highlight)
 
-    const identifiedHighlight = { ...highlight, id: getNextId() }
-    window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlight', {
-      detail: { highlight: identifiedHighlight }
+    const identifiedHighlights = newHighlights.map((element) => { return { ...element, id: getNextId() }})
+    window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlights', {
+      detail: { highlights: identifiedHighlights }
     }))
 
     this.setState({
-      highlights: [identifiedHighlight, ...highlights],
+      highlights: [...identifiedHighlights, ...highlights],
       changeMode: ChangeMode.ChangeExist,
     })
 
   }
 
-  selectHighlight(highlight: IHighlight) {
+  selectHighlights(selectedHighlights: Array<IHighlight>) {
     const { highlights } = this.state
-    const index = highlights.findIndex((element) => element.id === highlight.id)
+    const index = highlights.findIndex((element) => element.id === selectedHighlights[0].id)
 
     if (index === -1) {
       this.setState({
-        highlights: [highlight, ...highlights],
+        highlights: [...selectedHighlights, ...highlights],
         selectedIndex: 0,
       })
     } else {
-      highlights[index] = highlight
+      highlights[index] = selectedHighlights[0]
       this.setState({
-        highlights: [highlight, ...highlights],
+        highlights: [...selectedHighlights, ...highlights],
         selectedIndex: index,
       })
     }
-    this.scrollViewerTo(highlight)
+    this.scrollViewerTo(selectedHighlights)
   }
 
   editHighlight(highlight: IHighlight) {
@@ -391,25 +391,27 @@ class PDFwrapper extends Component<{}, State> {
                   onScrollChange={resetHash}
                   // pdfScaleValue="page-width"
                   scrollRef={(scrollTo) => {
-                    this.scrollViewerTo = scrollTo;
+                    this.scrollViewerTo = scrollTo
 
-                    this.scrollToHighlightFromHash();
+                    this.scrollToHighlightFromHash()
                   }}
                   onSelectionFinished={(
-                    position,
-                    content,
+                    positions,
+                    contents,
                     hideTipAndSelection,
                     transformSelection,
                   ) => (<Tip
                     changeMode={changeMode}
-                    textAvailable={content.text && content.text !== '-' ? true : false}
+                    textAvailable={contents.some((element) => element.text && element.text !== '-')}
                     onAction={(withText) => {
-                      transformSelection();
+                      transformSelection()
                       if (!withText) {
-                        content.text = '-'
+                        contents.forEach((element) => {
+                          element.text = '-'
+                        })
                       }
-                      this.addHighlight({ content, position, comment: { text: '', emoji: '' } });
-                      hideTipAndSelection();
+                      this.addHighlights(positions.map((position, i) => { return { content: contents[i], position, comment: { text: '', emoji: '' } }}))
+                      hideTipAndSelection()
                     }}
                   />)}
                   highlightTransform={(
