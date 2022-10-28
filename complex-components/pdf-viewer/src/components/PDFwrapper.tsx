@@ -45,12 +45,12 @@ class PDFwrapper extends Component<{}, State> {
   // FIXME: Add listeners not for window level but element level only
   setUrlListener: any
   setHighlightsListener: any
-  cancelLatestHighlightListener: any
+  cancelLatestHighlightsListener: any
   selectHighlightsListener: any
-  editHighlightListener: any
-  removeHighlightListener: any
-  afterPersistHighlightListener: any
-  cancelEditHighlightListener: any
+  editHighlightsListener: any
+  removeHighlightsListener: any
+  afterPersistHighlightsListener: any
+  cancelEditHighlightsListener: any
 
   constructor(props: any) {
     super(props)
@@ -122,8 +122,8 @@ class PDFwrapper extends Component<{}, State> {
         false
       )
     }
-    if (!this.cancelLatestHighlightListener) {
-      this.cancelLatestHighlightListener = window.addEventListener('pdf-viewer-integration:cancelLatestHighlight',
+    if (!this.cancelLatestHighlightsListener) {
+      this.cancelLatestHighlightsListener = window.addEventListener('pdf-viewer-integration:cancelLatestHighlights',
         (e: Event) => {
           console.debug(e)
           this.cancelLatestHighlight()
@@ -136,51 +136,56 @@ class PDFwrapper extends Component<{}, State> {
         (e: Event) => {
           console.debug(e)
           if ('detail' in e && (e as CustomEvent).detail?.highlights) {
-            this.selectHighlights(JSON.parse((e as CustomEvent).detail.highlights))
+            const highlights = JSON.parse((e as CustomEvent).detail.highlights)
+            this.selectHighlights(Array.isArray(highlights) ? highlights: [highlights])
           }
         },
         false
       )
     }
-    if (!this.editHighlightListener) {
-      this.editHighlightListener = window.addEventListener('pdf-viewer-integration:editHighlight',
+    if (!this.editHighlightsListener) {
+      this.editHighlightsListener = window.addEventListener('pdf-viewer-integration:editHighlights',
         (e: Event) => {
           console.debug(e)
-          if ('detail' in e && (e as CustomEvent).detail?.highlight) {
-            this.editHighlight(JSON.parse((e as CustomEvent).detail.highlight))
+          if ('detail' in e && (e as CustomEvent).detail?.highlights) {
+            const highlights = JSON.parse((e as CustomEvent).detail.highlights)
+            this.editHighlights(Array.isArray(highlights) ? highlights: [highlights])
           }
         },
         false
       )
     }
-    if (!this.removeHighlightListener) {
-      this.removeHighlightListener = window.addEventListener('pdf-viewer-integration:removeHighlight',
+    if (!this.removeHighlightsListener) {
+      this.removeHighlightsListener = window.addEventListener('pdf-viewer-integration:removeHighlights',
         (e: Event) => {
           console.debug(e)
-          if ('detail' in e && (e as CustomEvent).detail?.highlight) {
-            this.removeHighlight(JSON.parse((e as CustomEvent).detail.highlight))
+          if ('detail' in e && (e as CustomEvent).detail?.highlights) {
+            const highlights = JSON.parse((e as CustomEvent).detail.highlights)
+            this.removeHighlights(Array.isArray(highlights) ? highlights: [highlights])
           }
         },
         false
       )
     }
-    if (!this.afterPersistHighlightListener) {
-      this.afterPersistHighlightListener = window.addEventListener('pdf-viewer-integration:afterPersistHighlight',
+    if (!this.afterPersistHighlightsListener) {
+      this.afterPersistHighlightsListener = window.addEventListener('pdf-viewer-integration:afterPersistHighlights',
         (e: Event) => {
           console.debug(e)
-          if ('detail' in e && (e as CustomEvent).detail?.highlight) {
-            this.afterPersistHighlight(JSON.parse((e as CustomEvent).detail.highlight))
+          if ('detail' in e && (e as CustomEvent).detail?.highlights) {
+            const highlights = JSON.parse((e as CustomEvent).detail.highlights)
+            this.afterPersistHighlights(Array.isArray(highlights) ? highlights: [highlights])
           }
         },
         false
       )
     }
-    if (!this.cancelEditHighlightListener) {
-      this.cancelEditHighlightListener = window.addEventListener('pdf-viewer-integration:cancelEditHighlight',
+    if (!this.cancelEditHighlightsListener) {
+      this.cancelEditHighlightsListener = window.addEventListener('pdf-viewer-integration:cancelEditHighlights',
         (e: Event) => {
           console.debug(e)
-          if ('detail' in e && (e as CustomEvent).detail?.highlight) {
-            this.cancelEditHighlight(JSON.parse((e as CustomEvent).detail.highlight))
+          if ('detail' in e && (e as CustomEvent).detail?.highlights) {
+            const highlights = JSON.parse((e as CustomEvent).detail.highlights)
+            this.cancelEditHighlights(Array.isArray(highlights) ? highlights: [highlights])
           }
         },
         false
@@ -250,30 +255,30 @@ class PDFwrapper extends Component<{}, State> {
         selectedIndex: index,
       })
     }
-    this.scrollViewerTo(selectedHighlights)
+    this.scrollViewerTo(selectedHighlights[0])
   }
 
-  editHighlight(highlight: IHighlight) {
+  editHighlights(highlightItems: Array<IHighlight>) {
     const { highlights } = this.state
-    const index = highlights.findIndex((element) => element.id === highlight.id)
+    const index = highlights.findIndex((element) => element.id === highlightItems[0].id)
 
     if (index === -1) {
       this.setState({
-        highlights: [highlight, ...highlights],
+        highlights: [...highlightItems, ...highlights],
         changeMode: ChangeMode.ChangeExist,
       })
     } else {
-      highlights[index] = highlight
+      highlights[index] = highlightItems[0]
       this.setState({
         changeMode: ChangeMode.ChangeExist,
       })
     }
-    this.scrollViewerTo(highlight)
+    this.scrollViewerTo(highlightItems[0])
   }
 
-  removeHighlight(highlight: IHighlight) {
+  removeHighlights(highlightItems: Array<IHighlight>) {
     const { highlights, selectedIndex } = this.state
-    const index = highlights.findIndex((element) => element.id === highlight.id)
+    const index = highlights.findIndex((element) => element.id === highlightItems[0].id)
 
     if (index > -1) {
       highlights.splice(index, 1)
@@ -287,12 +292,12 @@ class PDFwrapper extends Component<{}, State> {
         changeMode: ChangeMode.AddNew,
       })
     }
-    this.scrollViewerTo(highlight)
+    this.scrollViewerTo(highlightItems[0])
   }
 
-  afterPersistHighlight(highlight: IHighlight) {
+  afterPersistHighlights(highlightItems: Array<IHighlight>) {
     const { highlights } = this.state
-    const index = highlights.findIndex((element) => element.id === highlight.id)
+    const index = highlights.findIndex((element) => element.id === highlightItems[0].id)
 
     if (index > -1) {
       this.setState({
@@ -300,11 +305,11 @@ class PDFwrapper extends Component<{}, State> {
       })
     } else {
       this.setState({
-        highlights: [highlight, ...highlights],
+        highlights: [...highlightItems, ...highlights],
         changeMode: ChangeMode.AddNew,
       })
     }
-    this.scrollViewerTo(highlight)
+    this.scrollViewerTo(highlightItems[0])
   }
 
   cancelLatestHighlight = () => {
@@ -317,22 +322,22 @@ class PDFwrapper extends Component<{}, State> {
     })
   }
 
-  cancelEditHighlight = (highlight: IHighlight) => {
+  cancelEditHighlights = (highlightItems: Array<IHighlight>) => {
     const { highlights } = this.state
-    const index = highlights.findIndex((element) => element.id === highlight.id)
+    const index = highlights.findIndex((element) => element.id === highlightItems[0].id)
 
     if (index === -1) {
       this.setState({
-        highlights: [highlight, ...highlights],
+        highlights: [...highlightItems, ...highlights],
         changeMode: ChangeMode.AddNew,
       })
     } else {
-      highlights[index] = highlight
+      highlights[index] = highlightItems[0]
       this.setState({
         changeMode: ChangeMode.AddNew,
       })
     }
-    this.scrollViewerTo(highlight)
+    this.scrollViewerTo(highlightItems[0])
   }
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
