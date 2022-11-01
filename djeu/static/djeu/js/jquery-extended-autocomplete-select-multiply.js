@@ -2227,6 +2227,8 @@
                     });
 
                     this.$selection.on('focusout', '.extended-autocomplete-select-multiply-search--inline', function (evt) {
+                        //console.debug(self);
+                        self.container.close();
                         self._handleBlur(evt);
                     });
 
