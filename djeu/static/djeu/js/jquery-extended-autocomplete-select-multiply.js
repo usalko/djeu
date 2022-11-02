@@ -1323,6 +1323,10 @@
                         });
                     }
 
+                    // this.$results.on('mouseleave', '.extended-autocomplete-select-multiply-results__option[aria-selected]', function (evt) {
+                    //     self.trigger('close');
+                    // });
+
                     this.$results.on('mouseup', '.extended-autocomplete-select-multiply-results__option[aria-selected]',
                         function (evt) {
                             var $this = $(this);
@@ -1584,7 +1588,7 @@
 
                         var $select = $target.closest('.extendedAutocompleteSelectMultiply');
 
-                        var $all = $('.extendedAutocompleteSelectMultiply.extended-autocomplete-select-multiply-container--open');
+                        var $all = $('.extended-autocomplete-select-multiply-container.extended-autocomplete-select-multiply-container--open');
 
                         $all.each(function () {
                             if (this == $select[0]) {
@@ -2227,8 +2231,6 @@
                     });
 
                     this.$selection.on('focusout', '.extended-autocomplete-select-multiply-search--inline', function (evt) {
-                        //console.debug(self);
-                        self.container.close();
                         self._handleBlur(evt);
                     });
 
