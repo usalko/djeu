@@ -962,12 +962,16 @@
                     return sorter(data);
                 };
 
-                Results.prototype.selectedData = function () {
+                Results.prototype.selectedData = function (asIsMode) {
                     var $options = this.$results
                         .find('.extended-autocomplete-select-multiply-results__option[aria-selected]')
                         .filter('[class$="--highlighted"]');
 
-                    return $options.length ? Utils.GetData($options[0], 'data') : null;
+                    var selectedOption = $options.length ? Utils.GetData($options[0], 'data') : null;
+                    if ( asIsMode && selectedOption && selectedOption.text !== this.lastParams['term'] ) {
+                        return null; // The new title cause escapingMode is active
+                    }
+                    return selectedOption;
                 };
 
                 Results.prototype.highlightFirstItem = function () {
@@ -5802,6 +5806,8 @@
 
                     this.id = this._generateId($element);
 
+                    this.escapingMode = false;
+
                     options = options || {};
 
                     this.options = new Options(options, $element);
@@ -6121,27 +6127,33 @@
                     this.on('keypress', function (evt) {
                         var key = evt.which;
 
+                        var _enter = function() {
+                            if (self.selection.isLastDataComponent()) {
+                                self.selection.setDataComponent(self.results.selectedData(self.escapingMode));
+                                self.trigger('results:append', {
+                                    'data': {
+                                        'results': [{}]
+                                    }
+                                });
+                                // data is extracting in select handler
+                                self.trigger('results:select', {});
+                                self.selection.reset();
+                            } else {
+                                self.selection.nextDataComponent(self.results.selectedData(self.escapingMode));
+                            }
+                        }
+
                         if (self.isOpen()) {
-                            if (key === KEYS.ESC || key === KEYS.TAB ||
-                                (key === KEYS.UP && evt.altKey)) {
+
+                            self.escapingMode = key === KEYS.ESC;
+
+                            if ( key === KEYS.ESC || key === KEYS.TAB ||
+                                (key === KEYS.UP && evt.altKey) ) {
                                 self.close(evt);
 
                                 evt.preventDefault();
                             } else if (key === KEYS.ENTER) {
-
-                                if (self.selection.isLastDataComponent()) {
-                                    self.selection.setDataComponent(self.results.selectedData());
-                                    self.trigger('results:append', {
-                                        'data': {
-                                            'results': [{}]
-                                        }
-                                    });
-                                    // data is extracting in select handler
-                                    self.trigger('results:select', {});
-                                    self.selection.reset();
-                                } else {
-                                    self.selection.nextDataComponent(self.results.selectedData());
-                                }
+                                _enter();
 
                                 evt.preventDefault();
                             } else if ((key === KEYS.SPACE && evt.ctrlKey)) {
@@ -6158,12 +6170,18 @@
                                 evt.preventDefault();
                             }
                         } else {
-                            if (key === KEYS.ENTER || key === KEYS.SPACE ||
+
+                            if ( self.escapingMode && key === KEYS.ENTER ) {
+                                _enter();
+
+                                evt.preventDefault();
+                            } else if (key === KEYS.ENTER || key === KEYS.SPACE ||
                                 (key === KEYS.DOWN && evt.altKey)) {
                                 self.open();
 
                                 evt.preventDefault();
                             }
+                            self.escapingMode = false;
                         }
                     });
                 };
