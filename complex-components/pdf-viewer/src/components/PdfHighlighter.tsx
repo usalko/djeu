@@ -72,7 +72,8 @@ interface Props<T_HT> {
     positions: Array<ScaledPosition>,
     contents: Array<{ text?: string, image?: string }>,
     hideTipAndSelection: () => void,
-    transformSelection: () => void
+    transformSelection: () => void,
+    hideTipOnly: () => void,
   ) => JSX.Element | null
   enableAreaSelection: (event: MouseEvent) => boolean
 }
@@ -381,9 +382,19 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
       tipChildren: null,
     })
 
-    this.setState({ ghostHighlights: [], tip: null }, () =>
+    this.setState({
+        ghostHighlights: [],
+        tip: null 
+      }, () =>
       this.renderHighlights()
     )
+  }
+
+  hideTipOnly = () => {
+    this.setState({
+      tipPosition: null,
+      tipChildren: null,
+    })
   }
 
   setTip(position: Position, inner: JSX.Element | null) {
@@ -395,7 +406,10 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
   renderTip = () => {
     const { tipPosition, tipChildren } = this.state
-    if (!tipPosition) return null
+    
+    if (!tipPosition) {
+      return null
+    }
 
     const { boundingRect, pageNumber } = tipPosition
     const page = {
@@ -593,7 +607,8 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
               ghostHighlights: [{ position: scaledPosition }],
             },
             () => this.renderHighlights()
-          )
+          ),
+        () => this.hideTipOnly(),
       )
     )
   }
@@ -763,7 +778,8 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                           resetSelection()
                           this.renderHighlights()
                         }
-                      )
+                      ),
+                    () => this.hideTipOnly(),
                   )
                 )
               }}

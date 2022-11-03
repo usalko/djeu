@@ -15,6 +15,7 @@ export interface State {
   highlights: Array<IHighlight>
   changeMode: ChangeMode,
   selectedIndex: number,
+  memoHighlights: Array<IHighlight>, // Highlights for the complex selection (as an example: chain of highlights)
 }
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -59,6 +60,7 @@ class PDFwrapper extends Component<{}, State> {
       highlights: props.highlights || [],
       changeMode: ChangeMode.AddNew,
       selectedIndex: -1,
+      memoHighlights: []
     }
   }
 
@@ -76,6 +78,7 @@ class PDFwrapper extends Component<{}, State> {
       highlights: [],
       changeMode: ChangeMode.AddNew,
       selectedIndex: -1,
+      memoHighlights: [],
     })
   }
 
@@ -137,7 +140,7 @@ class PDFwrapper extends Component<{}, State> {
           console.debug(e)
           if ('detail' in e && (e as CustomEvent).detail?.highlights) {
             const highlights = JSON.parse((e as CustomEvent).detail.highlights)
-            this.selectHighlights(Array.isArray(highlights) ? highlights: [highlights])
+            this.selectHighlights(Array.isArray(highlights) ? highlights : [highlights])
           }
         },
         false
@@ -149,7 +152,7 @@ class PDFwrapper extends Component<{}, State> {
           console.debug(e)
           if ('detail' in e && (e as CustomEvent).detail?.highlights) {
             const highlights = JSON.parse((e as CustomEvent).detail.highlights)
-            this.editHighlights(Array.isArray(highlights) ? highlights: [highlights])
+            this.editHighlights(Array.isArray(highlights) ? highlights : [highlights])
           }
         },
         false
@@ -161,7 +164,7 @@ class PDFwrapper extends Component<{}, State> {
           console.debug(e)
           if ('detail' in e && (e as CustomEvent).detail?.highlights) {
             const highlights = JSON.parse((e as CustomEvent).detail.highlights)
-            this.removeHighlights(Array.isArray(highlights) ? highlights: [highlights])
+            this.removeHighlights(Array.isArray(highlights) ? highlights : [highlights])
           }
         },
         false
@@ -173,7 +176,7 @@ class PDFwrapper extends Component<{}, State> {
           console.debug(e)
           if ('detail' in e && (e as CustomEvent).detail?.highlights) {
             const highlights = JSON.parse((e as CustomEvent).detail.highlights)
-            this.afterPersistHighlights(Array.isArray(highlights) ? highlights: [highlights])
+            this.afterPersistHighlights(Array.isArray(highlights) ? highlights : [highlights])
           }
         },
         false
@@ -185,7 +188,7 @@ class PDFwrapper extends Component<{}, State> {
           console.debug(e)
           if ('detail' in e && (e as CustomEvent).detail?.highlights) {
             const highlights = JSON.parse((e as CustomEvent).detail.highlights)
-            this.cancelEditHighlights(Array.isArray(highlights) ? highlights: [highlights])
+            this.cancelEditHighlights(Array.isArray(highlights) ? highlights : [highlights])
           }
         },
         false
@@ -213,7 +216,8 @@ class PDFwrapper extends Component<{}, State> {
       this.setState({
         highlights: [...uploadedHighlights],
         changeMode: ChangeMode.AddNew,
-        selectedIndex: newSelectedIndex
+        selectedIndex: newSelectedIndex,
+        memoHighlights: [],
       })
     }
 
@@ -223,18 +227,34 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   addHighlights(newHighlights: Array<NewHighlight>) {
-    const { highlights } = this.state
+    const { highlights, memoHighlights } = this.state
 
     // console.log("Saving highlight", highlight)
 
-    const identifiedHighlights = newHighlights.map((element) => { return { ...element, id: getNextId() }})
+    const identifiedHighlights = newHighlights.map((element) => { return { ...element, id: getNextId() } })
     window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlights', {
-      detail: { highlights: identifiedHighlights }
+      detail: { highlights: [...identifiedHighlights, ...memoHighlights] }
     }))
 
     this.setState({
       highlights: [...identifiedHighlights, ...highlights],
       changeMode: ChangeMode.ChangeExist,
+      memoHighlights: [],
+    })
+
+  }
+
+  remindHighlights(newHighlights: Array<NewHighlight>) {
+    const { highlights, memoHighlights } = this.state
+
+    // console.log("Saving highlight", highlight)
+
+    const identifiedHighlights = newHighlights.map((element) => { return { ...element, id: getNextId() } })
+
+    this.setState({
+      highlights: [...identifiedHighlights, ...highlights],
+      changeMode: ChangeMode.AddNew,
+      memoHighlights: [...identifiedHighlights, ...memoHighlights],
     })
 
   }
@@ -247,12 +267,14 @@ class PDFwrapper extends Component<{}, State> {
       this.setState({
         highlights: [...selectedHighlights, ...highlights],
         selectedIndex: 0,
+        memoHighlights: [],
       })
     } else {
       highlights[index] = selectedHighlights[0]
       this.setState({
         highlights: [...selectedHighlights, ...highlights],
         selectedIndex: index,
+        memoHighlights: [],
       })
     }
     this.scrollViewerTo(selectedHighlights[0])
@@ -266,11 +288,13 @@ class PDFwrapper extends Component<{}, State> {
       this.setState({
         highlights: [...highlightItems, ...highlights],
         changeMode: ChangeMode.ChangeExist,
+        memoHighlights: [],
       })
     } else {
       highlights[index] = highlightItems[0]
       this.setState({
         changeMode: ChangeMode.ChangeExist,
+        memoHighlights: [],
       })
     }
     this.scrollViewerTo(highlightItems[0])
@@ -285,11 +309,13 @@ class PDFwrapper extends Component<{}, State> {
       this.setState({
         highlights: [...highlights],
         changeMode: ChangeMode.AddNew,
-        selectedIndex: selectedIndex === index ? -1 : selectedIndex
+        selectedIndex: selectedIndex === index ? -1 : selectedIndex,
+        memoHighlights: [],
       })
     } else {
       this.setState({
         changeMode: ChangeMode.AddNew,
+        memoHighlights: [],
       })
     }
     this.scrollViewerTo(highlightItems[0])
@@ -302,11 +328,13 @@ class PDFwrapper extends Component<{}, State> {
     if (index > -1) {
       this.setState({
         changeMode: ChangeMode.AddNew,
+        memoHighlights: [],
       })
     } else {
       this.setState({
         highlights: [...highlightItems, ...highlights],
         changeMode: ChangeMode.AddNew,
+        memoHighlights: [],
       })
     }
     this.scrollViewerTo(highlightItems[0])
@@ -318,7 +346,8 @@ class PDFwrapper extends Component<{}, State> {
     this.setState({
       highlights: [...highlights],
       changeMode: ChangeMode.AddNew,
-      selectedIndex: selectedIndex > -1 ? selectedIndex - 1 : -1
+      selectedIndex: selectedIndex > -1 ? selectedIndex - 1 : -1,
+      memoHighlights: [],
     })
   }
 
@@ -330,11 +359,13 @@ class PDFwrapper extends Component<{}, State> {
       this.setState({
         highlights: [...highlightItems, ...highlights],
         changeMode: ChangeMode.AddNew,
+        memoHighlights: [],
       })
     } else {
       highlights[index] = highlightItems[0]
       this.setState({
         changeMode: ChangeMode.AddNew,
+        memoHighlights: [],
       })
     }
     this.scrollViewerTo(highlightItems[0])
@@ -405,19 +436,34 @@ class PDFwrapper extends Component<{}, State> {
                     contents,
                     hideTipAndSelection,
                     transformSelection,
+                    hideTipOnly,
                   ) => (<Tip
                     changeMode={changeMode}
                     textAvailable={contents.some((element) => element.text && element.text !== '-')}
-                    onAction={(withText) => {
-                      transformSelection()
-                      if (!withText) {
+                    onAddImage={
+                      () => {
+                        transformSelection()
                         contents.forEach((element) => {
                           element.text = '-'
                         })
+                        this.addHighlights(positions.map((position, i) => { return { content: contents[i], position, comment: { text: '', emoji: '' } } }))
+                        hideTipAndSelection()                        
                       }
-                      this.addHighlights(positions.map((position, i) => { return { content: contents[i], position, comment: { text: '', emoji: '' } }}))
-                      hideTipAndSelection()
-                    }}
+                    }
+                    onAddImageAndText={
+                      () => {
+                        transformSelection()
+                        this.addHighlights(positions.map((position, i) => { return { content: contents[i], position, comment: { text: '', emoji: '' } } }))
+                        hideTipAndSelection()                        
+                      }
+                    }
+                    onContinue={
+                      () => {
+                        transformSelection()
+                        this.remindHighlights(positions.map((position, i) => { return { content: contents[i], position, comment: { text: '', emoji: '' } } }))
+                        hideTipOnly()                        
+                      }
+                    }
                   />)}
                   highlightTransform={(
                     highlight,
