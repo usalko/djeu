@@ -18,7 +18,7 @@ interface Props {
 }
 
 export class Tip extends Component<Props, State> {
-  
+
   state: State = {
   };
 
@@ -58,6 +58,19 @@ export class Tip extends Component<Props, State> {
             }}
           >
             {changeMode === ChangeMode.AddNew ? 'Добавить цитату и текст' : 'Обновить цитату и текст'}
+          </div>
+        ) : ''}
+        {textAvailable ? (
+          <div
+            className="Tip__compact_without_top_bound"
+            onClick={(event) => {
+              event.preventDefault();
+              onAction(true);
+              // this.setState({ compact: false });
+              // onConfirm({ text, emoji });
+            }}
+          >
+            {'Еще...'}
           </div>
         ) : ''}
         {
