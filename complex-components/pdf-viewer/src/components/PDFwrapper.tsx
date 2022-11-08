@@ -359,7 +359,7 @@ class PDFwrapper extends Component<{}, State> {
     const { highlights, selectedIndex, lastHighlightsCount } = this.state
     const dropCount = Math.min(lastHighlightsCount, highlights.length)
     for (let i = 0; i < dropCount; i++) {
-      highlights.pop()
+      highlights.shift()
     }
     this.setState({
       highlights: [...highlights],
