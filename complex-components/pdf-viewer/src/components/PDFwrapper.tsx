@@ -108,7 +108,7 @@ class PDFwrapper extends Component<{}, State> {
       this.setUrlListener = window.addEventListener('jquery-pdf-viewer:setPDFwrapperUrl',
         (e: Event) => {
           if (e instanceof CustomEvent) {
-            console.debug(e)
+            // console.debug(e)
             if (e?.detail?.url) {
               this.toggleDocument(e?.detail?.url)
             }
@@ -120,7 +120,7 @@ class PDFwrapper extends Component<{}, State> {
     if (!this.setHighlightsListener) {
       this.setHighlightsListener = window.addEventListener('jquery-pdf-viewer:setHighlights',
         (e: Event) => {
-          console.debug(e)
+          // console.debug(e)
           if ((e as CustomEvent).detail?.highlights) {
             this.setHighlights(JSON.parse((e as CustomEvent).detail.highlights))
           }
@@ -131,7 +131,7 @@ class PDFwrapper extends Component<{}, State> {
     if (!this.cancelLatestHighlightsListener) {
       this.cancelLatestHighlightsListener = window.addEventListener('pdf-viewer-integration:cancelLatestHighlights',
         (e: Event) => {
-          console.debug(e)
+          // console.debug(e)
           this.cancelLatestHighlight()
         },
         false
@@ -140,7 +140,7 @@ class PDFwrapper extends Component<{}, State> {
     if (!this.selectHighlightsListener) {
       this.selectHighlightsListener = window.addEventListener('pdf-viewer-integration:selectHighlights',
         (e: Event) => {
-          console.debug(e)
+          // console.debug(e)
           if ('detail' in e && (e as CustomEvent).detail?.highlights) {
             const highlights = JSON.parse((e as CustomEvent).detail.highlights)
             this.selectHighlights(Array.isArray(highlights) ? highlights : [highlights])
@@ -152,7 +152,7 @@ class PDFwrapper extends Component<{}, State> {
     if (!this.editHighlightsListener) {
       this.editHighlightsListener = window.addEventListener('pdf-viewer-integration:editHighlights',
         (e: Event) => {
-          console.debug(e)
+          // console.debug(e)
           if ('detail' in e && (e as CustomEvent).detail?.highlights) {
             const highlights = JSON.parse((e as CustomEvent).detail.highlights)
             this.editHighlights(Array.isArray(highlights) ? highlights : [highlights])
@@ -164,7 +164,7 @@ class PDFwrapper extends Component<{}, State> {
     if (!this.removeHighlightsListener) {
       this.removeHighlightsListener = window.addEventListener('pdf-viewer-integration:removeHighlights',
         (e: Event) => {
-          console.debug(e)
+          // console.debug(e)
           if ('detail' in e && (e as CustomEvent).detail?.highlights) {
             const highlights = JSON.parse((e as CustomEvent).detail.highlights)
             this.removeHighlights(Array.isArray(highlights) ? highlights : [highlights])
@@ -176,7 +176,7 @@ class PDFwrapper extends Component<{}, State> {
     if (!this.afterPersistHighlightsListener) {
       this.afterPersistHighlightsListener = window.addEventListener('pdf-viewer-integration:afterPersistHighlights',
         (e: Event) => {
-          console.debug(e)
+          // console.debug(e)
           if ('detail' in e && (e as CustomEvent).detail?.highlights) {
             const highlights = JSON.parse((e as CustomEvent).detail.highlights)
             this.afterPersistHighlights(Array.isArray(highlights) ? highlights : [highlights])
@@ -188,7 +188,7 @@ class PDFwrapper extends Component<{}, State> {
     if (!this.cancelEditHighlightsListener) {
       this.cancelEditHighlightsListener = window.addEventListener('pdf-viewer-integration:cancelEditHighlights',
         (e: Event) => {
-          console.debug(e)
+          // console.debug(e)
           if ('detail' in e && (e as CustomEvent).detail?.highlights) {
             const highlights = JSON.parse((e as CustomEvent).detail.highlights)
             this.cancelEditHighlights(Array.isArray(highlights) ? highlights : [highlights])
@@ -356,12 +356,11 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   cancelLatestHighlight = () => {
-    const { highlights, memoHighlights, selectedIndex, lastHighlightsCount } = this.state
+    const { highlights, selectedIndex, lastHighlightsCount } = this.state
     const dropCount = Math.min(lastHighlightsCount, highlights.length)
     for (let i = 0; i < dropCount; i++) {
       highlights.pop()
     }
-    console.debug(memoHighlights)
     this.setState({
       highlights: [...highlights],
       changeMode: ChangeMode.AddNew,
