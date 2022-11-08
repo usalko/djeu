@@ -226,6 +226,16 @@ class PDFwrapper extends Component<{}, State> {
     }
   }
 
+  removeTextFromReminded() {
+    const { memoHighlights } = this.state
+
+    if (memoHighlights) {
+      memoHighlights.forEach((x) => {
+        x.content.text = '-'
+      })
+    }
+  }
+
   addHighlights(newHighlights: Array<NewHighlight>) {
     const { highlights, memoHighlights } = this.state
 
@@ -446,6 +456,7 @@ class PDFwrapper extends Component<{}, State> {
                         contents.forEach((element) => {
                           element.text = '-'
                         })
+                        this.removeTextFromReminded()
                         this.addHighlights(positions.map((position, i) => { return { content: contents[i], position, comment: { text: '', emoji: '' } } }))
                         hideTipAndSelection()                        
                       }
