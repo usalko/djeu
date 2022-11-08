@@ -1,3 +1,4 @@
+import { min } from "lodash";
 import { Component } from "react";
 import { IHighlight, NewHighlight } from "../types";
 import { AreaHighlight } from './AreaHighlight';
@@ -16,6 +17,7 @@ export interface State {
   changeMode: ChangeMode,
   selectedIndex: number,
   memoHighlights: Array<IHighlight>, // Highlights for the complex selection (as an example: chain of highlights)
+  lastHighlightsCount: number, // Count of added highlights
 }
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -60,7 +62,8 @@ class PDFwrapper extends Component<{}, State> {
       highlights: props.highlights || [],
       changeMode: ChangeMode.AddNew,
       selectedIndex: -1,
-      memoHighlights: []
+      memoHighlights: [],
+      lastHighlightsCount: 0,
     }
   }
 
@@ -242,14 +245,16 @@ class PDFwrapper extends Component<{}, State> {
     // console.log("Saving highlight", highlight)
 
     const identifiedHighlights = newHighlights.map((element) => { return { ...element, id: getNextId() } })
+    const addedHighlights = [...identifiedHighlights, ...memoHighlights]
     window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlights', {
-      detail: { highlights: [...identifiedHighlights, ...memoHighlights] }
+      detail: { highlights: addedHighlights }
     }))
 
     this.setState({
       highlights: [...identifiedHighlights, ...highlights],
       changeMode: ChangeMode.ChangeExist,
       memoHighlights: [],
+      lastHighlightsCount: addedHighlights.length, // For the correct cancel last highlights
     })
 
   }
@@ -351,13 +356,18 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   cancelLatestHighlight = () => {
-    const { highlights, selectedIndex } = this.state
-    highlights.pop()
+    const { highlights, memoHighlights, selectedIndex, lastHighlightsCount } = this.state
+    const dropCount = Math.min(lastHighlightsCount, highlights.length)
+    for (let i = 0; i < dropCount; i++) {
+      highlights.pop()
+    }
+    console.debug(memoHighlights)
     this.setState({
       highlights: [...highlights],
       changeMode: ChangeMode.AddNew,
       selectedIndex: selectedIndex > -1 ? selectedIndex - 1 : -1,
       memoHighlights: [],
+      lastHighlightsCount: 0,
     })
   }
 
