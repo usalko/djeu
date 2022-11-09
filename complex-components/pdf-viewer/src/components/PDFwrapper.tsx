@@ -247,7 +247,7 @@ class PDFwrapper extends Component<{}, State> {
     const identifiedHighlights = newHighlights.map((element) => { return { ...element, id: getNextId() } })
     const addedHighlights = [...identifiedHighlights, ...memoHighlights]
     window.dispatchEvent(new CustomEvent('pdf-viewer:addHighlights', {
-      detail: { highlights: addedHighlights }
+      detail: { highlights: addedHighlights.reverse() }
     }))
 
     this.setState({
