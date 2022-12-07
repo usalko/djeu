@@ -317,14 +317,21 @@ class PDFwrapper extends Component<{}, State> {
 
   removeHighlights(highlightItems: Array<IHighlight>) {
     const { highlights, selectedIndex } = this.state
-    const index = highlights.findIndex((element) => element.id === highlightItems[0].id)
+    const removedIndexes: number[] = []
 
-    if (index > -1) {
-      highlights.splice(index, 1)
+    highlightItems.forEach((item) => {
+      const index = highlights.findIndex((element) => element.id === item.id)
+      if (index > -1) {
+        highlights.splice(index, 1)
+        removedIndexes.push(index)
+      }
+    })
+ 
+    if (highlights.length > 0) {
       this.setState({
         highlights: [...highlights],
         changeMode: ChangeMode.AddNew,
-        selectedIndex: selectedIndex === index ? -1 : selectedIndex,
+        selectedIndex: removedIndexes.indexOf(selectedIndex) > -1 ? -1 : selectedIndex,
         memoHighlights: [],
       })
     } else {
@@ -333,26 +340,14 @@ class PDFwrapper extends Component<{}, State> {
         memoHighlights: [],
       })
     }
-    this.scrollViewerTo(highlightItems[0])
+    // this.scrollViewerTo(highlightItems[0])
   }
 
   afterPersistHighlights(highlightItems: Array<IHighlight>) {
-    const { highlights } = this.state
-    const index = highlights.findIndex((element) => element.id === highlightItems[0].id)
-
-    if (index > -1) {
-      this.setState({
-        changeMode: ChangeMode.AddNew,
-        memoHighlights: [],
-      })
-    } else {
-      this.setState({
-        highlights: [...highlightItems, ...highlights],
-        changeMode: ChangeMode.AddNew,
-        memoHighlights: [],
-      })
-    }
-    this.scrollViewerTo(highlightItems[0])
+    this.setState({
+      changeMode: ChangeMode.AddNew,
+      memoHighlights: [],
+    })
   }
 
   cancelLatestHighlight = () => {
