@@ -276,19 +276,26 @@ class PDFwrapper extends Component<{}, State> {
 
   selectHighlights(selectedHighlights: Array<IHighlight>) {
     const { highlights } = this.state
-    const index = highlights.findIndex((element) => element.id === selectedHighlights[0].id)
+    const newHighlights: IHighlight[] = []
 
-    if (index === -1) {
+    selectedHighlights.forEach((item) => {
+      const index = highlights.findIndex((element) => element.id === item.id)
+      if (index === -1) {
+        newHighlights.push(item)
+      } else {
+        highlights[index] = item
+      }
+    })
+  
+    if (newHighlights.length > 0) {
       this.setState({
-        highlights: [...selectedHighlights, ...highlights],
+        highlights: [...newHighlights, ...highlights],
         selectedIndex: 0,
         memoHighlights: [],
       })
     } else {
-      highlights[index] = selectedHighlights[0]
       this.setState({
-        highlights: [...selectedHighlights, ...highlights],
-        selectedIndex: index,
+        selectedIndex: highlights.findIndex((element) => element.id === selectedHighlights[0].id),
         memoHighlights: [],
       })
     }
@@ -297,16 +304,24 @@ class PDFwrapper extends Component<{}, State> {
 
   editHighlights(highlightItems: Array<IHighlight>) {
     const { highlights } = this.state
-    const index = highlights.findIndex((element) => element.id === highlightItems[0].id)
+    const newHighlights: IHighlight[] = []
 
-    if (index === -1) {
+    highlightItems.forEach((item) => {
+      const index = highlights.findIndex((element) => element.id === item.id)
+      if (index === -1) {
+        newHighlights.push(item)
+      } else {
+        highlights[index] = item
+      }
+    })
+
+    if (newHighlights.length > 0) {
       this.setState({
-        highlights: [...highlightItems, ...highlights],
+        highlights: [...newHighlights, ...highlights],
         changeMode: ChangeMode.ChangeExist,
         memoHighlights: [],
       })
     } else {
-      highlights[index] = highlightItems[0]
       this.setState({
         changeMode: ChangeMode.ChangeExist,
         memoHighlights: [],
@@ -326,7 +341,7 @@ class PDFwrapper extends Component<{}, State> {
         removedIndexes.push(index)
       }
     })
- 
+
     if (highlights.length > 0) {
       this.setState({
         highlights: [...highlights],
@@ -367,16 +382,24 @@ class PDFwrapper extends Component<{}, State> {
 
   cancelEditHighlights = (highlightItems: Array<IHighlight>) => {
     const { highlights } = this.state
-    const index = highlights.findIndex((element) => element.id === highlightItems[0].id)
+    const newHighlights: IHighlight[] = []
 
-    if (index === -1) {
+    highlightItems.forEach((item) => {
+      const index = highlights.findIndex((element) => element.id === item.id)
+      if (index === -1) {
+        newHighlights.push(item)
+      } else {
+        highlights[index] = item
+      }
+    })
+  
+    if (newHighlights.length > 0) {
       this.setState({
-        highlights: [...highlightItems, ...highlights],
+        highlights: [...newHighlights, ...highlights],
         changeMode: ChangeMode.AddNew,
         memoHighlights: [],
       })
     } else {
-      highlights[index] = highlightItems[0]
       this.setState({
         changeMode: ChangeMode.AddNew,
         memoHighlights: [],
@@ -462,21 +485,21 @@ class PDFwrapper extends Component<{}, State> {
                         })
                         this.removeTextFromReminded()
                         this.addHighlights(positions.map((position, i) => { return { content: contents[i], position, comment: { text: '', emoji: '' } } }))
-                        hideTipAndSelection()                        
+                        hideTipAndSelection()
                       }
                     }
                     onAddImageAndText={
                       () => {
                         transformSelection()
                         this.addHighlights(positions.map((position, i) => { return { content: contents[i], position, comment: { text: '', emoji: '' } } }))
-                        hideTipAndSelection()                        
+                        hideTipAndSelection()
                       }
                     }
                     onContinue={
                       () => {
                         transformSelection()
                         this.remindHighlights(positions.map((position, i) => { return { content: contents[i], position, comment: { text: '', emoji: '' } } }))
-                        hideTipOnly()                        
+                        hideTipOnly()
                       }
                     }
                   />)}
