@@ -243,7 +243,7 @@ class PDFwrapper extends Component<{}, State> {
   addHighlights(newHighlights: Array<NewHighlight>) {
     const { highlights, memoHighlights } = this.state
 
-    // console.log("Saving highlight", highlight)
+    if (this.debugEnabled) { console.debug('pdf-viewer:addHighlights', newHighlights) }
 
     const identifiedHighlights = newHighlights.map((element) => { return { ...element, id: getNextId() } })
     const addedHighlights = [...identifiedHighlights, ...memoHighlights]
@@ -263,7 +263,7 @@ class PDFwrapper extends Component<{}, State> {
   remindHighlights(newHighlights: Array<NewHighlight>) {
     const { highlights, memoHighlights } = this.state
 
-    // console.log("Saving highlight", highlight)
+    if (this.debugEnabled) { console.debug('remindHighlights', newHighlights) }
 
     const identifiedHighlights = newHighlights.map((element) => { return { ...element, id: getNextId() } })
 
@@ -276,6 +276,9 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   selectHighlights(selectedHighlights: Array<IHighlight>) {
+
+    if (this.debugEnabled) { console.debug('selectHighlights', selectedHighlights) }
+
     const { highlights } = this.state
     const newHighlights: IHighlight[] = []
 
@@ -304,6 +307,9 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   editHighlights(highlightItems: Array<IHighlight>) {
+
+    if (this.debugEnabled) { console.debug('editHighlights', highlightItems) }
+
     const { highlights } = this.state
     const newHighlights: IHighlight[] = []
 
@@ -332,6 +338,9 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   removeHighlights(highlightItems: Array<IHighlight>) {
+
+    if (this.debugEnabled) { console.debug('removeHighlights', highlightItems) }
+
     const { highlights, selectedIndex } = this.state
     const removedIndexes: number[] = []
 
@@ -360,6 +369,9 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   afterPersistHighlights(highlightItems: Array<IHighlight>) {
+
+    if (this.debugEnabled) { console.debug('afterPersistHighlights', highlightItems) }
+
     this.setState({
       changeMode: ChangeMode.AddNew,
       memoHighlights: [],
@@ -367,6 +379,9 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   cancelLatestHighlight = () => {
+
+    if (this.debugEnabled) { console.debug('cancelLatestHighlight') }
+
     const { highlights, selectedIndex, lastHighlightsCount } = this.state
     const dropCount = Math.min(lastHighlightsCount, highlights.length)
     for (let i = 0; i < dropCount; i++) {
@@ -382,6 +397,9 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   cancelEditHighlights = (highlightItems: Array<IHighlight>) => {
+
+    if (this.debugEnabled) { console.debug('cancelEditHighlights', highlightItems) }
+
     const { highlights } = this.state
     const newHighlights: IHighlight[] = []
 
@@ -411,9 +429,8 @@ class PDFwrapper extends Component<{}, State> {
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
 
-    // console.debug("Updating highlight", highlightId, position, content)
-
     const modifiedHighlight = { position: position, content: content, id: highlightId }
+    if (this.debugEnabled) { console.debug('pdf-viewer:updateHighlight', modifiedHighlight) }
     window.dispatchEvent(new CustomEvent('pdf-viewer:updateHighlight', {
       detail: { highlight: modifiedHighlight }
     }))
