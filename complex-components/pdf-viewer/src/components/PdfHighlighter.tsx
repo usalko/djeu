@@ -766,8 +766,8 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                 this.setTip(
                   startViewportPosition,
                   onSelectionFinished(
-                    positions,
-                    contents,
+                    positions.reverse(), // Reverse for the correct handle of another reverse (@see PDFwrapper.tsx addHighlights function)
+                    contents.reverse(),  // Reverse for the correct handle of another reverse (@see PDFwrapper.tsx addHighlights function)
                     () => this.hideTipAndSelection(),
                     () =>
                       this.setState(
