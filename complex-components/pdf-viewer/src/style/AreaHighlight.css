@@ -15,3 +15,7 @@
 .AreaHighlight--locked .AreaHighlight__part {
   background: #ff4141;
 }
+
+.AreaHighlight--selected .AreaHighlight__part {
+  background: rgba(255, 226, 143, 1);
+}

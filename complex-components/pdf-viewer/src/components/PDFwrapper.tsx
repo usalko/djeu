@@ -459,7 +459,7 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   render() {
-    const { url, highlights, changeMode } = this.state
+    const { url, highlights, changeMode, selectedHighlightsIndex } = this.state
     const self = this
 
     return (
@@ -539,6 +539,7 @@ class PDFwrapper extends Component<{}, State> {
                         children={
                           <AreaHighlight
                             locked={false}
+                            selected={selectedHighlightsIndex.some((i) => highlights[i].id === highlight.id)}
                             highlight={highlight}
                             onChange={(boundingRect) => {
                               this.updateHighlight(
