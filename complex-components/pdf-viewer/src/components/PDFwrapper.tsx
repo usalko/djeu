@@ -15,7 +15,7 @@ export interface State {
   url: string
   highlights: Array<IHighlight>
   changeMode: ChangeMode,
-  selectedIndex: number,
+  selectedHighlightsIndex: Array<number>, // Highlights selected for the change
   memoHighlights: Array<IHighlight>, // Highlights for the complex selection (as an example: chain of highlights)
   lastHighlightsCount: number, // Count of added highlights
 }
@@ -62,7 +62,7 @@ class PDFwrapper extends Component<{}, State> {
       url: props.url,
       highlights: props.highlights || [],
       changeMode: ChangeMode.AddNew,
-      selectedIndex: -1,
+      selectedHighlightsIndex: [],
       memoHighlights: [],
       lastHighlightsCount: 0,
     }
@@ -72,7 +72,7 @@ class PDFwrapper extends Component<{}, State> {
     this.setState({
       highlights: [],
       changeMode: ChangeMode.AddNew,
-      selectedIndex: -1,
+      selectedHighlightsIndex: [],
     })
   }
 
@@ -81,7 +81,7 @@ class PDFwrapper extends Component<{}, State> {
       url: newUrl,
       highlights: [],
       changeMode: ChangeMode.AddNew,
-      selectedIndex: -1,
+      selectedHighlightsIndex: [],
       memoHighlights: [],
     })
   }
@@ -211,22 +211,15 @@ class PDFwrapper extends Component<{}, State> {
   }
 
   setHighlights(uploadedHighlights: Array<IHighlight>) {
-    const { highlights, selectedIndex } = this.state
-    const selectedHighlight = highlights && selectedIndex > -1 ? highlights[selectedIndex] : null
-
-    const newSelectedIndex = selectedHighlight ? uploadedHighlights.findIndex((element) => element.id === selectedHighlight.id) : -1
+    const { highlights } = this.state
 
     if (highlights) {
       this.setState({
         highlights: [...uploadedHighlights],
         changeMode: ChangeMode.AddNew,
-        selectedIndex: newSelectedIndex,
+        selectedHighlightsIndex: [],
         memoHighlights: [],
       })
-    }
-
-    if (newSelectedIndex > -1) {
-      this.scrollViewerTo(selectedHighlight)
     }
   }
 
@@ -281,6 +274,7 @@ class PDFwrapper extends Component<{}, State> {
 
     const { highlights } = this.state
     const newHighlights: IHighlight[] = []
+    const selectedHighlightsIndex: number[] = []
 
     selectedHighlights.forEach((item) => {
       const index = highlights.findIndex((element) => element.id === item.id)
@@ -288,18 +282,22 @@ class PDFwrapper extends Component<{}, State> {
         newHighlights.push(item)
       } else {
         highlights[index] = item
+        selectedHighlightsIndex.push(index)
       }
+    })
+    newHighlights.forEach((highlight, index) => {
+      selectedHighlightsIndex.push(highlights.length + index)
     })
 
     if (newHighlights.length > 0) {
       this.setState({
-        highlights: [...newHighlights, ...highlights],
-        selectedIndex: 0,
+        highlights: [...highlights, ...newHighlights],
+        selectedHighlightsIndex: selectedHighlightsIndex,
         memoHighlights: [],
       })
     } else {
       this.setState({
-        selectedIndex: highlights.findIndex((element) => element.id === selectedHighlights[0].id),
+        selectedHighlightsIndex: selectedHighlightsIndex,
         memoHighlights: [],
       })
     }
@@ -341,7 +339,7 @@ class PDFwrapper extends Component<{}, State> {
 
     if (this.debugEnabled) { console.debug('removeHighlights', highlightItems) }
 
-    const { highlights, selectedIndex } = this.state
+    const { highlights, selectedHighlightsIndex } = this.state
     const removedIndexes: number[] = []
 
     highlightItems.forEach((item) => {
@@ -356,7 +354,7 @@ class PDFwrapper extends Component<{}, State> {
       this.setState({
         highlights: [...highlights],
         changeMode: ChangeMode.AddNew,
-        selectedIndex: removedIndexes.indexOf(selectedIndex) > -1 ? -1 : selectedIndex,
+        selectedHighlightsIndex: removedIndexes.filter(value => selectedHighlightsIndex.includes(value)) ? [] : selectedHighlightsIndex,
         memoHighlights: [],
       })
     } else {
@@ -382,7 +380,7 @@ class PDFwrapper extends Component<{}, State> {
 
     if (this.debugEnabled) { console.debug('cancelLatestHighlight') }
 
-    const { highlights, selectedIndex, lastHighlightsCount } = this.state
+    const { highlights, lastHighlightsCount } = this.state
     const dropCount = Math.min(lastHighlightsCount, highlights.length)
     for (let i = 0; i < dropCount; i++) {
       highlights.shift()
@@ -390,7 +388,7 @@ class PDFwrapper extends Component<{}, State> {
     this.setState({
       highlights: [...highlights],
       changeMode: ChangeMode.AddNew,
-      selectedIndex: selectedIndex > -1 ? selectedIndex - 1 : -1,
+      selectedHighlightsIndex: [],
       memoHighlights: [],
       lastHighlightsCount: 0,
     })
