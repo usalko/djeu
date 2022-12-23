@@ -22,7 +22,6 @@
 }
 
 .AreaHighlight--selected {
-  position: relative;
   background: rgba(255, 226, 143, 1);
   z-index: 1000;
 }
