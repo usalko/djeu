@@ -276,31 +276,19 @@ class PDFwrapper extends Component<{}, State> {
     if (this.debugEnabled) { console.debug('selectHighlights', selectedHighlights) }
 
     const { highlights } = this.state
-    const newHighlights: IHighlight[] = []
-    const selectedHighlightsIndex: string[] = []
+    const selectedHighlightsIndex: string[] = selectedHighlights.map((highlight) => highlight.id)
 
-    selectedHighlights.forEach((item) => {
-      const index = highlights.findIndex((element) => element.id === item.id)
-      if (index === -1) {
-        newHighlights.push(item)
-      } else {
-        highlights[index] = item
-        selectedHighlightsIndex.push(item.id)
-      }
-    })
-    newHighlights.forEach((highlight, index) => {
-      selectedHighlightsIndex.push(highlight.id)
-    })
+    const otherHighlights: IHighlight[] = highlights.filter((highlight) => !selectedHighlightsIndex.includes(highlight.id))
 
-    if (newHighlights.length > 0) {
+    if (selectedHighlights.length > 0) {
       this.setState({
-        highlights: [...highlights, ...newHighlights],
+        highlights: [...otherHighlights, ...selectedHighlights],
         selectedHighlightsIndex: selectedHighlightsIndex,
         memoHighlights: [],
       })
     } else {
       this.setState({
-        selectedHighlightsIndex: selectedHighlightsIndex,
+        selectedHighlightsIndex: [],
         memoHighlights: [],
       })
     }
