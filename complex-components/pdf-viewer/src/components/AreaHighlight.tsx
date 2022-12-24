@@ -21,6 +21,8 @@ export class AreaHighlight extends Component<Props> {
     return (
       <Rnd
         allowAnyClick={!locked}
+        enableResizing={!locked}
+        disableDragging={locked}
         className={`AreaHighlight__part ${locked ? "AreaHighlight--locked" : ""} ${selected ? "AreaHighlight--selected" : ""}`}
         onDragStop={(_, data) => {
           const boundingRect: LeftTopWidthHeightPageNumber = {
