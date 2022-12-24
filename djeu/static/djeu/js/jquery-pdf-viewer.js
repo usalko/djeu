@@ -52503,17 +52503,11 @@ if (true) {
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function _typeof(obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
 }
 
 Object.defineProperty(exports, "__esModule", ({
@@ -52662,14 +52656,9 @@ function ownKeys(object, enumerableOnly) {
 
   if (Object.getOwnPropertySymbols) {
     var symbols = Object.getOwnPropertySymbols(object);
-
-    if (enumerableOnly) {
-      symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-    }
-
-    keys.push.apply(keys, symbols);
+    enumerableOnly && (symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
   }
 
   return keys;
@@ -52677,19 +52666,12 @@ function ownKeys(object, enumerableOnly) {
 
 function _objectSpread(target) {
   for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+      _defineProperty(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    });
   }
 
   return target;
@@ -52775,6 +52757,9 @@ function _defineProperties(target, props) {
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
+  Object.defineProperty(Constructor, "prototype", {
+    writable: false
+  });
   return Constructor;
 }
 
@@ -52789,6 +52774,9 @@ function _inherits(subClass, superClass) {
       writable: true,
       configurable: true
     }
+  });
+  Object.defineProperty(subClass, "prototype", {
+    writable: false
   });
   if (superClass) _setPrototypeOf(subClass, superClass);
 }
@@ -53257,17 +53245,11 @@ _defineProperty(Draggable, "defaultProps", _objectSpread(_objectSpread({}, _Drag
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function _typeof(obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
 }
 
 Object.defineProperty(exports, "__esModule", ({
@@ -53425,6 +53407,9 @@ function _defineProperties(target, props) {
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
+  Object.defineProperty(Constructor, "prototype", {
+    writable: false
+  });
   return Constructor;
 }
 
@@ -53439,6 +53424,9 @@ function _inherits(subClass, superClass) {
       writable: true,
       configurable: true
     }
+  });
+  Object.defineProperty(subClass, "prototype", {
+    writable: false
   });
   if (superClass) _setPrototypeOf(subClass, superClass);
 }
@@ -53736,7 +53724,21 @@ var DraggableCore = /*#__PURE__*/function (_React$Component) {
       var position = (0, _positionFns.getControlPosition)(e, _this.state.touchIdentifier, _assertThisInitialized(_this));
       if (position == null) return;
       var x = position.x,
-          y = position.y;
+          y = position.y; // Snap to grid if prop has been provided
+
+      if (Array.isArray(_this.props.grid)) {
+        var deltaX = x - _this.state.lastX || 0;
+        var deltaY = y - _this.state.lastY || 0;
+
+        var _snapToGrid3 = (0, _positionFns.snapToGrid)(_this.props.grid, deltaX, deltaY);
+
+        var _snapToGrid4 = _slicedToArray(_snapToGrid3, 2);
+
+        deltaX = _snapToGrid4[0];
+        deltaY = _snapToGrid4[1];
+        x = _this.state.lastX + deltaX, y = _this.state.lastY + deltaY;
+      }
+
       var coreEvent = (0, _positionFns.createCoreData)(_assertThisInitialized(_this), x, y); // Call event handler
 
       var shouldContinue = _this.props.onStop(e, coreEvent);
@@ -53833,9 +53835,9 @@ var DraggableCore = /*#__PURE__*/function (_React$Component) {
     value: function findDOMNode()
     /*: ?HTMLElement*/
     {
-      var _this$props$nodeRef$c, _this$props, _this$props$nodeRef;
+      var _this$props, _this$props2, _this$props2$nodeRef;
 
-      return (_this$props$nodeRef$c = (_this$props = this.props) === null || _this$props === void 0 ? void 0 : (_this$props$nodeRef = _this$props.nodeRef) === null || _this$props$nodeRef === void 0 ? void 0 : _this$props$nodeRef.current) !== null && _this$props$nodeRef$c !== void 0 ? _this$props$nodeRef$c : _reactDom.default.findDOMNode(this);
+      return (_this$props = this.props) !== null && _this$props !== void 0 && _this$props.nodeRef ? (_this$props2 = this.props) === null || _this$props2 === void 0 ? void 0 : (_this$props2$nodeRef = _this$props2.nodeRef) === null || _this$props2$nodeRef === void 0 ? void 0 : _this$props2$nodeRef.current : _reactDom.default.findDOMNode(this);
     }
   }, {
     key: "render",
@@ -54047,40 +54049,34 @@ module.exports.DraggableCore = DraggableCore;
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function _typeof(obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
 }
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.matchesSelector = matchesSelector;
-exports.matchesSelectorAndParentsTo = matchesSelectorAndParentsTo;
+exports.addClassName = addClassName;
 exports.addEvent = addEvent;
-exports.removeEvent = removeEvent;
-exports.outerHeight = outerHeight;
-exports.outerWidth = outerWidth;
-exports.innerHeight = innerHeight;
-exports.innerWidth = innerWidth;
-exports.offsetXYFromParent = offsetXYFromParent;
+exports.addUserSelectStyles = addUserSelectStyles;
 exports.createCSSTransform = createCSSTransform;
 exports.createSVGTransform = createSVGTransform;
-exports.getTranslation = getTranslation;
 exports.getTouch = getTouch;
 exports.getTouchIdentifier = getTouchIdentifier;
-exports.addUserSelectStyles = addUserSelectStyles;
-exports.removeUserSelectStyles = removeUserSelectStyles;
-exports.addClassName = addClassName;
+exports.getTranslation = getTranslation;
+exports.innerHeight = innerHeight;
+exports.innerWidth = innerWidth;
+exports.matchesSelector = matchesSelector;
+exports.matchesSelectorAndParentsTo = matchesSelectorAndParentsTo;
+exports.offsetXYFromParent = offsetXYFromParent;
+exports.outerHeight = outerHeight;
+exports.outerWidth = outerWidth;
 exports.removeClassName = removeClassName;
+exports.removeEvent = removeEvent;
+exports.removeUserSelectStyles = removeUserSelectStyles;
 
 var _shims = __webpack_require__(693);
 
@@ -54141,14 +54137,9 @@ function ownKeys(object, enumerableOnly) {
 
   if (Object.getOwnPropertySymbols) {
     var symbols = Object.getOwnPropertySymbols(object);
-
-    if (enumerableOnly) {
-      symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-    }
-
-    keys.push.apply(keys, symbols);
+    enumerableOnly && (symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    })), keys.push.apply(keys, symbols);
   }
 
   return keys;
@@ -54156,19 +54147,12 @@ function ownKeys(object, enumerableOnly) {
 
 function _objectSpread(target) {
   for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
+    var source = null != arguments[i] ? arguments[i] : {};
+    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+      _defineProperty(target, key, source[key]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+    });
   }
 
   return target;
@@ -54516,10 +54500,10 @@ function removeClassName(el
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.getPrefix = getPrefix;
 exports.browserPrefixToKey = browserPrefixToKey;
 exports.browserPrefixToStyle = browserPrefixToStyle;
 exports["default"] = void 0;
+exports.getPrefix = getPrefix;
 var prefixes = ['Moz', 'Webkit', 'O', 'ms'];
 
 function getPrefix()
@@ -54628,13 +54612,13 @@ function log() {
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.getBoundPosition = getBoundPosition;
-exports.snapToGrid = snapToGrid;
 exports.canDragX = canDragX;
 exports.canDragY = canDragY;
-exports.getControlPosition = getControlPosition;
 exports.createCoreData = createCoreData;
 exports.createDraggableData = createDraggableData;
+exports.getBoundPosition = getBoundPosition;
+exports.getControlPosition = getControlPosition;
+exports.snapToGrid = snapToGrid;
 
 var _shims = __webpack_require__(693);
 
@@ -54843,11 +54827,11 @@ function findDOMNode(draggable
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
+exports.dontSetMe = dontSetMe;
 exports.findInArray = findInArray;
-exports.isFunction = isFunction;
-exports.isNum = isNum;
 exports.int = int;
-exports.dontSetMe = dontSetMe; // @credits https://gist.github.com/rogozhnikoff/a43cfed27c41e4e68cdc
+exports.isFunction = isFunction;
+exports.isNum = isNum; // @credits https://gist.github.com/rogozhnikoff/a43cfed27c41e4e68cdc
 
 function findInArray(array
 /*: Array<any> | TouchList*/
@@ -57543,8 +57527,10 @@ function (_super) {
           left: left_2
         }
       });
-    } else {
+    } else if (typeof this.props.bounds === "string") {
       boundary = document.querySelector(this.props.bounds);
+    } else if (this.props.bounds instanceof HTMLElement) {
+      boundary = this.props.bounds;
     }
 
     if (!(boundary instanceof HTMLElement) || !(parent instanceof HTMLElement)) {
@@ -57648,8 +57634,10 @@ function (_super) {
         boundary = document.body;
       } else if (this.props.bounds === "window") {
         boundary = window;
-      } else {
+      } else if (typeof this.props.bounds === "string") {
         boundary = document.querySelector(this.props.bounds);
+      } else if (this.props.bounds instanceof HTMLElement) {
+        boundary = this.props.bounds;
       }
 
       var self_1 = this.getSelfElement();
@@ -57962,7 +57950,7 @@ layer.style.width=pageViewDiv.style.width;layer.style.height=pageViewDiv.style.h
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(184);
 ;// CONCATENATED MODULE: ./src/components/AreaHighlight.tsx
-var _excluded=["highlight","onChange","locked","selected"];var AreaHighlight_AreaHighlight=/*#__PURE__*/function(_Component){_inherits(AreaHighlight,_Component);var _super=_createSuper(AreaHighlight);function AreaHighlight(){_classCallCheck(this,AreaHighlight);return _super.apply(this,arguments);}_createClass(AreaHighlight,[{key:"render",value:function render(){var _this$props=this.props,highlight=_this$props.highlight,onChange=_this$props.onChange,locked=_this$props.locked,selected=_this$props.selected,otherProps=_objectWithoutProperties(_this$props,_excluded);return/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"AreaHighlight ".concat(locked?"AreaHighlight--locked":""," ").concat(selected?"AreaHighlight--selected":""),children:/*#__PURE__*/(0,jsx_runtime.jsx)(Rnd,_objectSpread2({className:"AreaHighlight__part",onDragStop:function onDragStop(_,data){var boundingRect=_objectSpread2(_objectSpread2({},highlight.position.boundingRect),{},{top:data.y-20,left:data.x});onChange(boundingRect);},onResizeStop:function onResizeStop(_mouseEvent,_direction,ref,_delta,position){var _getPageFromElement;var boundingRect={top:position.y-20,left:position.x,width:ref.offsetWidth,height:ref.offsetHeight,pageNumber:((_getPageFromElement=getPageFromElement(ref))===null||_getPageFromElement===void 0?void 0:_getPageFromElement.number)||-1};onChange(boundingRect);},position:{x:highlight.position.boundingRect.left,y:highlight.position.boundingRect.top-20},size:{width:highlight.position.boundingRect.width,height:highlight.position.boundingRect.height},onClick:function onClick(event){event.stopPropagation();event.preventDefault();}},otherProps))});}}]);return AreaHighlight;}(react.Component);/* harmony default export */ var components_AreaHighlight = ((/* unused pure expression or super */ null && (AreaHighlight_AreaHighlight)));
+var _excluded=["highlight","onChange","locked","selected"];var AreaHighlight_AreaHighlight=/*#__PURE__*/function(_Component){_inherits(AreaHighlight,_Component);var _super=_createSuper(AreaHighlight);function AreaHighlight(){_classCallCheck(this,AreaHighlight);return _super.apply(this,arguments);}_createClass(AreaHighlight,[{key:"render",value:function render(){var _this$props=this.props,highlight=_this$props.highlight,onChange=_this$props.onChange,locked=_this$props.locked,selected=_this$props.selected,otherProps=_objectWithoutProperties(_this$props,_excluded);return/*#__PURE__*/(0,jsx_runtime.jsx)(Rnd,_objectSpread2({allowAnyClick:!locked,className:"AreaHighlight__part ".concat(locked?"AreaHighlight--locked":""," ").concat(selected?"AreaHighlight--selected":""),onDragStop:function onDragStop(_,data){var boundingRect=_objectSpread2(_objectSpread2({},highlight.position.boundingRect),{},{top:data.y,left:data.x});onChange(boundingRect);},onResizeStop:function onResizeStop(_mouseEvent,_direction,ref,_delta,position){var _getPageFromElement;var boundingRect={top:position.y,left:position.x,width:ref.offsetWidth,height:ref.offsetHeight,pageNumber:((_getPageFromElement=getPageFromElement(ref))===null||_getPageFromElement===void 0?void 0:_getPageFromElement.number)||-1};onChange(boundingRect);},position:{x:highlight.position.boundingRect.left,y:highlight.position.boundingRect.top},size:{width:highlight.position.boundingRect.width,height:highlight.position.boundingRect.height},onClick:function onClick(event){event.stopPropagation();event.preventDefault();}},otherProps));}}]);return AreaHighlight;}(react.Component);/* harmony default export */ var components_AreaHighlight = ((/* unused pure expression or super */ null && (AreaHighlight_AreaHighlight)));
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/createForOfIteratorHelper.js
 
 function _createForOfIteratorHelper(o, allowArrayLike) {
