@@ -247,9 +247,9 @@ class PDFwrapper extends Component<{}, State> {
     }))
 
     this.setState({
-      highlights: [...identifiedHighlights, ...highlights],
+      highlights: [...highlights, ...identifiedHighlights],
       changeMode: ChangeMode.ChangeExist,
-      selectedHighlightsIndex: [...addedHighlights.map((e, index) => e.id)],
+      selectedHighlightsIndex: [...addedHighlights.map((highlight) => highlight.id)],
       memoHighlights: [],
       lastHighlightsCount: addedHighlights.length, // For the correct cancel last highlights
     })
@@ -264,9 +264,9 @@ class PDFwrapper extends Component<{}, State> {
     const identifiedHighlights = newHighlights.map((element) => { return { ...element, id: getNextId() } })
 
     this.setState({
-      highlights: [...identifiedHighlights, ...highlights],
+      highlights: [...highlights, ...identifiedHighlights],
       changeMode: ChangeMode.AddNew,
-      memoHighlights: [...identifiedHighlights, ...memoHighlights],
+      memoHighlights: [...memoHighlights, ...identifiedHighlights],
     })
 
   }
@@ -300,20 +300,14 @@ class PDFwrapper extends Component<{}, State> {
     if (this.debugEnabled) { console.debug('editHighlights', highlightItems) }
 
     const { highlights } = this.state
-    const newHighlights: IHighlight[] = []
 
-    highlightItems.forEach((item) => {
-      const index = highlights.findIndex((element) => element.id === item.id)
-      if (index === -1) {
-        newHighlights.push(item)
-      } else {
-        highlights[index] = item
-      }
-    })
+    const highlightItemsIndex: string[] = highlightItems.map((highlight) => highlight.id)
+    const existedHighlightsIndex: string[] = highlights.filter((highlight) => highlightItemsIndex.includes(highlight.id)).map((highlight) => highlight.id)
+    const addedHighlights = highlightItems.filter((highlight) => !existedHighlightsIndex.includes(highlight.id))
 
-    if (newHighlights.length > 0) {
+    if (addedHighlights.length > 0) {
       this.setState({
-        highlights: [...newHighlights, ...highlights],
+        highlights: [...highlights, ...addedHighlights],
         changeMode: ChangeMode.ChangeExist,
         memoHighlights: [],
       })
@@ -535,7 +529,7 @@ class PDFwrapper extends Component<{}, State> {
                         key={index}
                         children={
                           <AreaHighlight
-                            locked={false}
+                            locked={!selectedHighlightsIndex.some((id) => id === highlight.id)}
                             selected={selectedHighlightsIndex.some((id) => id === highlight.id)}
                             highlight={highlight}
                             onChange={(boundingRect) => {

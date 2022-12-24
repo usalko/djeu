@@ -27,7 +27,7 @@ export class AreaHighlight extends Component<Props> {
           onDragStop={(_, data) => {
             const boundingRect: LeftTopWidthHeightPageNumber = {
               ...highlight.position.boundingRect,
-              top: data.y,
+              top: data.y - 20,
               left: data.x,
             }
 
@@ -35,7 +35,7 @@ export class AreaHighlight extends Component<Props> {
           }}
           onResizeStop={(_mouseEvent, _direction, ref, _delta, position) => {
             const boundingRect: LeftTopWidthHeightPageNumber = {
-              top: position.y,
+              top: position.y - 20,
               left: position.x,
               width: ref.offsetWidth,
               height: ref.offsetHeight,
@@ -46,7 +46,7 @@ export class AreaHighlight extends Component<Props> {
           }}
           position={{
             x: highlight.position.boundingRect.left,
-            y: highlight.position.boundingRect.top,
+            y: highlight.position.boundingRect.top - 20,
           }}
           size={{
             width: highlight.position.boundingRect.width,

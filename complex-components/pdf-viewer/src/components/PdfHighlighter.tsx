@@ -711,7 +711,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                   content: { text: postprocessingText(startText), image: startImage },
                 }]
 
-                if (startTarget !== finishTarget && finishPage) {
+                if (startTarget !== finishTarget && finishPage && startPage.number !== finishPage.number) {
                   console.debug(`The selection has the two rectangles`)
                   const finishPageBoundingRect = {
                     ...boundingRect,
