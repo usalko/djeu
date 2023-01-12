@@ -1,4 +1,4 @@
-VERSION = (0, 1, 76, 'alpha')
+VERSION = (0, 2, 1, 'alpha')
 
 
 def get_release():
@@ -14,7 +14,7 @@ def get_version():
 
 __author__ = 'usalko'
 __docformat__ = 'restructuredtext en'
-__copyright__ = 'Copyright 2022, usalko'
+__copyright__ = 'Copyright 2023, usalko'
 __license__ = 'Apache Software License'
 __version__ = get_version()
 __maintainer__ = 'usalko'
