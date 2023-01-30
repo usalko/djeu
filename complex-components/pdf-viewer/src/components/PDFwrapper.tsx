@@ -463,7 +463,13 @@ class PDFwrapper extends Component<{}, State> {
               position: "relative",
             }}
           >
-            <PdfLoader url={url} beforeLoad={<Spinner />}>
+            <PdfLoader
+              url={url}
+              beforeLoad={<Spinner />}
+              onProgress={(data: any) => {
+                console.log(`loaded :  ${data.loaded}`)
+                console.log(`total : ${data.total}`)
+              }}>
               {(pdfDocument) => (
                 <PdfHighlighter
                   pdfDocument={pdfDocument}

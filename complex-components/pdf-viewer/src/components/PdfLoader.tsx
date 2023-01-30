@@ -1,61 +1,62 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 
-import type { PDFDocumentProxy } from "pdfjs-dist";
-import { getDocument, GlobalWorkerOptions } from "pdfjs-dist/legacy/build/pdf";
+import type { PDFDocumentProxy } from "pdfjs-dist"
+import { getDocument, GlobalWorkerOptions } from "pdfjs-dist/legacy/build/pdf"
 
 interface Props {
   /** See `GlobalWorkerOptionsType`. */
-  workerSrc: string;
+  workerSrc: string
 
-  url: string;
-  beforeLoad: JSX.Element;
-  errorMessage?: JSX.Element;
-  children: (pdfDocument: PDFDocumentProxy) => JSX.Element;
-  onError?: (error: Error) => void;
-  cMapUrl?: string;
-  cMapPacked?: boolean;
+  url: string
+  beforeLoad: JSX.Element
+  errorMessage?: JSX.Element
+  children: (pdfDocument: PDFDocumentProxy) => JSX.Element
+  onError?: (error: Error) => void
+  cMapUrl?: string
+  cMapPacked?: boolean
+  onProgress?: Function
 }
 
 interface State {
-  pdfDocument: PDFDocumentProxy | null;
-  error: Error | null;
+  pdfDocument: PDFDocumentProxy | null
+  error: Error | null
 }
 
 export class PdfLoader extends Component<Props, State> {
   state: State = {
     pdfDocument: null,
     error: null,
-  };
+  }
 
   static defaultProps = {
     // workerSrc: "https://unpkg.com/pdfjs-dist@2.11.338/build/pdf.worker.min.js",
     workerSrc: '/static/djeu/js/pdf.worker.min.js',
-  };
+  }
 
-  documentRef = React.createRef<HTMLElement>();
+  documentRef = React.createRef<HTMLElement>()
 
   componentDidMount() {
-    this.load();
+    this.load()
   }
 
   componentWillUnmount() {
-    const { pdfDocument: discardedDocument } = this.state;
+    const { pdfDocument: discardedDocument } = this.state
     if (discardedDocument) {
-      discardedDocument.destroy();
+      discardedDocument.destroy()
     }
   }
 
   componentDidUpdate({ url }: Props) {
     if (this.props.url !== url) {
-      this.load();
+      this.load()
     }
   }
 
   componentDidCatch(error: Error, info?: any) {
-    const { onError } = this.props;
+    const { onError } = this.props
 
     if (onError) {
-      onError(error);
+      onError(error)
     }
 
     this.setState({ pdfDocument: null, error })
@@ -78,16 +79,22 @@ export class PdfLoader extends Component<Props, State> {
           return
         }
 
-        return getDocument({
+        const loadingTask = getDocument({
           ...this.props,
           ownerDocument,
           cMapUrl,
           cMapPacked,
-        }).promise.then((pdfDocument) => {
+        })
+
+        if (this.props.onProgress) {
+          loadingTask.onProgress = this.props.onProgress
+        }
+
+        return loadingTask.promise.then((pdfDocument) => {
           this.setState({ pdfDocument })
           console.debug(`Pdf document ${pdfDocument} loaded`)
           window.dispatchEvent(new CustomEvent('pdf-viewer:documentLoaded'))
-        });
+        })
       })
       .catch((e) => this.componentDidCatch(e))
   }
@@ -104,11 +111,11 @@ export class PdfLoader extends Component<Props, State> {
             ? beforeLoad
             : children(pdfDocument)}
       </>
-    );
+    )
   }
 
   renderError() {
-    const { errorMessage } = this.props;
+    const { errorMessage } = this.props
     if (errorMessage) {
       return React.cloneElement(errorMessage, { error: this.state.error })
     }
